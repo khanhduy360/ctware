@@ -1,3 +1,4 @@
+import 'package:ctware/views/HomePage.dart';
 import 'package:ctware/views/LoginByZalo.dart';
 import 'package:ctware/views/Register.dart';
 import 'package:flutter/cupertino.dart';
@@ -98,8 +99,12 @@ class Login extends StatelessWidget {
                 //Container(child: SizedBox(height: 150,), alignment: Alignment.topCenter,),
                 ElevatedButton(
                   onPressed: () {
+                    // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    //   builder: (context) => LoginByZalo(),
+                    // ));
+
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => LoginByZalo(),
+                      builder: (context) => HomePage(),
                     ));
                   },
                   style: ElevatedButton.styleFrom(
