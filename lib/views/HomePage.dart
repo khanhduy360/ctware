@@ -1,9 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ctware/views/Account.dart';
+import 'package:ctware/views/Involce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'Setting.dart';
+import 'TestChart.dart';
 
 final List<String> imgList = [
   'assets/images/slider1.png',
@@ -99,6 +101,9 @@ class _HomePageState extends State<HomePage> {
                 _buildMenuItemIcon(context, Icons.receipt, 'Tra cứu Hóa đơn',
                     Colors.blueAccent, () {
                   // Action for 'Tra cứu Hóa đơn'
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => InvoiceListScreen(),
+                      ));
                   print('Tra cứu Hóa đơn tapped');
                 }),
                 _buildMenuItemIcon(
@@ -122,6 +127,11 @@ class _HomePageState extends State<HomePage> {
                     'Thông báo xì bể', Colors.redAccent, () {
                   // Action for 'Thông báo xì bể'
                   print('Thông báo xì bể tapped');
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => BarLineChart()),
+                  );
                 }),
                 _buildMenuItemIcon(context, Icons.map_outlined,
                     'Địa điểm thanh toán', Colors.orange, () {
