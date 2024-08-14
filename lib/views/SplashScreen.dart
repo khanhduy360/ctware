@@ -25,17 +25,29 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Logo hoặc hình ảnh splash screen
-            Image.asset('assets/icons/ic_launcher.png'), // Đảm bảo bạn đã thêm hình ảnh vào thư mục assets
-            SizedBox(height: 20),
-            // Văn bản hoặc các thành phần khác
-
-          ],
-        ),
+      body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(image: AssetImage('assets/images/LoginScreen.png'),
+            fit: BoxFit.fitHeight,),
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Logo hoặc hình ảnh splash screen
+                  SizedBox(
+                    width: 300,
+                    height: 300,
+                    child: Image.asset('assets/images/logo.png')
+                  ), // Đảm bảo bạn đã thêm hình ảnh vào thư mục assets
+                  SizedBox(height: 20),
+                  // Văn bản hoặc các thành phần khác
+                ],
+              ),
+            ),
+          ),
       ),
     );
   }

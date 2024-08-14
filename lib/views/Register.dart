@@ -40,47 +40,59 @@ class Register extends StatelessWidget {
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: 'Tài khoản',
-                          prefixIcon: Icon(Icons.account_circle, color: Colors.blue),
+                          labelStyle: TextStyle(fontSize: 18),
+                          prefixIcon: Icon(Icons.account_circle, color: Colors.blue, size: 30),
                         ),
+                        style: TextStyle(fontSize: 20),
                       ),
                       SizedBox(height: 10),
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: 'Họ và tên',
-                          prefixIcon: Icon(Icons.person, color: Colors.blue),
+                          labelStyle: TextStyle(fontSize: 18),
+                          prefixIcon: Icon(Icons.person, color: Colors.blue, size: 30),
                         ),
+                        style: TextStyle(fontSize: 20),
                       ),
                       SizedBox(height: 10),
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: 'Điện thoại',
-                          prefixIcon: Icon(Icons.phone, color: Colors.blue),
+                          labelStyle: TextStyle(fontSize: 18),
+                          prefixIcon: Icon(Icons.phone, color: Colors.blue, size: 30),
                         ),
+                        style: TextStyle(fontSize: 20),
                       ),
                       SizedBox(height: 10),
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: 'Email',
-                          prefixIcon: Icon(Icons.email, color: Colors.blue),
+                          labelStyle: TextStyle(fontSize: 18),
+                          prefixIcon: Icon(Icons.email, color: Colors.blue, size: 30),
                         ),
+                        style: TextStyle(fontSize: 20),
                       ),
                       SizedBox(height: 10),
                       TextFormField(
                         obscureText: true,
                         decoration: InputDecoration(
                           labelText: 'Mật khẩu',
-                          prefixIcon: Icon(Icons.lock, color: Colors.blue),
+                          labelStyle: TextStyle(fontSize: 18),
+                          prefixIcon: Icon(Icons.lock, color: Colors.blue, size: 30),
                         ),
+                        style: TextStyle(fontSize: 20),
                       ),
                       SizedBox(height: 10),
                       TextFormField(
                         obscureText: true,
                         decoration: InputDecoration(
                           labelText: 'Xác nhận mật khẩu',
-                          prefixIcon: Icon(Icons.lock, color: Colors.blue),
+                          labelStyle: TextStyle(fontSize: 18),
+                          prefixIcon: Icon(Icons.lock, color: Colors.blue, size: 30),
                         ),
+                        style: TextStyle(fontSize: 20),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 25),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(

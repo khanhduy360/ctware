@@ -94,75 +94,87 @@ class _HomePageState extends State<HomePage> {
             ),
             SizedBox(
                 height:
-                    200), // Add extra space to prevent overlap with other content
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildMenuItemIcon(context, Icons.receipt, 'Tra cứu Hóa đơn',
-                    Colors.blueAccent, () {
-                  // Action for 'Tra cứu Hóa đơn'
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => InvoiceListScreen(),
-                      ));
-                  print('Tra cứu Hóa đơn tapped');
-                }),
-                _buildMenuItemIcon(
-                    context, Icons.receipt, 'Hợp đồng', Colors.yellowAccent,
-                    () {
-                  // Action for 'Hợp đồng'
-                  print('Hợp đồng tapped');
-                }),
-                _buildMenuItemIcon(context, Icons.message, 'Gửi yêu cầu',
-                    Colors.lightBlueAccent, () {
-                  // Action for 'Gửi yêu cầu'
-                  print('Gửi yêu cầu tapped');
-                }),
-              ],
+                    170), // Add extra space to prevent overlap with other content
+            Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildMenuItemIcon(context, Icons.receipt, 'Tra cứu Hóa đơn',
+                      Colors.blueAccent, () {
+                    // Action for 'Tra cứu Hóa đơn'
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => InvoiceListScreen(),
+                        ));
+                    print('Tra cứu Hóa đơn tapped');
+                  }),
+                  _buildMenuItemIcon(
+                      context, Icons.receipt, 'Hợp đồng', Colors.yellowAccent,
+                      () {
+                    // Action for 'Hợp đồng'
+                    print('Hợp đồng tapped');
+                  }),
+                  _buildMenuItemIcon(context, Icons.message, 'Gửi yêu cầu',
+                      Colors.lightBlueAccent, () {
+                    // Action for 'Gửi yêu cầu'
+                    print('Gửi yêu cầu tapped');
+                  }),
+                ],
+              ),
             ),
-            SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildMenuItemIcon(context, Icons.dangerous_outlined,
-                    'Thông báo xì bể', Colors.redAccent, () {
-                  // Action for 'Thông báo xì bể'
-                  print('Thông báo xì bể tapped');
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BarLineChart()),
-                  );
-                }),
-                _buildMenuItemIcon(context, Icons.map_outlined,
-                    'Địa điểm thanh toán', Colors.orange, () {
-                  // Action for 'Địa điểm thanh toán'
-                      // Action for 'Cài đặt'
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => UserInfoScreen(),
-                      ));
-
-                  print('Địa điểm thanh toán tapped');
-                }),
-                _buildMenuItemIcon(
-                    context, Icons.settings, 'Cài đặt', Colors.yellow, () {
-                  // Action for 'Cài đặt'
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => Setting(),
-                  ));
-                  print('Cài đặt tapped');
-                }),
-              ],
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildMenuItemIcon(context, Icons.dangerous_outlined,
+                      'Thông báo xì bể', Colors.redAccent, () {
+                    // Action for 'Thông báo xì bể'
+                    print('Thông báo xì bể tapped');
+              
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BarLineChart()),
+                    );
+                  }),
+                  _buildMenuItemIcon(context, Icons.map_outlined,
+                      'Địa điểm thanh toán', Colors.orange, () {
+                    // Action for 'Địa điểm thanh toán'
+                        // Action for 'Cài đặt'
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => UserInfoScreen(),
+                        ));
+              
+                    print('Địa điểm thanh toán tapped');
+                  }),
+                  _buildMenuItemIcon(
+                      context, Icons.settings, 'Cài đặt', Colors.yellow, () {
+                    // Action for 'Cài đặt'
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Setting(),
+                    ));
+                    print('Cài đặt tapped');
+                  }),
+                ],
+              ),
             ),
-            SizedBox(height: 16),
-            CarouselSlider(
-              options: CarouselOptions(autoPlay: true, viewportFraction: 1),
-              items: imgList
-                  .map((item) => Container(
-                        child: Center(
-                            child: Image.asset(item,
-                                fit: BoxFit.fill, width: 1000)),
-                      ))
-                  .toList(),
+            Container(
+              margin: EdgeInsets.only(top: 30, bottom: 15),
+              color: Colors.black,
+              height: 100,
+              width: MediaQuery.of(context).size.width,
+              child: CarouselSlider(
+                options: CarouselOptions(autoPlay: true, viewportFraction: 1),
+                items: imgList
+                    .map((item) => Container(
+                          child: Image.asset(item,
+                              fit: BoxFit.fill, width: MediaQuery.of(context).size.width,),
+                        ))
+                    .toList(),
+              ),
             ),
             Container(
               padding: EdgeInsets.all(16.0),
@@ -178,7 +190,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Container(
-              height: 150,
+              height: 200,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -188,6 +200,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            const SizedBox(height: 20)
           ],
         ),
       ),
@@ -251,18 +264,21 @@ class _HomePageState extends State<HomePage> {
       child: InkWell(
         onTap: onPressed,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 30,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: color
+              ),
+              height: 60,
+              width: 60,
               child: Icon(icon, size: 30, color: Colors.white),
-              backgroundColor: color,
             ),
             SizedBox(height: 5),
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12),
+              style: TextStyle(fontSize: 15),
               overflow:
                   TextOverflow.visible, // Allows text to wrap to the next line
             ),
@@ -274,13 +290,23 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildNewsItem() {
     return Container(
-      width: 150,
-      margin: EdgeInsets.only(right: 16),
+      width: 200,
+      margin: EdgeInsets.only(left: 10, right: 10),
       child: Column(
         children: [
-          Image.asset('assets/icons/ic_logo.png', fit: BoxFit.cover),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(image: AssetImage('assets/images/news1.jpg'), fit: BoxFit.fill)
+            ),
+            height: 150,
+          ),
           SizedBox(height: 8),
-          Text('CAN THO WASCO', textAlign: TextAlign.center),
+          Container(
+            alignment: Alignment.centerLeft,
+            padding:const EdgeInsets.only(left: 5, right: 5),
+            child: Text('Kết quả thử nghiệm nước tháng 07/2024'),
+          ),
         ],
       ),
     );

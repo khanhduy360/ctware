@@ -77,25 +77,29 @@ class Login extends StatelessWidget {
                 SizedBox(height: 20),
                 TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'Tài khoản/Email',
-                    prefixIcon: Icon(Icons.account_circle, color: Colors.blue,),
+                    labelText: 'Tài khoản/Email/Số điện thoại',
+                    labelStyle: TextStyle(fontSize: 18),
+                    prefixIcon: Icon(Icons.account_circle, color: Colors.blue, size: 30,),
                   ),
+                  style: TextStyle(fontSize: 20),
                 ),
                 SizedBox(height: 10),
                 TextFormField(
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'Mật khẩu',
-                    prefixIcon: Icon(Icons.lock,  color: Colors.blue,),
+                    labelStyle: TextStyle(fontSize: 18),
+                    prefixIcon: Icon(Icons.lock,  color: Colors.blue, size: 30,),
                     suffixIcon: Icon(Icons.visibility),
                   ),
+                  style: TextStyle(fontSize: 20),
                 ),
                 SizedBox(height: 20),
                 TextButton(
                   onPressed: () {},
-                  child: Text('Quên mật khẩu?'),
+                  child: Text('Quên mật khẩu?', style: TextStyle(fontSize: 15),),
                 ),
-                SizedBox(height: 225),
+                SizedBox(height: 50),
                 //Container(child: SizedBox(height: 150,), alignment: Alignment.topCenter,),
                 ElevatedButton(
                   onPressed: () {
@@ -116,7 +120,26 @@ class Login extends StatelessWidget {
                     color: Colors.white, fontSize: 20
                   ),),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => HomePage(),
+                    ));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent, // Đặt màu nền trong suốt
+                    elevation: 0, // Loại bỏ hiệu ứng đổ bóng
+                    // Màu sắc giống với hình
+                    minimumSize:
+                    Size(double.infinity, 50), // Kích thước giống với hình
+                    side: BorderSide(color: Colors.blue, width: 2), // Màu viền giống với hình
+                  ),
+                  child: Text('Đăng nhập bằng Số điện thoại', style: TextStyle(
+                      color: Colors.blue, fontSize: 20
+                  ),),
+                ),
+                SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
