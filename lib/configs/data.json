@@ -1,0 +1,62 @@
+[
+  {
+    "time": 1,
+    "cost": 130,
+    "value": 6
+  },
+  {
+    "time": 2,
+    "cost": 250,
+    "value": 11
+  },
+  {
+    "time": 3,
+    "cost": 55,
+    "value": 3
+  },
+  {
+    "time": 4,
+    "cost": 500,
+    "value": 22
+  },
+  {
+    "time": 5,
+    "cost": 500,
+    "value": 22
+  },
+  {
+    "time": 6,
+    "cost": 55,
+    "value": 3
+  },
+  {
+    "time": 7,
+    "cost": 130,
+    "value": 6
+  },
+  {
+    "time": 8,
+    "cost": 500,
+    "value": 22
+  },
+  {
+    "time": 9,
+    "cost": 250,
+    "value": 11
+  },
+  {
+    "time": 10,
+    "cost": 130,
+    "value": 6
+  },
+  {
+    "time": 11,
+    "cost": 130,
+    "value": 6
+  },
+  {
+    "time": 12,
+    "cost": 55,
+    "value": 3
+  }
+]

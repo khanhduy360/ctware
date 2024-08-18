@@ -1,12 +1,39 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class UserInfoScreen extends StatelessWidget {
+import 'container/Bottombar.dart';
+
+class UserInfoScreen extends StatefulWidget {
+  @override
+  State<UserInfoScreen> createState() => _UserInfoScreenState();
+}
+
+class _UserInfoScreenState extends State<UserInfoScreen> {
+  static const List<Destination> allDestinations = <Destination>[
+    Destination(0, 'Trang chủ', 'assets/icons/ic_home.png', Colors.teal),
+    Destination(1, 'Tin tức', 'assets/icons/ic_news.png', Colors.cyan),
+    Destination(2, 'Thông báo', 'assets/icons/ic_notify.png', Colors.orange),
+    Destination(3, 'Tài khoản', 'assets/icons/ic_user.png', Colors.blue),
+  ];
+  int selectedIndex = 0;
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Thông tin người dùng'),
+        title: Text("Thông tin người dùng", style: TextStyle(color: Colors.white),),
+        backgroundColor: Colors.blue,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: ListView(
         children: [
@@ -57,28 +84,10 @@ class UserInfoScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Trang chủ',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.article),
-            label: 'Tin tức',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Thông báo',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Tài khoản',
-          ),
-        ],
-        currentIndex: 3,
-        selectedItemColor: Colors.blue,
-        onTap: (index) {},
+      bottomNavigationBar: CustomBottomNavigationBar(
+        selectedIndex: selectedIndex,
+        onItemTapped: _onItemTapped,
+        allDestinations: allDestinations,
       ),
     );
   }

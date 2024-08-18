@@ -5,7 +5,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  bool _obscureText = true;
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,12 +97,17 @@ class Login extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                  obscureText: true,
+                  obscureText: _obscureText,
                   decoration: InputDecoration(
                     labelText: 'Mật khẩu',
                     labelStyle: TextStyle(fontSize: 18),
-                    prefixIcon: Icon(Icons.lock,  color: Colors.blue, size: 30,),
-                    suffixIcon: Icon(Icons.visibility),
+                    prefixIcon: Icon(Icons.lock,  color: Colors.blue,),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: _togglePasswordVisibility,
+                    ),
                   ),
                   style: TextStyle(fontSize: 20),
                 ),

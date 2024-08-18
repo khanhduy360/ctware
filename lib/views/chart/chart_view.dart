@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ChartData {
@@ -45,6 +46,9 @@ class ChartView extends StatelessWidget {
   final MoneyConfigChart moneyConfigChart;
   final UseWaterConfigChart useWaterConfigChart;
 
+  static Color colorBar = Colors.blue;
+  static Color colorLine = Colors.red;
+
   @override
   Widget build(BuildContext context) {
     return SfCartesianChart(
@@ -53,12 +57,14 @@ class ChartView extends StatelessWidget {
           minimum: timeConfigChart.min,
           maximum: timeConfigChart.max,
           interval: timeConfigChart.step,
+          labelRotation: 50,
         ),
         // Trục y1: trục tiền
         primaryYAxis: NumericAxis(
           minimum: moneyConfigChart.min,
           maximum: moneyConfigChart.max,
           interval: moneyConfigChart.step,
+          numberFormat: NumberFormat.currency(locale: 'vi_VN', symbol: '', decimalDigits: 0),
         ),
         axes: [
           // Trục y2: trục khối nước
@@ -77,15 +83,15 @@ class ChartView extends StatelessWidget {
               dataSource: data,
               xValueMapper: (ChartData data, _) => data.time,
               yValueMapper: (ChartData data, _) => data.vnd,
-              name: 'Số tiền',
-              color: Colors.blue),
+              name: 'Số tiền(VNĐ)',
+              color: colorBar),
           LineSeries<ChartData, String>(
               dataSource: data,
               yAxisName: 'y1Axis',
               xValueMapper: (ChartData data, _) => data.time,
               yValueMapper: (ChartData data, _) => data.useWater,
-              name: 'Số khối',
-              color: Colors.red)
+              name: 'Số khối(cm³)',
+              color: colorLine)
         ]);
   }
 }

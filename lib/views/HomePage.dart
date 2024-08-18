@@ -3,13 +3,12 @@ import 'package:ctware/configs/extendtion/box_extendtion.dart';
 import 'package:ctware/configs/responsive.dart';
 import 'package:ctware/views/Account.dart';
 import 'package:ctware/views/Involce.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 import 'Setting.dart';
 import 'TestChart.dart';
+import 'container/Bottombar.dart';
 import 'chart/test_chart1.dart';
 
 final List<String> imgList = [
@@ -31,10 +30,6 @@ class _HomePageState extends State<HomePage> {
     Destination(2, 'Thông báo', 'assets/icons/ic_notify.png', Colors.orange),
     Destination(3, 'Tài khoản', 'assets/icons/ic_user.png', Colors.blue),
   ];
-  late final List<GlobalKey<NavigatorState>> navigatorKeys;
-  late final List<GlobalKey> destinationKeys;
-  late final List<AnimationController> destinationFaders;
-  late final List<Widget> destinationViews;
   int selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -86,16 +81,17 @@ class _HomePageState extends State<HomePage> {
                   context, Icons.receipt, 'Tra cứu Hóa đơn', Colors.blueAccent,
                   () {
                 // Action for 'Tra cứu Hóa đơn'
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => InvoiceListScreen(),
-                ));
+                 Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => InvoiceListScreen()),
+                      );
                 print('Tra cứu Hóa đơn tapped');
               }),
               _buildMenuItemIcon(
                   context, Icons.receipt, 'Hợp đồng', Colors.yellowAccent, () {
                 print('Hợp đồng tapped');
                 Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const Testchart1(),
+                  builder: (context) => const Testchart1(),
                 ));
               }),
               _buildMenuItemIcon(
@@ -118,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                   'Thông báo xì bể', Colors.redAccent, () {
                 // Action for 'Thông báo xì bể'
                 print('Thông báo xì bể tapped');
-      
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => BarLineChart()),
@@ -128,18 +124,20 @@ class _HomePageState extends State<HomePage> {
                   'Địa điểm thanh toán', Colors.orange, () {
                 // Action for 'Địa điểm thanh toán'
                 // Action for 'Cài đặt'
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => UserInfoScreen(),
-                ));
-      
+                Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => UserInfoScreen()),
+                      );
+
                 print('Địa điểm thanh toán tapped');
               }),
               _buildMenuItemIcon(
                   context, Icons.settings, 'Cài đặt', Colors.yellow, () {
                 // Action for 'Cài đặt'
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => Setting(),
-                ));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Setting()),
+                  );
                 print('Cài đặt tapped');
               }),
             ],
@@ -197,77 +195,47 @@ class _HomePageState extends State<HomePage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-              systemOverlayStyle: const SystemUiOverlayStyle(
-                  statusBarBrightness: Brightness.light),
-              expandedHeight: Responsive.height(35, context),
-              backgroundColor: Colors.white,
-              elevation: 0.0,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Column(
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        width: Responsive.width(100, context),
-                        child: Image(
-                          image: AssetImage('assets/icons/bg_home.png'),
-                          fit: BoxFit.fill,
-                        ),
+            systemOverlayStyle: const SystemUiOverlayStyle(
+                statusBarBrightness: Brightness.light),
+            expandedHeight: Responsive.height(35, context),
+            backgroundColor: Colors.white,
+            elevation: 0.0,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Column(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      width: Responsive.width(100, context),
+                      child: Image(
+                        image: AssetImage('assets/icons/bg_home.png'),
+                        fit: BoxFit.fill,
                       ),
                     ),
-                    Container(
+                  ),
+                  Container(
                       height: Responsive.height(10, context),
                       color: Colors.white)
-                  ],
-                ),
-              ),
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(180),
-                child: Container(
-                      alignment: Alignment.bottomCenter,
-                      margin: EdgeInsets.all(20),
-                      child: mainCard(context),
-                    ),
+                ],
               ),
             ),
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(180),
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                margin: EdgeInsets.all(20),
+                child: mainCard(context),
+              ),
+            ),
+          ),
           SliverToBoxAdapter(
             child: mainBody(context),
           ),
         ],
       ),
-      bottomNavigationBar: NavigationBar(
-        height: 60,
-        indicatorColor: Colors.white70,
+      bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: selectedIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
-        destinations: allDestinations.map<NavigationDestination>(
-          (Destination destination) {
-            bool isSelected =
-                allDestinations[selectedIndex].index == destination.index;
-            return NavigationDestination(
-              icon: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    destination.iconPath,
-                    color: isSelected ? destination.color : Colors.grey,
-                    height: 20,
-                  ),
-                  Text(
-                    destination.title,
-                    style: TextStyle(
-                      color: isSelected ? destination.color : Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-              label: '',
-            );
-          },
-        ).toList(),
+        onItemTapped: _onItemTapped,
+        allDestinations: allDestinations,
       ),
     );
   }
@@ -278,7 +246,9 @@ class _HomePageState extends State<HomePage> {
         Container(
           height: 40,
           width: 40,
-          child: Image(image: AssetImage(assetPath),),
+          child: Image(
+            image: AssetImage(assetPath),
+          ),
         ),
         SizedBox(height: 5),
         Text(title, textAlign: TextAlign.center),
@@ -340,13 +310,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-class Destination {
-  const Destination(this.index, this.title, this.iconPath, this.color);
-
-  final int index;
-  final String title;
-  final String iconPath;
-  final Color color;
 }
