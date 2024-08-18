@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'Setting.dart';
 import 'TestChart.dart';
+import 'container/Bottombar.dart';
 
 final List<String> imgList = [
   'assets/images/slider1.png',
@@ -26,10 +27,6 @@ class _HomePageState extends State<HomePage> {
     Destination(2, 'Thông báo', 'assets/icons/ic_notify.png', Colors.orange),
     Destination(3, 'Tài khoản', 'assets/icons/ic_user.png', Colors.blue),
   ];
-  late final List<GlobalKey<NavigatorState>> navigatorKeys;
-  late final List<GlobalKey> destinationKeys;
-  late final List<AnimationController> destinationFaders;
-  late final List<Widget> destinationViews;
   int selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -101,9 +98,11 @@ class _HomePageState extends State<HomePage> {
                 _buildMenuItemIcon(context, Icons.receipt, 'Tra cứu Hóa đơn',
                     Colors.blueAccent, () {
                   // Action for 'Tra cứu Hóa đơn'
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => InvoiceListScreen(),
-                      ));
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => InvoiceListScreen()),
+                      );
                   print('Tra cứu Hóa đơn tapped');
                 }),
                 _buildMenuItemIcon(
@@ -137,18 +136,22 @@ class _HomePageState extends State<HomePage> {
                     'Địa điểm thanh toán', Colors.orange, () {
                   // Action for 'Địa điểm thanh toán'
                       // Action for 'Cài đặt'
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => UserInfoScreen(),
-                      ));
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => UserInfoScreen()),
+                      );
 
                   print('Địa điểm thanh toán tapped');
                 }),
                 _buildMenuItemIcon(
                     context, Icons.settings, 'Cài đặt', Colors.yellow, () {
                   // Action for 'Cài đặt'
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => Setting(),
-                  ));
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Setting()),
+                  );
                   print('Cài đặt tapped');
                 }),
               ],
@@ -191,40 +194,10 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: NavigationBar(
-        height: 60,
-        indicatorColor: Colors.white70,
+      bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: selectedIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
-        destinations: allDestinations.map<NavigationDestination>(
-          (Destination destination) {
-            bool isSelected =
-                allDestinations[selectedIndex].index == destination.index;
-            return NavigationDestination(
-              icon: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    destination.iconPath,
-                    color: isSelected ? destination.color : Colors.grey,
-                    height: 20,
-                  ),
-                  Text(
-                    destination.title,
-                    style: TextStyle(
-                      color: isSelected ? destination.color : Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-              label: '',
-            );
-          },
-        ).toList(),
+        onItemTapped: _onItemTapped,
+        allDestinations: allDestinations,
       ),
     );
   }
@@ -287,11 +260,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class Destination {
-  const Destination(this.index, this.title, this.iconPath, this.color);
-
-  final int index;
-  final String title;
-  final String iconPath;
-  final Color color;
-}

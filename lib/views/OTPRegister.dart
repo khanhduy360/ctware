@@ -203,13 +203,17 @@ class _OTPRegisterState extends State<OTPRegister> {
   Widget buildOTPTextField(TextEditingController controller,
       FocusNode focusNode, FocusNode? nextFocusNode) {
     return SizedBox(
-      width: 40,
-      height: 40,
+      width: 50,
+      height: 75,
       child: TextField(
         controller: controller,
         focusNode: focusNode,
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
+        style: TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.bold
+        ),
         maxLength: 1,
         onChanged: (value) {
           if (_isInit && value.length == 1 && nextFocusNode != null) {
@@ -218,7 +222,9 @@ class _OTPRegisterState extends State<OTPRegister> {
         },
         decoration: InputDecoration(
           counter: Offstage(),
-          border: OutlineInputBorder(),
+          border: OutlineInputBorder(
+
+          ),
         ),
       ),
     );

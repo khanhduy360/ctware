@@ -2,7 +2,27 @@ import 'package:ctware/views/OTPRegister.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
+  @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  bool _obscureTextPass = true;
+  bool _obscureTextPassConfirm = true;
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscureTextPass = !_obscureTextPass;
+    });
+  }
+
+  void _togglePasswordConfirmVisibility() {
+    setState(() {
+      _obscureTextPassConfirm = !_obscureTextPassConfirm;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +59,7 @@ class Register extends StatelessWidget {
                       SizedBox(height: 20),
                       TextFormField(
                         decoration: InputDecoration(
-                          labelText: 'Tài khoản',
+                          labelText: 'Tài khoản (*)',
                           prefixIcon: Icon(Icons.account_circle, color: Colors.blue),
                         ),
                       ),
@@ -66,18 +86,30 @@ class Register extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       TextFormField(
-                        obscureText: true,
+                        obscureText: _obscureTextPass,
                         decoration: InputDecoration(
-                          labelText: 'Mật khẩu',
+                          labelText: 'Mật khẩu (*)',
                           prefixIcon: Icon(Icons.lock, color: Colors.blue),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureTextPass ? Icons.visibility : Icons.visibility_off,
+                            ),
+                            onPressed: _togglePasswordVisibility,
+                          ),
                         ),
                       ),
                       SizedBox(height: 10),
                       TextFormField(
-                        obscureText: true,
+                        obscureText: _obscureTextPassConfirm,
                         decoration: InputDecoration(
-                          labelText: 'Xác nhận mật khẩu',
+                          labelText: 'Xác nhận mật khẩu (*)',
                           prefixIcon: Icon(Icons.lock, color: Colors.blue),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureTextPassConfirm ? Icons.visibility : Icons.visibility_off,
+                            ),
+                            onPressed: _togglePasswordConfirmVisibility,
+                          ),
                         ),
                       ),
                       SizedBox(height: 20),
