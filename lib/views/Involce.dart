@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:ctware/configs/extendtion/box_extendtion.dart';
+import 'package:ctware/configs/month_year_picker_custom.dart';
+import 'package:ctware/configs/responsive.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'AddInvolce.dart';
@@ -6,6 +11,8 @@ import 'container/Bottombar.dart';
 import 'package:intl/intl.dart';
 
 class InvoiceListScreen extends StatefulWidget {
+  const InvoiceListScreen({super.key});
+
   @override
   State<InvoiceListScreen> createState() => _InvoiceListScreenState();
 }
@@ -19,84 +26,82 @@ class _InvoiceListScreenState extends State<InvoiceListScreen> {
   ];
   int selectedIndex = 0;
   String dropdownValue = '65642 - NGUYỄN VĂN A';
+  DateTime? fromMonthSelected;
+  DateTime? toMonthSelected;
+  // ignore: non_constant_identifier_names
+  final TAG_FROM_MONTH = 'key_tag_button_1';
+  // ignore: non_constant_identifier_names
+  final TAG_TO_MONTH = 'key_tag_button_2';
+
+  @override
+  void initState() {
+    super.initState();
+    fromMonthSelected = DateTime.now();
+    toMonthSelected = DateTime.now();
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
     });
   }
 
-  DateTime fromDate = DateTime.now();
-  DateTime toDate = DateTime.now();
-
-  String fromMonthText = 'Từ tháng\n04/2024';
-  String toMonthText = 'Đến tháng\n05/2024';
-
-  Future<void> _selectFromMonth(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+  Future<void> _onPressedDatePicker(String tag) async {
+    DateTime? initialDate = tag == TAG_FROM_MONTH ? fromMonthSelected : toMonthSelected;
+    final selected = await showMonthYearPicker(
       context: context,
-      initialDate: fromDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-      initialDatePickerMode: DatePickerMode.year,
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Colors.blue, // header background color
-              onPrimary: Colors.white, // header text color
-              onSurface: Colors.black, // body text color
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.blue, // button text color
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
+      initialDate: initialDate ?? DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime(2030),
+      locale: const Locale('vi', 'VN'),
+      initialMonthYearPickerMode: MonthYearPickerMode.month
     );
-    if (picked != null && picked != fromDate) {
+    if (selected != null) {
       setState(() {
-        fromDate =
-            DateTime(picked.year, picked.month); // Keep only year and month
-        fromMonthText = 'Từ tháng\n' + DateFormat('MM/yyyy').format(fromDate);
+        if(tag == TAG_FROM_MONTH) {
+          fromMonthSelected = selected;
+        } else {
+          toMonthSelected = selected;
+        }
       });
     }
   }
 
-  Future<void> _selectToMonth(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: toDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-      initialDatePickerMode: DatePickerMode.year,
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Colors.blue, // header background color
-              onPrimary: Colors.white, // header text color
-              onSurface: Colors.black, // body text color
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.blue, // button text color
-              ),
-            ),
+  String formatDate(DateTime? date) {
+    return DateFormat('MM/yyyy').format(date ?? DateTime.now());
+  }
+
+  Widget _buttonDatePicket(context, {
+    required String label,
+    required String tag,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      height: 40,
+      width: Responsive.width(35, context),
+      decoration: BoxStyle.fromBoxDecoration(radius: 15),
+      child: FloatingActionButton(
+        heroTag: tag,
+        onPressed: () {
+          _onPressedDatePicker(tag);
+        },
+        backgroundColor: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15, right: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(label),
+              const Icon(
+                Icons.calendar_today,
+                size: 20,
+                color: Colors.black,
+              )
+            ],
           ),
-          child: child!,
-        );
-      },
+        ),
+      ),
     );
-    if (picked != null && picked != toDate) {
-      setState(() {
-        toDate =
-            DateTime(picked.year, picked.month); // Keep only year and month
-        toMonthText = 'Đến tháng\n' + DateFormat('MM/yyyy').format(toDate);
-      });
-    }
   }
 
   @override
@@ -178,43 +183,43 @@ class _InvoiceListScreenState extends State<InvoiceListScreen> {
                         ),
                       ),
                       Divider(color: Colors.grey),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () => _selectFromMonth(context),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    fromMonthText,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Từ tháng:',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () => _selectToMonth(context),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    toMonthText,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                ],
+                              _buttonDatePicket(
+                                context,
+                                label: formatDate(fromMonthSelected),
+                                tag: TAG_FROM_MONTH,
+                              )
+                            ],
+                          ),
+                          const SizedBox(width: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Đến tháng:',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            ),
-                          ],
-                        ),
+                              _buttonDatePicket(
+                                context,
+                                label: formatDate(toMonthSelected),
+                                tag: TAG_TO_MONTH,
+                              )
+                            ],
+                          )
+                        ],
                       ),
                       SizedBox(height: 16.0),
                     ],
@@ -300,44 +305,46 @@ class _InvoiceListScreenState extends State<InvoiceListScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Danh bộ'),
+                                Text('Danh bộ', style: TextStyle(fontSize: 16),),
                                 Text(
                                   '877026A',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 16
                                   ),
                                 ),
                               ],
                             ),
                             Column(
                               children: [
-                                Text('CS Cũ'),
+                                Text('CS Cũ', style: TextStyle(fontSize: 16),),
                                 Text(
                                   '25',
                                   style: TextStyle(
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.bold, fontSize: 16
                                   ),
                                 ),
                               ],
                             ),
                             Column(
                               children: [
-                                Text('CS Mới'),
+                                Text('CS Mới', style: TextStyle(fontSize: 16),),
                                 Text(
                                   '30',
                                   style: TextStyle(
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.bold, fontSize: 16
                                   ),
                                 ),
                               ],
                             ),
                             Column(
                               children: [
-                                Text('M3TT'),
+                                Text('M3TT', style: TextStyle(fontSize: 16),),
                                 Text(
                                   '5',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 16
                                   ),
                                 ),
                               ],
@@ -353,12 +360,14 @@ class _InvoiceListScreenState extends State<InvoiceListScreen> {
                               style: TextStyle(
                                 color: Colors.green,
                                 fontWeight: FontWeight.bold,
+                                fontSize: 14
                               ),
                             ),
                             Text(
                               '17/04/2024',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
+                                fontSize: 14
                               ),
                             ),
                           ],

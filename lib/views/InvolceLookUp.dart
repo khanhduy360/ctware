@@ -108,7 +108,7 @@ class InvoiceCard extends StatelessWidget {
             Text('Địa chỉ: $address'),
             SizedBox(height: 8),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton.icon(
                   onPressed: () {
@@ -117,6 +117,7 @@ class InvoiceCard extends StatelessWidget {
                   icon: Icon(Icons.speed, color: Colors.blue,),
                   label: Text('Ghi chỉ số Online', style: TextStyle(color: Colors.blue),),
                 ),
+                const SizedBox(width: 15),
                 ElevatedButton.icon(
                   onPressed: () {
 

@@ -1,3 +1,4 @@
+import 'package:ctware/configs/extendtion/box_extendtion.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,11 +22,15 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       selectedIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Thông tin người dùng", style: TextStyle(color: Colors.white),),
+        title: Text(
+          "Thông tin người dùng",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.blue,
         elevation: 0,
         leading: IconButton(
@@ -39,49 +44,74 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
         children: [
           UserInfoHeader(),
           SectionTitle(title: 'Quản lý tài khoản'),
-          ListTile(
-            title: Text('Quản lý Hóa đơn'),
-            trailing: Icon(Icons.arrow_forward_ios),
-            onTap: () {},
-          ),
-          ListTile(
-            title: Text('Đổi mật khẩu'),
-            trailing: Icon(Icons.arrow_forward_ios),
-            onTap: () {},
-          ),
-          ListTile(
-            title: Text('Xác thực Email'),
-            trailing: Icon(Icons.arrow_forward_ios),
-            onTap: () {},
+          Container(
+            margin:
+                const EdgeInsets.only(top: 8, left: 15, right: 15, bottom: 8),
+            decoration: BoxStyle.fromBoxDecoration(radius: 15),
+            child: Column(
+              children: [
+                ListTile(
+                  title: Text('Quản lý Hóa đơn'),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: Text('Đổi mật khẩu'),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: Text('Xác thực Email'),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {},
+                ),
+              ],
+            ),
           ),
           SectionTitle(title: 'Hỗ trợ'),
-          SupportRow(
-            leftTitle: 'Email',
-            leftSubtitle: '',
-            rightTitle: 'ctncantho@gmail.com',
-            rightSubtitle: '',
-          ),
-          SupportRow(
-            leftTitle: 'Zalo',
-            leftSubtitle: '',
-            rightTitle: 'CANTHOWASSCO OA Page',
-            rightSubtitle: '',
-          ),
-          SupportRow(
-            leftTitle: 'Facebook',
-            leftSubtitle: '',
-            rightTitle: 'CANTHOWASSCO Fanpage',
-            rightSubtitle: '',
+          Container(
+            margin:
+                const EdgeInsets.only(top: 8, left: 15, right: 15, bottom: 8),
+            decoration: BoxStyle.fromBoxDecoration(radius: 15),
+            child: Column(children: [
+              SupportRow(
+                leftTitle: 'Email',
+                leftSubtitle: '',
+                rightTitle: 'ctncantho@gmail.com',
+                rightSubtitle: '',
+              ),
+              SupportRow(
+                leftTitle: 'Zalo',
+                leftSubtitle: '',
+                rightTitle: 'CANTHOWASSCO OA Page',
+                rightSubtitle: '',
+              ),
+              SupportRow(
+                leftTitle: 'Facebook',
+                leftSubtitle: '',
+                rightTitle: 'CANTHOWASSCO Fanpage',
+                rightSubtitle: '',
+              ),
+            ]),
           ),
           SectionTitle(title: 'Giới thiệu'),
-          ListTile(
-            title: Text('Về CTWCare'),
-            onTap: () {},
-          ),
-          ListTile(
-            title: Text('Điều khoản sử dụng'),
-            onTap: () {},
-          ),
+          Container(
+            margin:
+                const EdgeInsets.only(top: 8, left: 15, right: 15, bottom: 8),
+            decoration: BoxStyle.fromBoxDecoration(radius: 15),
+            child: Column(
+              children: [
+                ListTile(
+                  title: Text('Về CTWCare'),
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: Text('Điều khoản sử dụng'),
+                  onTap: () {},
+                ),
+              ],
+            ),
+          )
         ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
@@ -146,7 +176,6 @@ class SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      color: Colors.grey[200],
       child: Text(
         title,
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),

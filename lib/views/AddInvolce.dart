@@ -56,8 +56,6 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
               ),
             ),
             SizedBox(height: 32),
-
-            SizedBox(height: 16),
             TextButton(
               onPressed: () {
                 // Handle link press
@@ -67,7 +65,7 @@ class _AddInvoiceScreenState extends State<AddInvoiceScreen> {
                 style: TextStyle(color: Colors.blue),
               ),
             ),
-      Spacer(), // Đẩy các widget phía trên lên trên cùng
+            const SizedBox(height: 20),
       ElevatedButton(
         onPressed: () {
           // Handle button press
