@@ -75,22 +75,19 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             decoration: BoxStyle.fromBoxDecoration(radius: 15),
             child: Column(children: [
               SupportRow(
-                leftTitle: 'Email',
-                leftSubtitle: '',
+                leftTitle: 'Email: ',
                 rightTitle: 'ctncantho@gmail.com',
-                rightSubtitle: '',
+                icon: 'assets/icons/gmail-icon.png',
               ),
               SupportRow(
-                leftTitle: 'Zalo',
-                leftSubtitle: '',
+                leftTitle: 'Zalo: ',
                 rightTitle: 'CANTHOWASSCO OA Page',
-                rightSubtitle: '',
+                icon: 'assets/icons/zalo-icon.png'
               ),
               SupportRow(
-                leftTitle: 'Facebook',
-                leftSubtitle: '',
+                leftTitle: 'Facebook: ',
                 rightTitle: 'CANTHOWASSCO Fanpage',
-                rightSubtitle: '',
+                icon: 'assets/icons/fb-icon.png'
               ),
             ]),
           ),
@@ -186,39 +183,31 @@ class SectionTitle extends StatelessWidget {
 
 class SupportRow extends StatelessWidget {
   final String leftTitle;
-  final String leftSubtitle;
   final String rightTitle;
-  final String rightSubtitle;
+  final String icon;
 
   SupportRow({
     required this.leftTitle,
-    required this.leftSubtitle,
     required this.rightTitle,
-    required this.rightSubtitle,
+    required this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      padding: const EdgeInsets.all(15),
       child: Row(
         children: [
-          Expanded(
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(leftTitle),
-              subtitle: Text(leftSubtitle),
-              onTap: () {},
+          Text(leftTitle),
+          Expanded(child: Text(rightTitle)),
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: SizedBox(
+              height: 20,
+              width: 20,
+              child: Image.asset(icon, fit: BoxFit.fill,)
             ),
-          ),
-          Expanded(
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(rightTitle),
-              subtitle: Text(rightSubtitle),
-              onTap: () {},
-            ),
-          ),
+          )
         ],
       ),
     );

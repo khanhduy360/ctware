@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:ctware/views/Login.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ctware/screens/login.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -14,10 +15,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Thời gian chờ là 2 giây trước khi chuyển sang trang chính
-    Timer(Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 2), () {
       // Chuyển sang màn hình chính
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => Login(),
+        builder: (context) => const Login(),
       ));
     });
   }
@@ -42,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     height: 300,
                     child: Image.asset('assets/images/logo.png')
                   ), // Đảm bảo bạn đã thêm hình ảnh vào thư mục assets
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // Văn bản hoặc các thành phần khác
                 ],
               ),
