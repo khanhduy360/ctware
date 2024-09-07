@@ -16,6 +16,7 @@ class _LoginState extends State<Login> {
   bool _obscureText = true;
   final _formKey = GlobalKey<FormState>();
   late String _account = '', _password = '';
+  late bool _isLoginProcess = false;
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -23,14 +24,16 @@ class _LoginState extends State<Login> {
     });
   }
 
-  void _loginProcess() {
+  void _loginProcess() async {
     final formState = _formKey.currentState;
-    final authService = new AuthService(context: context);
-    if(formState != null && formState.validate()) {
+    final authService = AuthService(context: context);
+    if (formState != null && formState.validate()) {
       formState.save();
       final userProvider = Provider.of<UserProvider>(context, listen: false);
-      authService.loginApi(account: _account, password: _password).then((value) {
-        if(value != null) {
+      await authService
+          .loginApi(account: _account, password: _password)
+          .then((value) {
+        if (value != null) {
           userProvider.setUser(value);
           Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => const HomePage(),
@@ -38,6 +41,9 @@ class _LoginState extends State<Login> {
         }
       });
     }
+    setState(() {
+      _isLoginProcess = false;
+    });
   }
 
   @override
@@ -100,58 +106,58 @@ class _LoginState extends State<Login> {
                 ),
                 const SizedBox(height: 20),
                 Form(
-                  key: _formKey,
+                    key: _formKey,
                     child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Tài khoản/Email/Số điện thoại',
-                        labelStyle: TextStyle(fontSize: 18),
-                        prefixIcon: Icon(
-                          Icons.account_circle,
-                          color: Colors.blue,
-                          size: 30,
-                        ),
-                      ),
-                      style: const TextStyle(fontSize: 20),
-                      validator: (value) {
-                        if(value == null || value.isEmpty) {
-                          return 'Vui lòng nhập tài khoản, email, số điện thoại.';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) => _account = value ?? '',
-                    ),
-                    const SizedBox(height: 10),
-                    TextFormField(
-                      obscureText: _obscureText,
-                      decoration: InputDecoration(
-                        labelText: 'Mật khẩu',
-                        labelStyle: const TextStyle(fontSize: 18),
-                        prefixIcon: const Icon(
-                          Icons.lock,
-                          color: Colors.blue,
-                        ),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscureText
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            labelText: 'Tài khoản/Email/Số điện thoại',
+                            labelStyle: TextStyle(fontSize: 18),
+                            prefixIcon: Icon(
+                              Icons.account_circle,
+                              color: Colors.blue,
+                              size: 30,
+                            ),
                           ),
-                          onPressed: _togglePasswordVisibility,
+                          style: const TextStyle(fontSize: 20),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Vui lòng nhập tài khoản, email, số điện thoại.';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) => _account = value ?? '',
                         ),
-                      ),
-                      style: const TextStyle(fontSize: 20),
-                      validator: (value) {
-                        if(value == null || value.isEmpty) {
-                          return 'Vui lòng nhập mật khẩu.';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) => _password = value ?? '',
-                    ),
-                  ],
-                )),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          obscureText: _obscureText,
+                          decoration: InputDecoration(
+                            labelText: 'Mật khẩu',
+                            labelStyle: const TextStyle(fontSize: 18),
+                            prefixIcon: const Icon(
+                              Icons.lock,
+                              color: Colors.blue,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: _togglePasswordVisibility,
+                            ),
+                          ),
+                          style: const TextStyle(fontSize: 20),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Vui lòng nhập mật khẩu.';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) => _password = value ?? '',
+                        ),
+                      ],
+                    )),
                 const SizedBox(height: 20),
                 TextButton(
                   onPressed: () {},
@@ -163,6 +169,12 @@ class _LoginState extends State<Login> {
                 const SizedBox(height: 50),
                 ElevatedButton(
                   onPressed: () {
+                    if (_isLoginProcess) {
+                      return;
+                    }
+                    setState(() {
+                      _isLoginProcess = true;
+                    });
                     _loginProcess();
                   },
                   style: ElevatedButton.styleFrom(
@@ -170,10 +182,21 @@ class _LoginState extends State<Login> {
                     minimumSize: const Size(
                         double.infinity, 50), // Kích thước giống với hình
                   ),
-                  child: const Text(
-                    'Đăng nhập',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
+                  child: _isLoginProcess
+                      ? const SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 4,
+                            ),
+                          ),
+                        )
+                      : const Text(
+                          'Đăng nhập',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(

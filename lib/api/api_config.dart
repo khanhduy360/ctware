@@ -2,12 +2,11 @@ import 'package:ctware/services/cache_manage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-// Server config
-const domain = 'apidemo.ctn-cantho.com.vn';
-const urlSite = "https://$domain/api/ctwapi/";
-
 class ApiService {
-  static bool isConnected = true;
+  // Server config
+  static const domain = 'apidemo.ctn-cantho.com.vn';
+  static const urlSite = "https://$domain/api/ctwapi/";
+
   final BuildContext context;
 
   const ApiService({required this.context});

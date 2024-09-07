@@ -15,7 +15,7 @@ class AuthService extends ApiService {
       "PlatformType": 3,
       "Fkey": "string",
     };
-    final response = await post(loginUrl, data);
+    final response = await post(Url.login, data);
     if(response != null && response.statusCode == 200) {
       return User.fromJson(response.data);
     }

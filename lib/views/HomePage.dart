@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:ctware/configs/extendtion/box_extendtion.dart';
-import 'package:ctware/configs/responsive.dart';
+import 'package:ctware/theme/style.dart';
 import 'package:ctware/views/Account.dart';
 import 'package:ctware/views/Involce.dart';
 import 'package:flutter/material.dart';
