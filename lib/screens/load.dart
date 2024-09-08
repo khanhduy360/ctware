@@ -1,18 +1,13 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:ctware/provider/user_provider.dart';
+import 'package:ctware/screens/home.dart';
 import 'package:ctware/screens/login.dart';
 import 'package:ctware/services/auth_service.dart';
 import 'package:ctware/services/cache_manage.dart';
-import 'package:ctware/views/HomePage.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-
-Widget _mainLogo(BuildContext context) {
-  return SizedBox(
-      width: 300, height: 300, child: Image.asset('assets/images/logo.png'));
-}
 
 class LoadApp extends StatelessWidget {
   const LoadApp({super.key});
@@ -24,7 +19,7 @@ class LoadApp extends StatelessWidget {
     // ignore: use_build_context_synchronously
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     authService.getUserApi().then((value) {
-      if(value != null) {
+      if (value != null) {
         userProvider.setUser(value);
       }
     });
@@ -40,7 +35,10 @@ class LoadApp extends StatelessWidget {
           ),
         ),
         child: SplashScreen(
-          mainLogo: _mainLogo(context),
+          mainLogo: SizedBox(
+              width: 300,
+              height: 300,
+              child: Image.asset('assets/images/logo.png')),
           nextScreen: const LoadPage(),
           function: () {
             loadingData(context);
