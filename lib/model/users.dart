@@ -11,8 +11,8 @@ class User {
   String accEmail;
   String accTel;
   int sqID;
-  String Token;
-  String RefreshToken;
+  String? Token;
+  String? RefreshToken;
   String? SODB;
   String? DisplayName;
   bool accEmailVerified;

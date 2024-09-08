@@ -1,4 +1,5 @@
 import 'package:ctware/services/cache_manage.dart';
+import 'package:ctware/theme/dialog.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -41,6 +42,8 @@ class ApiService {
       } else {
         // ignore: avoid_print
         print("[GET] Error form <$url>:\n$error");
+        // ignore: use_build_context_synchronously
+        ShowingDialog.errorDialog(context, errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau', title: 'Thông báo');
       }
       return null;
     }
@@ -70,6 +73,8 @@ class ApiService {
       } else {
         // ignore: avoid_print
         print("[POST] Error form <$url>:\n$error");
+        // ignore: use_build_context_synchronously
+        ShowingDialog.errorDialog(context, errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau', title: 'Thông báo');
       }
       return null;
     }

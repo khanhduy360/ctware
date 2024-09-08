@@ -1,5 +1,5 @@
 import 'package:ctware/provider/user_provider.dart';
-import 'package:ctware/screens/splash_screen.dart';
+import 'package:ctware/screens/load.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -32,7 +32,7 @@ class CTWareApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
         ),
-        home: const SplashScreen(),
+        home: const LoadApp(),
       ),
     );
   }
