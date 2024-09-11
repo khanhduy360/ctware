@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 extension BoxStyle on BoxDecoration {
@@ -31,13 +34,6 @@ extension HexColor on Color {
     buffer.write(hexString.replaceFirst('#', ''));
     return Color(int.parse(buffer.toString(), radix: 16));
   }
-
-  /// Prefixes a hash sign if [leadingHashSign] is set to `true` (default is `true`).
-  String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
-      '${alpha.toRadixString(16).padLeft(2, '0')}'
-      '${red.toRadixString(16).padLeft(2, '0')}'
-      '${green.toRadixString(16).padLeft(2, '0')}'
-      '${blue.toRadixString(16).padLeft(2, '0')}';
 }
 
 class Responsive {
@@ -51,5 +47,16 @@ class Responsive {
 
   static height(double p, BuildContext context) {
     return MediaQuery.of(context).size.height * (p / 100);
+  }
+}
+
+// Tạo extension cho String để chuyển đổi Base64 thành Image widget
+extension ImageFromBase64 on String {
+  static Widget toImage(String string) {
+    // Giải mã chuỗi Base64 thành Uint8List
+    Uint8List bytes = base64Decode(string);
+
+    // Hiển thị hình ảnh từ Uint8List
+    return Image.memory(bytes, fit: BoxFit.fill,);
   }
 }

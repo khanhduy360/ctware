@@ -19,6 +19,35 @@ class ApiService {
       ..receiveTimeout = const Duration(seconds: 30);
   }
 
+  Future<Response?> fetch(url) async {
+    // Method GET
+    try {
+      Dio dio = Dio();
+      authSSL(dio);
+      final response = await dio.get(url,
+          options: Options(
+            headers: {
+              "Accept": "application/json",
+            },
+          ));
+      // ignore: avoid_print
+      print('[GET] Result form <$url>:\n$response');
+      return response;
+    } on DioException catch (error) {
+      if(error.response != null) {
+        // ignore: avoid_print
+        print('[GET] Result form <$url>:\n${error.response}');
+        return error.response;
+      } else {
+        // ignore: avoid_print
+        print("[GET] Error form <$url>:\n$error");
+        // ignore: use_build_context_synchronously
+        ShowingDialog.errorDialog(context, errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau', title: 'Thông báo');
+      }
+      return null;
+    }
+  }
+
   Future<Response?> fetchByToken(url) async {
     // Method GET
     try {

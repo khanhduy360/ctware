@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/home.dart';
@@ -14,11 +15,9 @@ class LoadApp extends StatelessWidget {
 
   loadingData(BuildContext context) async {
     await CacheManage.loadToken();
-    // ignore: use_build_context_synchronously
     final authService = AuthService(context: context);
-    // ignore: use_build_context_synchronously
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    authService.getUserApi().then((value) {
+    await authService.getUserApi().then((value) {
       if (value != null) {
         userProvider.setUser(value);
       }

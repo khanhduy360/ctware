@@ -1,5 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ctware/model/advertise_slide.dart';
 import 'package:ctware/provider/user_provider.dart';
+import 'package:ctware/screens/bank_location/bl_list_view.dart';
+import 'package:ctware/services/common_service.dart';
 import 'package:ctware/theme/style.dart';
 import 'package:ctware/views/Account.dart';
 import 'package:ctware/views/Involce.dart';
@@ -9,7 +12,9 @@ import 'package:ctware/views/chart/test_chart1.dart';
 import 'package:ctware/views/container/Bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final List<String> imgList = [
   'assets/images/slider1.png',
@@ -30,20 +35,28 @@ class _HomePageState extends State<HomePage> {
     Destination(2, 'Thông báo', 'assets/icons/ic_notify.png', Colors.orange),
     Destination(3, 'Tài khoản', 'assets/icons/ic_user.png', Colors.blue),
   ];
-  
+
   int selectedIndex = 0;
   late UserProvider userProvider;
+  late List<AdvertiseSlide> advertiseSlideList;
+  late Future<List<AdvertiseSlide>> futureAdvertiseSlide;
 
   @override
   void initState() {
     super.initState();
     userProvider = Provider.of<UserProvider>(context, listen: false);
+    final commonService = CommonService(context: context);
+    futureAdvertiseSlide = commonService.getAdvertiseSlideApi();
   }
 
   void _onItemTapped(int index) {
     setState(() {
       selectedIndex = index;
     });
+  }
+
+  void _onTapAdvertiseSlide(AdvertiseSlide advertiseSlide) async {
+    await launchUrl(Uri.parse(advertiseSlide.LINK ?? ''));
   }
 
   Widget mainCard(context) {
@@ -85,23 +98,25 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildMenuItemIcon(
-                  context, Icons.receipt, 'Tra cứu Hóa đơn', Colors.blueAccent,
-                  () {
+                  context,
+                  Iconsax.empty_wallet_time,
+                  'Tra cứu Hóa đơn',
+                  const Color.fromARGB(255, 42, 108, 224), () {
                 // Action for 'Tra cứu Hóa đơn'
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const InvoiceListScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const InvoiceListScreen()),
                 );
               }),
-              _buildMenuItemIcon(
-                  context, Icons.receipt, 'Hợp đồng', Colors.yellowAccent, () {
+              _buildMenuItemIcon(context, Iconsax.clipboard_text, 'Hợp đồng',
+                  const Color.fromARGB(255, 255, 196, 0), () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const Testchart1(),
                 ));
               }),
-              _buildMenuItemIcon(
-                  context, Icons.message, 'Gửi yêu cầu', Colors.lightBlueAccent,
-                  () {
+              _buildMenuItemIcon(context, Iconsax.message, 'Gửi yêu cầu',
+                  const Color.fromARGB(255, 0, 163, 233), () {
                 // Action for 'Gửi yêu cầu'
               }),
             ],
@@ -114,25 +129,30 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildMenuItemIcon(context, Icons.dangerous_outlined,
-                  'Thông báo xì bể', Colors.redAccent, () {
+              _buildMenuItemIcon(
+                  context, Icons.warning_rounded, 'Thông báo xì bể', Colors.red,
+                  () {
                 // Action for 'Thông báo xì bể'
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => BarLineChart()),
                 );
               }),
-              _buildMenuItemIcon(context, Icons.map_outlined,
-                  'Địa điểm thanh toán', Colors.orange, () {
+              _buildMenuItemIcon(
+                  context,
+                  Icons.maps_home_work_outlined,
+                  'Địa điểm thanh toán',
+                  const Color.fromARGB(255, 209, 77, 11), () {
                 // Action for 'Địa điểm thanh toán'
                 // Action for 'Cài đặt'
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UserInfoScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const BankLocationListView()),
                 );
               }),
-              _buildMenuItemIcon(
-                  context, Icons.settings, 'Cài đặt', Colors.yellow, () {
+              _buildMenuItemIcon(context, Icons.settings, 'Cài đặt',
+                  const Color.fromARGB(255, 250, 137, 8), () {
                 // Action for 'Cài đặt'
                 Navigator.push(
                   context,
@@ -142,22 +162,38 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        Container(
-          margin: const EdgeInsets.only(top: 30, bottom: 15),
-          color: Colors.black,
-          height: 100,
-          width: MediaQuery.of(context).size.width,
-          child: CarouselSlider(
-            options: CarouselOptions(autoPlay: true, viewportFraction: 1),
-            items: imgList
-                .map((item) => Image.asset(
-                      item,
-                      fit: BoxFit.fill,
-                      width: MediaQuery.of(context).size.width,
-                    ))
-                .toList(),
-          ),
-        ),
+        FutureBuilder(
+            future: futureAdvertiseSlide,
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                return Container(
+                  margin: const EdgeInsets.only(top: 30, bottom: 15),
+                  color: Colors.black,
+                  height: 100,
+                  width: MediaQuery.of(context).size.width,
+                  child: CarouselSlider(
+                    options:
+                        CarouselOptions(autoPlay: true, viewportFraction: 1),
+                    items: snapshot.data!
+                        .map((item) => InkWell(
+                              onTap: () {
+                                _onTapAdvertiseSlide(item);
+                              },
+                              child:
+                                  ImageFromBase64.toImage(item.HINHANH ?? ''),
+                            ))
+                        .toList(),
+                  ),
+                );
+              }
+              return const SizedBox(
+                  height: 100,
+                  child: Center(
+                      child: CircularProgressIndicator(
+                    color: Colors.blue,
+                    strokeWidth: 3,
+                  )));
+            }),
         Container(
           padding: const EdgeInsets.all(16.0),
           alignment: Alignment.centerLeft,
@@ -235,22 +271,22 @@ class _HomePageState extends State<HomePage> {
   Widget _buildNewsItem() {
     return Container(
       width: 200,
-      margin: EdgeInsets.only(left: 10, right: 10),
+      margin: const EdgeInsets.only(left: 10, right: 10),
       child: Column(
         children: [
           Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
+                image: const DecorationImage(
                     image: AssetImage('assets/images/news1.jpg'),
                     fit: BoxFit.fill)),
             height: 150,
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(left: 5, right: 5),
-            child: Text('Kết quả thử nghiệm nước tháng 07/2024'),
+            child: const Text('Kết quả thử nghiệm nước tháng 07/2024'),
           ),
         ],
       ),

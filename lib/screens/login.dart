@@ -1,6 +1,6 @@
 import 'package:ctware/provider/user_provider.dart';
+import 'package:ctware/screens/home.dart';
 import 'package:ctware/services/auth_service.dart';
-import 'package:ctware/views/HomePage.dart';
 import 'package:ctware/views/Register.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
