@@ -1,3 +1,4 @@
+import 'package:ctware/provider/news_provider.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/load.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class CTWareApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => NewsProvider()),
       ],
       child: MaterialApp(
         title: 'Hello FreeLanecer First',

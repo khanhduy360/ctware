@@ -40,7 +40,7 @@ class _BankLocationListViewState extends State<BankLocationListView> {
                 child: Text(bankLocation.TENNH, style: const TextStyle(fontSize: 16)),
               ),
             ),
-            Icon(Icons.keyboard_arrow_right_rounded, size: 20)
+            const Icon(Icons.keyboard_arrow_right_rounded, size: 20)
           ],
         ),
       ));

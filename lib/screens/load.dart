@@ -76,6 +76,6 @@ class LoadPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CacheManage.tokenOnCache == null ? const Login() : const HomePage();
+    return CacheManage.tokenOnCache == null ? const Login() : const Home();
   }
 }

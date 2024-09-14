@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // map to API
+import 'package:ctware/model/news_item.dart';
+
 class News {
   int Id;
   int CatId;
@@ -8,6 +10,8 @@ class News {
   String? Url;
   String? Image;
   int ThuTu;
+
+  List<NewsItem> items = <NewsItem>[];
 
   News({
     required this.Id,

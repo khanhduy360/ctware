@@ -3,23 +3,74 @@ import 'package:ctware/model/advertise_slide.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/bank_location/bl_list_view.dart';
 import 'package:ctware/services/common_service.dart';
+import 'package:ctware/theme/bottom_bar.dart';
 import 'package:ctware/theme/style.dart';
 import 'package:ctware/views/Account.dart';
 import 'package:ctware/views/Involce.dart';
 import 'package:ctware/views/Setting.dart';
 import 'package:ctware/views/TestChart.dart';
 import 'package:ctware/views/chart/test_chart1.dart';
-import 'package:ctware/views/container/Bottombar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final List<String> imgList = [
-  'assets/images/slider1.png',
-  'assets/images/slider2.png'
-];
+class Home extends StatefulWidget {
+  const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  static const List<Destination> allDestinations = <Destination>[
+    Destination(0, 'Trang chủ', 'assets/icons/ic_home.png', Colors.teal),
+    Destination(1, 'Tin tức', 'assets/icons/ic_news.png', Colors.cyan),
+    Destination(2, 'Thông báo', 'assets/icons/ic_notify.png', Colors.orange),
+    Destination(3, 'Tài khoản', 'assets/icons/ic_user.png', Colors.blue),
+  ];
+
+  late int selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = 0;
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
+  List<Widget> mainPageList(BuildContext context) {
+    return <Widget>[
+      Navigator(
+        onGenerateRoute: (settings) {
+          Widget page = const HomePage(); // Default Page
+          if(settings.name == 'HomePage') {
+           page = const HomePage();
+          }
+           return MaterialPageRoute(builder: (_) => page);
+        },
+      )
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: mainPageList(context)[selectedIndex],
+      bottomNavigationBar: CustomBottomNavigationBar(
+        selectedIndex: selectedIndex,
+        onItemTapped: _onItemTapped,
+        allDestinations: allDestinations,
+      ),
+    );
+  }
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,14 +80,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static const List<Destination> allDestinations = <Destination>[
-    Destination(0, 'Trang chủ', 'assets/icons/ic_home.png', Colors.teal),
-    Destination(1, 'Tin tức', 'assets/icons/ic_news.png', Colors.cyan),
-    Destination(2, 'Thông báo', 'assets/icons/ic_notify.png', Colors.orange),
-    Destination(3, 'Tài khoản', 'assets/icons/ic_user.png', Colors.blue),
+  final List<String> imgList = [
+    'assets/images/slider1.png',
+    'assets/images/slider2.png'
   ];
 
-  int selectedIndex = 0;
   late UserProvider userProvider;
   late List<AdvertiseSlide> advertiseSlideList;
   late Future<List<AdvertiseSlide>> futureAdvertiseSlide;
@@ -47,12 +95,7 @@ class _HomePageState extends State<HomePage> {
     userProvider = Provider.of<UserProvider>(context, listen: false);
     final commonService = CommonService(context: context);
     futureAdvertiseSlide = commonService.getAdvertiseSlideApi();
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
+    commonService.getNewsApi();
   }
 
   void _onTapAdvertiseSlide(AdvertiseSlide advertiseSlide) async {
@@ -310,7 +353,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: SizedBox(
                       width: Responsive.width(100, context),
-                      child: Image(
+                      child: const Image(
                         image: AssetImage('assets/icons/bg_home.png'),
                         fit: BoxFit.fill,
                       ),
@@ -323,10 +366,10 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(180),
+              preferredSize: const Size.fromHeight(180),
               child: Container(
                 alignment: Alignment.bottomCenter,
-                margin: EdgeInsets.all(20),
+                margin: const EdgeInsets.all(20),
                 child: mainCard(context),
               ),
             ),
@@ -335,11 +378,6 @@ class _HomePageState extends State<HomePage> {
             child: mainBody(context),
           ),
         ],
-      ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        selectedIndex: selectedIndex,
-        onItemTapped: _onItemTapped,
-        allDestinations: allDestinations,
       ),
     );
   }

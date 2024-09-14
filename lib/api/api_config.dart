@@ -1,3 +1,4 @@
+import 'package:ctware/screens/login.dart';
 import 'package:ctware/services/cache_manage.dart';
 import 'package:ctware/theme/dialog.dart';
 import 'package:dio/dio.dart';
@@ -34,7 +35,7 @@ class ApiService {
       print('[GET] Result form <$url>:\n$response');
       return response;
     } on DioException catch (error) {
-      if(error.response != null) {
+      if (error.response != null) {
         // ignore: avoid_print
         print('[GET] Result form <$url>:\n${error.response}');
         return error.response;
@@ -42,7 +43,13 @@ class ApiService {
         // ignore: avoid_print
         print("[GET] Error form <$url>:\n$error");
         // ignore: use_build_context_synchronously
-        ShowingDialog.errorDialog(context, errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau', title: 'Thông báo');
+        ShowingDialog.errorDialog(context,
+            errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau',
+            title: 'Thông báo');
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const Login(),
+        ));
       }
       return null;
     }
@@ -64,7 +71,7 @@ class ApiService {
       print('[GET] Result form <$url>:\n$response');
       return response;
     } on DioException catch (error) {
-      if(error.response != null) {
+      if (error.response != null) {
         // ignore: avoid_print
         print('[GET] Result form <$url>:\n${error.response}');
         return error.response;
@@ -72,7 +79,13 @@ class ApiService {
         // ignore: avoid_print
         print("[GET] Error form <$url>:\n$error");
         // ignore: use_build_context_synchronously
-        ShowingDialog.errorDialog(context, errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau', title: 'Thông báo');
+        ShowingDialog.errorDialog(context,
+            errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau',
+            title: 'Thông báo');
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const Login(),
+        ));
       }
       return null;
     }
@@ -95,7 +108,7 @@ class ApiService {
       print('[POST] Result form <$url>:\n$response');
       return response;
     } on DioException catch (error) {
-      if(error.response != null) {
+      if (error.response != null) {
         // ignore: avoid_print
         print('[POST] Result form <$url>:\n${error.response}');
         return error.response;
@@ -103,7 +116,9 @@ class ApiService {
         // ignore: avoid_print
         print("[POST] Error form <$url>:\n$error");
         // ignore: use_build_context_synchronously
-        ShowingDialog.errorDialog(context, errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau', title: 'Thông báo');
+        ShowingDialog.errorDialog(context,
+            errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau',
+            title: 'Thông báo');
       }
       return null;
     }
