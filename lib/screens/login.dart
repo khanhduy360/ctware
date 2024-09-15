@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
         if (value != null) {
           userProvider.setUser(value);
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => const HomePage(),
+            builder: (context) => const Home(),
           ));
         }
       });
@@ -202,7 +202,7 @@ class _LoginState extends State<Login> {
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const HomePage(),
+                      builder: (context) => const Home(),
                     ));
                   },
                   style: ElevatedButton.styleFrom(

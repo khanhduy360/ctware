@@ -46,7 +46,7 @@ class _BankLocationListViewState extends State<BankLocationListView> {
       ));
     }
     return SingleChildScrollView(child: Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(marginLayoutBase),
       child: Column(children: listView),
     ));
   }

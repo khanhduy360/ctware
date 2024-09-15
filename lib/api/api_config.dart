@@ -47,7 +47,7 @@ class ApiService {
             errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau',
             title: 'Thông báo');
         // ignore: use_build_context_synchronously
-        Navigator.of(context).push(MaterialPageRoute(
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => const Login(),
         ));
       }
@@ -83,7 +83,7 @@ class ApiService {
             errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau',
             title: 'Thông báo');
         // ignore: use_build_context_synchronously
-        Navigator.of(context).push(MaterialPageRoute(
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => const Login(),
         ));
       }
@@ -119,6 +119,10 @@ class ApiService {
         ShowingDialog.errorDialog(context,
             errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau',
             title: 'Thông báo');
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const Login(),
+        ));
       }
       return null;
     }

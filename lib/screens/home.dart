@@ -1,7 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ctware/model/advertise_slide.dart';
+import 'package:ctware/model/news.dart';
+import 'package:ctware/provider/news_provider.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/bank_location/bl_list_view.dart';
+import 'package:ctware/screens/news/news_list_view.dart';
 import 'package:ctware/services/common_service.dart';
 import 'package:ctware/theme/bottom_bar.dart';
 import 'package:ctware/theme/style.dart';
@@ -45,24 +48,39 @@ class _HomeState extends State<Home> {
     });
   }
 
+  final List<GlobalKey<NavigatorState>> _navigatorKeys = [
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+  ];
+
   List<Widget> mainPageList(BuildContext context) {
     return <Widget>[
       Navigator(
+        key: _navigatorKeys[0],
         onGenerateRoute: (settings) {
-          Widget page = const HomePage(); // Default Page
-          if(settings.name == 'HomePage') {
-           page = const HomePage();
-          }
-           return MaterialPageRoute(builder: (_) => page);
+          return MaterialPageRoute(
+              builder: (_) => HomePage(
+                    onNavigateToNew: () {
+                      _onItemTapped(1);
+                    },
+                  ));
         },
-      )
+      ),
+      Navigator(
+        key: _navigatorKeys[1],
+        onGenerateRoute: (settings) {
+          return MaterialPageRoute(builder: (_) => const NewsListView());
+        },
+      ),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: mainPageList(context)[selectedIndex],
+      body: IndexedStack(index: selectedIndex, children: mainPageList(context)),
       bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: selectedIndex,
         onItemTapped: _onItemTapped,
@@ -73,7 +91,9 @@ class _HomeState extends State<Home> {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.onNavigateToNew});
+
+  final VoidCallback onNavigateToNew;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -86,8 +106,10 @@ class _HomePageState extends State<HomePage> {
   ];
 
   late UserProvider userProvider;
+  late NewsProvider newsProvider;
   late List<AdvertiseSlide> advertiseSlideList;
   late Future<List<AdvertiseSlide>> futureAdvertiseSlide;
+  late Future<List<News>> futureNews;
 
   @override
   void initState() {
@@ -95,7 +117,8 @@ class _HomePageState extends State<HomePage> {
     userProvider = Provider.of<UserProvider>(context, listen: false);
     final commonService = CommonService(context: context);
     futureAdvertiseSlide = commonService.getAdvertiseSlideApi();
-    commonService.getNewsApi();
+    newsProvider = Provider.of<NewsProvider>(context, listen: false);
+    futureNews = newsProvider.futureNews(context);
   }
 
   void _onTapAdvertiseSlide(AdvertiseSlide advertiseSlide) async {
@@ -240,24 +263,37 @@ class _HomePageState extends State<HomePage> {
         Container(
           padding: const EdgeInsets.all(16.0),
           alignment: Alignment.centerLeft,
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Tin tức',
+              const Text('Tin tức',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              Text('Tất cả >', style: TextStyle(color: Colors.blue)),
+              InkWell(
+                  onTap: () {
+                    widget.onNavigateToNew();
+                  },
+                  child: const Text('Tất cả >',
+                      style: TextStyle(color: Colors.blue))),
             ],
           ),
         ),
         SizedBox(
           height: 200,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              _buildNewsItem(),
-              _buildNewsItem(),
-              _buildNewsItem(),
-            ],
+          child: FutureBuilder(
+            future: futureNews,
+            builder: (context, snapshot) {
+              if(snapshot.hasData && snapshot.data != null && snapshot.data!.isNotEmpty) {
+                print('------------------------');
+              }
+              return ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  _buildNewsItem(),
+                  _buildNewsItem(),
+                  _buildNewsItem(),
+                ],
+              );
+            }
           ),
         ),
         const SizedBox(height: 20)
