@@ -293,7 +293,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         SizedBox(
-          height: 200,
+          height: 220,
           child: FutureBuilder(
               future: futureNews,
               builder: (context, snapshot) {
@@ -340,7 +340,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildMenuItemIcon(BuildContext context, IconData icon, String title,
       Color color, VoidCallback onPressed) {
-    return Container(
+    return SizedBox(
       width: (MediaQuery.of(context).size.width - 32) /
           3, // Ensure three items fit within the screen width with padding
       child: InkWell(
@@ -354,7 +354,7 @@ class _HomePageState extends State<HomePage> {
               width: 60,
               child: Icon(icon, size: 30, color: Colors.white),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text(
               title,
               textAlign: TextAlign.center,
@@ -380,14 +380,15 @@ class _HomePageState extends State<HomePage> {
                     )));
       },
       child: Container(
+        decoration: BoxStyle.fromBoxDecoration(radius: 10),
         width: 200,
-        margin: const EdgeInsets.only(left: 10, right: 10),
+        margin: const EdgeInsets.all(10),
         child: Column(
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
               ),
               child: CachedNetworkImage(
                 placeholder: (context, url) => const Center(
