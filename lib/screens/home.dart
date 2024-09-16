@@ -1,10 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ctware/model/advertise_slide.dart';
 import 'package:ctware/model/news.dart';
+import 'package:ctware/model/news_item.dart';
 import 'package:ctware/provider/news_provider.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/bank_location/bl_list_view.dart';
 import 'package:ctware/screens/news/news_list_view.dart';
+import 'package:ctware/screens/news/news_web_view.dart';
 import 'package:ctware/services/common_service.dart';
 import 'package:ctware/theme/bottom_bar.dart';
 import 'package:ctware/theme/style.dart';
@@ -79,12 +82,24 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(index: selectedIndex, children: mainPageList(context)),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        selectedIndex: selectedIndex,
-        onItemTapped: _onItemTapped,
-        allDestinations: allDestinations,
+    // ignore: deprecated_member_use
+    return WillPopScope(
+      onWillPop: () async {
+        final currentContext = _navigatorKeys[selectedIndex].currentContext;
+        if (currentContext != null && Navigator.canPop(currentContext)) {
+          Navigator.pop(currentContext);
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        body:
+            IndexedStack(index: selectedIndex, children: mainPageList(context)),
+        bottomNavigationBar: CustomBottomNavigationBar(
+          selectedIndex: selectedIndex,
+          onItemTapped: _onItemTapped,
+          allDestinations: allDestinations,
+        ),
       ),
     );
   }
@@ -280,21 +295,27 @@ class _HomePageState extends State<HomePage> {
         SizedBox(
           height: 200,
           child: FutureBuilder(
-            future: futureNews,
-            builder: (context, snapshot) {
-              if(snapshot.hasData && snapshot.data != null && snapshot.data!.isNotEmpty) {
-                print('------------------------');
-              }
-              return ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  _buildNewsItem(),
-                  _buildNewsItem(),
-                  _buildNewsItem(),
-                ],
-              );
-            }
-          ),
+              future: futureNews,
+              builder: (context, snapshot) {
+                if (snapshot.hasData &&
+                    snapshot.data != null &&
+                    snapshot.data!.isNotEmpty) {
+                  return ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: newsProvider
+                        .getNewsItemHot()
+                        .map((item) => _buildNewsItem(item))
+                        .toList(),
+                  );
+                }
+                return const SizedBox(
+                    height: 100,
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.blue,
+                      strokeWidth: 3,
+                    )));
+              }),
         ),
         const SizedBox(height: 20)
       ]),
@@ -347,27 +368,48 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildNewsItem() {
-    return Container(
-      width: 200,
-      margin: const EdgeInsets.only(left: 10, right: 10),
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: const DecorationImage(
-                    image: AssetImage('assets/images/news1.jpg'),
-                    fit: BoxFit.fill)),
-            height: 150,
-          ),
-          const SizedBox(height: 8),
-          Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(left: 5, right: 5),
-            child: const Text('Kết quả thử nghiệm nước tháng 07/2024'),
-          ),
-        ],
+  Widget _buildNewsItem(NewsItem item) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NewsWebView(
+                      title: item.title ?? '',
+                      url: item.link ?? '',
+                    )));
+      },
+      child: Container(
+        width: 200,
+        margin: const EdgeInsets.only(left: 10, right: 10),
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              child: CachedNetworkImage(
+                placeholder: (context, url) => const Center(
+                    child: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator())),
+                imageUrl: item.imgUrl ?? '',
+                height: 150,
+                width: Responsive.width(100, context),
+                fit: BoxFit.fill,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 5, right: 5),
+              child: Text(item.title ?? '',
+                  maxLines: 2, overflow: TextOverflow.ellipsis),
+            ),
+          ],
+        ),
       ),
     );
   }
