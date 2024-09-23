@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ctware/model/news.dart';
 import 'package:ctware/provider/news_provider.dart';
 import 'package:ctware/screens/news/news_list_items_view.dart';
+import 'package:ctware/theme/base_layout.dart';
 import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -66,33 +67,28 @@ class NewsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Tin tức',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.blue,
-      ),
-      body: SingleChildScrollView(
-        child: Consumer<NewsProvider>(
-          builder: (context, dataProvider, child) {
-            if (dataProvider.news.isEmpty) {
-              return Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.all(marginLayoutBase),
-                  child: const SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: CircularProgressIndicator()));
-            }
-            return Column(
-                children: dataProvider.news
-                    .map((item) => _newsItemView(context, item))
-                    .toList());
-          },
-        ),
-      ),
-    );
+    return BaseLayout.view(
+        context: context,
+        title: 'Tin tức',
+        backAction: false,
+        body: SingleChildScrollView(
+          child: Consumer<NewsProvider>(
+            builder: (context, dataProvider, child) {
+              if (dataProvider.news.isEmpty) {
+                return Container(
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.all(marginLayoutBase),
+                    child: const SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: CircularProgressIndicator()));
+              }
+              return Column(
+                  children: dataProvider.news
+                      .map((item) => _newsItemView(context, item))
+                      .toList());
+            },
+          ),
+        ));
   }
 }

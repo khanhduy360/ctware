@@ -2,11 +2,11 @@
 // map to API
 class BankBranch {
   int Id;
-  String? Ten;
+  String Ten;
   String? MANH;
   String? MAKV;
-  String? X;
-  String? Y;
+  String X;
+  String Y;
   String? GhiChu;
   String? DiaChi;
   String? DienThoai;

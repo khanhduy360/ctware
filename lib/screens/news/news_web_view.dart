@@ -1,3 +1,4 @@
+import 'package:ctware/theme/base_layout.dart';
 import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -43,20 +44,10 @@ class _NewsWebViewState extends State<NewsWebView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            widget.title,
-            style: const TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.blue,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          actions: [
+    return BaseLayout.view(
+        context: context,
+        title: widget.title,
+        actions: [
           IconButton(
             icon: const Icon(
               Icons.public,
@@ -67,7 +58,6 @@ class _NewsWebViewState extends State<NewsWebView> {
             },
           ),
         ],
-        ),
         body: loading
             ? Container(
                 alignment: Alignment.center,

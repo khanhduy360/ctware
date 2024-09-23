@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 // map to API
+import 'dart:ffi';
+
 import 'package:ctware/model/bank_branch.dart';
 
 class BankLocation {
@@ -26,5 +28,16 @@ class BankLocation {
       TENNH: responseData['TENNH'],
       NganHangDiaDiems: NganHangDiaDiems
     );
+  }
+
+  List<double> getFirstPosition() {
+    BankBranch activeBranchFirst = NganHangDiaDiems.first;
+    for(var branch in NganHangDiaDiems) {
+      if(branch.TrangThai) {
+        activeBranchFirst = branch;
+        break;
+      }
+    }
+    return [double.parse(activeBranchFirst.X), double.parse(activeBranchFirst.Y)];
   }
 }

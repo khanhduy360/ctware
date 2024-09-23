@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ctware/model/news.dart';
 import 'package:ctware/model/news_item.dart';
 import 'package:ctware/screens/news/news_web_view.dart';
+import 'package:ctware/theme/base_layout.dart';
 import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -14,13 +15,12 @@ class NewsListItemsView extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => NewsWebView(
-                title: item.title ?? '',
-                url: item.link ?? '',
-              ))
-        );
+            context,
+            MaterialPageRoute(
+                builder: (context) => NewsWebView(
+                      title: item.title ?? '',
+                      url: item.link ?? '',
+                    )));
       },
       child: Container(
         margin: const EdgeInsets.all(marginLayoutBase),
@@ -32,13 +32,15 @@ class NewsListItemsView extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
                 child: CachedNetworkImage(
                   placeholder: (context, url) => const Center(
                       child: SizedBox(
-                          height: 50, width: 50, child: CircularProgressIndicator())),
+                          height: 50,
+                          width: 50,
+                          child: CircularProgressIndicator())),
                   imageUrl: item.imgUrl ?? '',
                   height: 230,
                   width: Responsive.width(100, context),
@@ -53,7 +55,8 @@ class NewsListItemsView extends StatelessWidget {
                   children: [
                     Text(
                       item.title ?? '',
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -68,7 +71,11 @@ class NewsListItemsView extends StatelessWidget {
                     ),
                     Container(
                       alignment: Alignment.bottomRight,
-                      child: Text(item.pubDate != null ? DateFormat('dd/MM/yyyy H:mm:ss').format(item.pubDate!) : '',
+                      child: Text(
+                          item.pubDate != null
+                              ? DateFormat('dd/MM/yyyy H:mm:ss')
+                                  .format(item.pubDate!)
+                              : '',
                           style: const TextStyle(fontSize: 14)),
                     ),
                   ],
@@ -83,20 +90,9 @@ class NewsListItemsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Tin tức',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.blue,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+    return BaseLayout.view(
+      context: context,
+      title: 'Tin tức',
       body: SingleChildScrollView(
           child: Column(
               children: newsData.items
