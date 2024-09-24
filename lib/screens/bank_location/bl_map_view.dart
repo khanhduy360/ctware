@@ -17,81 +17,84 @@ class BankLocationMapView extends StatefulWidget {
 
 class _BankLocationMapViewState extends State<BankLocationMapView> {
   late LatLng _center;
-  final Map<String, Marker> _markers = {};
+  late Map<String, Marker> _markers = {};
+  late GoogleMapController _mapController;
 
   @override
   void initState() {
     super.initState();
-    final position = widget.bankLocation.getFirstPosition();
-    final brachTe = widget.bankLocation.NganHangDiaDiems[0];
-    _center = LatLng(position[0], position[1]);
-    _markers[brachTe.Ten] = Marker(
-      markerId: MarkerId(brachTe.Ten),
-      position: LatLng(double.parse(brachTe.X), double.parse(brachTe.Y)),
-      infoWindow: InfoWindow(
-        title: brachTe.Ten,
-        snippet: brachTe.DiaChi,
-      ),
-    );
+    _center = widget.bankLocation.getFirstPosition();
+  }
+
+  addMarker() async {
+    _markers = await widget.bankLocation.getMarKerList();
+    setState(() {});
   }
 
   Widget branchView(BuildContext context, BankBranch bankBranch) {
     if (!bankBranch.TrangThai) {
       return const SizedBox();
     }
-    return Container(
-      decoration: BoxStyle.fromBoxDecoration(),
-      margin: const EdgeInsets.only(top: 5, bottom: 5),
-      padding: const EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
-      width: Responsive.width(100, context),
-      height: 120,
-      child: Row(
-        children: [
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.only(left: 5, right: 15),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  bankBranch.Ten ?? '',
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  bankBranch.DiaChi ?? '',
-                  maxLines: 2,
-                  style: const TextStyle(fontSize: 15),
-                ),
-                Text(
-                  bankBranch.DienThoai ?? '',
-                  style: const TextStyle(fontSize: 15),
-                ),
-              ],
-            ),
-          )),
-          ClipOval(
-            child: InkWell(
-              onTap: () async {
-                String phoneNumber = bankBranch.DienThoai ?? '';
-                String formattedPhoneNumber =
-                    phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
-                await launchUrl(Uri.parse('tel:$formattedPhoneNumber'));
-              },
-              child: const Material(
-                  color: Colors.green,
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Icon(
-                      Icons.phone,
-                      size: 25,
-                      color: Colors.white,
-                    ),
-                  )),
-            ),
-          )
-        ],
+    return InkWell(
+      onTap: () {
+        _mapController.animateCamera(CameraUpdate.newLatLngZoom(
+          bankBranch.getPosition(), 15
+        ));
+      },
+      child: Container(
+        decoration: BoxStyle.fromBoxDecoration(),
+        margin: const EdgeInsets.only(top: 5, bottom: 5),
+        padding: const EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
+        width: Responsive.width(100, context),
+        height: 120,
+        child: Row(
+          children: [
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.only(left: 5, right: 15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    bankBranch.Ten ?? '',
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    bankBranch.DiaChi ?? '',
+                    maxLines: 2,
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                  Text(
+                    bankBranch.DienThoai ?? '',
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                ],
+              ),
+            )),
+            ClipOval(
+              child: InkWell(
+                onTap: () async {
+                  String phoneNumber = bankBranch.DienThoai ?? '';
+                  String formattedPhoneNumber =
+                      phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
+                  await launchUrl(Uri.parse('tel:$formattedPhoneNumber'));
+                },
+                child: const Material(
+                    color: Colors.green,
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Icon(
+                        Icons.phone,
+                        size: 25,
+                        color: Colors.white,
+                      ),
+                    )),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -103,15 +106,18 @@ class _BankLocationMapViewState extends State<BankLocationMapView> {
       title: 'Chi tiết địa điểm',
       body: Column(
         children: [
-          Container(
-            width: Responsive.width(100, context),
-            height: Responsive.height(50, context),
+          SizedBox(
+            height: Responsive.height(45, context),
             child: GoogleMap(
               zoomControlsEnabled: false,
               myLocationButtonEnabled: true,
               myLocationEnabled: true,
               markers: _markers.values.toSet(),
               initialCameraPosition: CameraPosition(zoom: 15, target: _center),
+              onMapCreated: (controller) {
+                _mapController = controller;
+                addMarker();
+              },
             ),
           ),
           Expanded(

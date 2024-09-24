@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 // map to API
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class BankBranch {
   int Id;
   String Ten;
@@ -44,5 +46,9 @@ class BankBranch {
       Website: responseData['Website'],
       TrangThai: responseData['TrangThai'],
     );
+  }
+
+  LatLng getPosition() {
+    return LatLng(double.parse(X), double.parse(Y));
   }
 }

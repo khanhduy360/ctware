@@ -1,8 +1,8 @@
 // ignore_for_file: non_constant_identifier_names, constant_identifier_names
 // map to API
-import 'dart:ffi';
-
 import 'package:ctware/model/bank_branch.dart';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class BankLocation {
   String MANH;
@@ -20,24 +20,42 @@ class BankLocation {
 
   factory BankLocation.fromJson(Map<String, dynamic> responseData) {
     List<BankBranch> NganHangDiaDiems = <BankBranch>[];
-    for(var bankBranch in responseData['NganHangDiaDiems']) {
+    for (var bankBranch in responseData['NganHangDiaDiems']) {
       NganHangDiaDiems.add(BankBranch.fromJson(bankBranch));
     }
     return BankLocation(
-      MANH: responseData['MANH'],
-      TENNH: responseData['TENNH'],
-      NganHangDiaDiems: NganHangDiaDiems
-    );
+        MANH: responseData['MANH'],
+        TENNH: responseData['TENNH'],
+        NganHangDiaDiems: NganHangDiaDiems);
   }
 
-  List<double> getFirstPosition() {
+  LatLng getFirstPosition() {
     BankBranch activeBranchFirst = NganHangDiaDiems.first;
-    for(var branch in NganHangDiaDiems) {
-      if(branch.TrangThai) {
+    for (var branch in NganHangDiaDiems) {
+      if (branch.TrangThai) {
         activeBranchFirst = branch;
         break;
       }
     }
-    return [double.parse(activeBranchFirst.X), double.parse(activeBranchFirst.Y)];
+    return activeBranchFirst.getPosition();
+  }
+
+  Future<Map<String, Marker>> getMarKerList() async {
+    Map<String, Marker> markerList = {};
+    final markerIcon = await BitmapDescriptor.asset(
+        const ImageConfiguration(size: Size(40, 40)), 'assets/icons/cusmarker.png');
+    for (var branch in NganHangDiaDiems) {
+      if (branch.TrangThai) {
+        markerList[branch.Id.toString()] = Marker(
+            markerId: MarkerId(branch.Id.toString()),
+            position: LatLng(double.parse(branch.X), double.parse(branch.Y)),
+            infoWindow: InfoWindow(
+              title: branch.Ten,
+              snippet: branch.DiaChi,
+            ),
+            icon: markerIcon);
+      }
+    }
+    return markerList;
   }
 }
