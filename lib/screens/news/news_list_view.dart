@@ -75,13 +75,7 @@ class NewsListView extends StatelessWidget {
           child: Consumer<NewsProvider>(
             builder: (context, dataProvider, child) {
               if (dataProvider.news.isEmpty) {
-                return Container(
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.all(BaseLayout.marginLayoutBase),
-                    child: const SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: CircularProgressIndicator()));
+                return BaseLayout.loadingView(context);
               }
               return Column(
                   children: dataProvider.news

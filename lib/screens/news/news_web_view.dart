@@ -59,11 +59,7 @@ class _NewsWebViewState extends State<NewsWebView> {
           ),
         ],
         body: loading
-            ? Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.all(BaseLayout.marginLayoutBase),
-                child: const SizedBox(
-                    height: 50, width: 50, child: CircularProgressIndicator()))
+            ? BaseLayout.loadingView(context)
             : Container(
                 decoration: BoxStyle.fromBoxDecoration(radius: 10),
                 margin: const EdgeInsets.all(BaseLayout.marginLayoutBase),

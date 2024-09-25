@@ -6,7 +6,7 @@ class Url {
   // Users
   static const login = "$version/Users/Login"; // POST
   static const getUser = "$version/Users/GetUser"; // GET
-  static const contracts = "$version/Users/Contracts?pld=$platformId"; //GET
+  static const contracts = "$version/Users/Contracts?pId=$platformId"; //GET
   // Common
   static const chuyenMucTin = "$version/Common/ChuyenMucTin"; //GET
   static const advertiseSlide = "$version/Common/AdvertiseSlide"; //GET

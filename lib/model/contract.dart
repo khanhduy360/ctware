@@ -23,7 +23,7 @@ class Contract {
   String? THOIGIANTAO_FORMATTED;
   String? TENKV;
   String? UserId;
-  String? PlatformType;
+  int PlatformType;
 
   Contract({
     required this.ID,

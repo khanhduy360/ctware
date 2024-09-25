@@ -72,13 +72,7 @@ class _BankLocationListViewState extends State<BankLocationListView> {
             bankLocationData = snapshot.data ?? [];
             return bankLocationListView(context);
           }
-          return const SizedBox(
-              height: 100,
-              child: Center(
-                  child: CircularProgressIndicator(
-                color: Colors.blue,
-                strokeWidth: 3,
-              )));
+          return BaseLayout.loadingView(context);
         },
       )
     );

@@ -17,14 +17,24 @@ class BaseLayout {
             style: const TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.blue,
-          leading: backAction ? IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ) : null,
+          leading: backAction
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              : null,
           actions: actions,
         ),
         body: body);
+  }
+
+  static Widget loadingView(BuildContext context) {
+    return Container(
+        alignment: Alignment.center,
+        margin: const EdgeInsets.all(BaseLayout.marginLayoutBase),
+        child: const SizedBox(
+            height: 50, width: 50, child: CircularProgressIndicator()));
   }
 }
