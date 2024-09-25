@@ -6,6 +6,7 @@ import 'package:ctware/model/news_item.dart';
 import 'package:ctware/provider/news_provider.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/bank_location/bl_list_view.dart';
+import 'package:ctware/screens/contract/contract_list_view.dart';
 import 'package:ctware/screens/news/news_list_view.dart';
 import 'package:ctware/screens/news/news_web_view.dart';
 import 'package:ctware/services/common_service.dart';
@@ -193,7 +194,7 @@ class _HomePageState extends State<HomePage> {
               _buildMenuItemIcon(context, Iconsax.clipboard_text, 'Hợp đồng',
                   const Color.fromARGB(255, 255, 196, 0), () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const Testchart1(),
+                  builder: (context) => const ContractListView(),
                 ));
               }),
               _buildMenuItemIcon(context, Iconsax.message, 'Gửi yêu cầu',

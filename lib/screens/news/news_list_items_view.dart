@@ -23,7 +23,7 @@ class NewsListItemsView extends StatelessWidget {
                     )));
       },
       child: Container(
-        margin: const EdgeInsets.all(marginLayoutBase),
+        margin: const EdgeInsets.all(BaseLayout.marginLayoutBase),
         decoration: BoxStyle.fromBoxDecoration(radius: 20),
         child: SizedBox(
           height: 410,

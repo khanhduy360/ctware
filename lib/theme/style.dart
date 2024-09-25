@@ -3,8 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-const marginLayoutBase = 10.0;
-
 extension BoxStyle on BoxDecoration {
   static BoxDecoration fromBoxDecoration(
       {double? radius,

@@ -16,7 +16,7 @@ class AuthService extends ApiService {
       "Password": password,
       "Email": "string",
       "InstanceIdService": "string",
-      "PlatformType": 3,
+      "PlatformType": Url.platformId,
       "Fkey": "string",
     };
     final response = await post(Url.login, data);

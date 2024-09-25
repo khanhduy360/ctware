@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class BaseLayout {
+  static const marginLayoutBase = 10.0;
+
   static Widget view({
     required BuildContext context,
     required String title,

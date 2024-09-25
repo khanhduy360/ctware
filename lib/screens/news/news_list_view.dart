@@ -20,7 +20,7 @@ class NewsListView extends StatelessWidget {
         );
       },
       child: Container(
-        margin: const EdgeInsets.all(marginLayoutBase),
+        margin: const EdgeInsets.all(BaseLayout.marginLayoutBase),
         decoration: BoxStyle.fromBoxDecoration(radius: 10),
         padding: const EdgeInsets.all(10),
         child: Row(
@@ -77,7 +77,7 @@ class NewsListView extends StatelessWidget {
               if (dataProvider.news.isEmpty) {
                 return Container(
                     alignment: Alignment.center,
-                    margin: const EdgeInsets.all(marginLayoutBase),
+                    margin: const EdgeInsets.all(BaseLayout.marginLayoutBase),
                     child: const SizedBox(
                         height: 50,
                         width: 50,
