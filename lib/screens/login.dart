@@ -68,10 +68,10 @@ class _LoginState extends State<Login> {
                     Image(
                       image: AssetImage('assets/images/logo.png'),
                       fit: BoxFit.fill,
-                      height: 150,
-                      width: 150,
+                      height: 120,
+                      width: 120,
                     ),
-                    SizedBox(width: 30),
+                    SizedBox(width: 20),
                     Column(
                       children: [
                         Text(

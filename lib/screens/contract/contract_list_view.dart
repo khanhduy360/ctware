@@ -14,19 +14,17 @@ class ContractListView extends StatefulWidget {
 
 class _ContractListViewState extends State<ContractListView> {
   late ContractProvider contractProvider;
-  late Future<List<Contract>> futureContracts;
 
   @override
   void initState() {
     super.initState();
     contractProvider = Provider.of<ContractProvider>(context, listen: false);
-    futureContracts = contractProvider.futureContracts(context);
   }
 
   Widget loadWidget(BuildContext context) {
     if (contractProvider.listContract.isEmpty) {
       return FutureBuilder(
-          future: futureContracts,
+          future: contractProvider.futureContracts(context),
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               return contractItems(context, contractProvider.listContract);
