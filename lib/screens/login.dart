@@ -63,13 +63,13 @@ class _LoginState extends State<Login> {
             child: Column(
               children: [
                 const Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Image(
                       image: AssetImage('assets/images/logo.png'),
                       fit: BoxFit.fill,
-                      height: 120,
-                      width: 120,
+                      height: 125,
+                      width: 125,
                     ),
                     SizedBox(width: 20),
                     Column(
