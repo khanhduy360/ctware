@@ -1,3 +1,4 @@
+import 'package:ctware/configs/utilities.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/home.dart';
 import 'package:ctware/services/auth_service.dart';
@@ -48,6 +49,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    rootContext = context;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
@@ -68,10 +70,9 @@ class _LoginState extends State<Login> {
                     Image(
                       image: AssetImage('assets/images/logo.png'),
                       fit: BoxFit.fill,
-                      height: 125,
-                      width: 125,
+                      height: 120,
+                      width: 120,
                     ),
-                    SizedBox(width: 20),
                     Column(
                       children: [
                         Text(

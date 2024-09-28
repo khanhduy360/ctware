@@ -1,3 +1,4 @@
+import 'package:ctware/configs/utilities.dart';
 import 'package:ctware/screens/login.dart';
 import 'package:ctware/services/cache_manage.dart';
 import 'package:ctware/theme/dialog.dart';
@@ -16,8 +17,8 @@ class ApiService {
   void authSSL(Dio dio) {
     dio.options
       ..baseUrl = urlSite
-      ..connectTimeout = const Duration(seconds: 30)
-      ..receiveTimeout = const Duration(seconds: 30);
+      ..connectTimeout = const Duration(seconds: 60)
+      ..receiveTimeout = const Duration(seconds: 60);
   }
 
   Future<Response?> fetch(url) async {
@@ -43,13 +44,13 @@ class ApiService {
         // ignore: avoid_print
         print("[GET] Error form <$url>:\n$error");
         // ignore: use_build_context_synchronously
-        ShowingDialog.errorDialog(context,
+        Navigator.of(rootContext).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (rootContext) => const Login()),
+            (Route<dynamic> route) => false);
+        // ignore: use_build_context_synchronously
+        ShowingDialog.errorDialog(rootContext,
             errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau',
             title: 'Thông báo');
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const Login(),
-        ));
       }
       return null;
     }
@@ -79,13 +80,13 @@ class ApiService {
         // ignore: avoid_print
         print("[GET] Error form <$url>:\n$error");
         // ignore: use_build_context_synchronously
-        ShowingDialog.errorDialog(context,
+        Navigator.of(rootContext).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (rootContext) => const Login()),
+            (Route<dynamic> route) => false);
+        // ignore: use_build_context_synchronously
+        ShowingDialog.errorDialog(rootContext,
             errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau',
             title: 'Thông báo');
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const Login(),
-        ));
       }
       return null;
     }
@@ -116,13 +117,13 @@ class ApiService {
         // ignore: avoid_print
         print("[POST] Error form <$url>:\n$error");
         // ignore: use_build_context_synchronously
-        ShowingDialog.errorDialog(context,
+        Navigator.of(rootContext).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (rootContext) => const Login()),
+            (Route<dynamic> route) => false);
+        // ignore: use_build_context_synchronously
+        ShowingDialog.errorDialog(rootContext,
             errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau',
             title: 'Thông báo');
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const Login(),
-        ));
       }
       return null;
     }

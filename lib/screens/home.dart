@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ctware/configs/utilities.dart';
 import 'package:ctware/model/advertise_slide.dart';
 import 'package:ctware/model/news.dart';
 import 'package:ctware/model/news_item.dart';
@@ -83,6 +84,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    rootContext = context;
     // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {

@@ -1,3 +1,4 @@
+import 'package:ctware/configs/utilities.dart';
 import 'package:ctware/provider/contract_provider.dart';
 import 'package:ctware/provider/news_provider.dart';
 import 'package:ctware/provider/user_provider.dart';
@@ -18,6 +19,7 @@ class CTWareApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    rootContext = context;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),

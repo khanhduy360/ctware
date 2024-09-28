@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+late BuildContext rootContext;
 
 DateTime parseRssDate(String rssDate) {
     // Define a list of possible date formats that RSS items might use
