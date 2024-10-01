@@ -8,6 +8,7 @@ import 'package:ctware/provider/news_provider.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/bank_location/bl_list_view.dart';
 import 'package:ctware/screens/contract/contract_list_view.dart';
+import 'package:ctware/screens/invoice/invoice_search_view.dart';
 import 'package:ctware/screens/news/news_list_view.dart';
 import 'package:ctware/screens/news/news_web_view.dart';
 import 'package:ctware/services/common_service.dart';
@@ -190,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const InvoiceListScreen()),
+                      builder: (context) => const InvoiceSearchView()),
                 );
               }),
               _buildMenuItemIcon(context, Iconsax.clipboard_text, 'Hợp đồng',

@@ -1,4 +1,5 @@
 import 'package:ctware/configs/utilities.dart';
+import 'package:ctware/provider/bill_provider.dart';
 import 'package:ctware/provider/contract_provider.dart';
 import 'package:ctware/provider/news_provider.dart';
 import 'package:ctware/provider/user_provider.dart';
@@ -25,6 +26,7 @@ class CTWareApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => NewsProvider()),
         ChangeNotifierProvider(create: (_) => ContractProvider()),
+        ChangeNotifierProvider(create: (_) => BillProvider()),
       ],
       child: MaterialApp(
         title: 'Hello FreeLanecer First',
