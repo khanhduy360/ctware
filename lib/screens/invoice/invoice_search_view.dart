@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:ctware/model/bill.dart';
+import 'package:ctware/model/invoice.dart';
 import 'package:ctware/provider/bill_provider.dart';
+import 'package:ctware/services/statistic_service.dart';
 import 'package:ctware/theme/base_layout.dart';
 import 'package:ctware/theme/month_year_picker_custom.dart';
 import 'package:ctware/theme/style.dart';
@@ -18,17 +20,17 @@ class InvoiceSearchView extends StatefulWidget {
 
 class _InvoiceSearchViewState extends State<InvoiceSearchView> {
   int selectedIndex = 0;
-  DateTime? fromMonthSelected;
-  DateTime? toMonthSelected;
+  late DateTime fromMonthSelected;
+  late DateTime toMonthSelected;
   // ignore: non_constant_identifier_names
   final TAG_FROM_MONTH = 'key_tag_button_1';
   // ignore: non_constant_identifier_names
   final TAG_TO_MONTH = 'key_tag_button_2';
-
-  late Future<List<Bill>> futureBills;
   late BillProvider billProvider;
   List<Bill> dropdownList = <Bill>[];
   late Bill dropdownValue;
+  bool isLoadInvoice = false;
+  late List<Invoice> listInvoiceRs = [];
 
   @override
   void initState() {
@@ -36,7 +38,6 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
     fromMonthSelected = DateTime.now();
     toMonthSelected = DateTime.now();
     billProvider = Provider.of<BillProvider>(context, listen: false);
-    futureBills = billProvider.futureBills(context);
     if (billProvider.listBill.isNotEmpty) {
       dropdownList = billProvider.listBill;
       dropdownValue = dropdownList.first;
@@ -44,9 +45,22 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
   }
 
   searchInvoice() {
-    print(dropdownValue.IDKH);
-    print(fromMonthSelected!.toUtc().toIso8601String());
-    print(toMonthSelected!.toUtc().toIso8601String());
+    setState(() {
+      isLoadInvoice = true;
+    });
+    final statisticService = StatisticService(context: context);
+    statisticService
+        .traCuuApi(
+      idkh: dropdownValue.IDKH,
+      fromDate: fromMonthSelected.toUtc().toIso8601String(),
+      toDate: toMonthSelected.toUtc().toIso8601String(),
+    )
+        .then((onValue) {
+      setState(() {
+        listInvoiceRs = onValue;
+        isLoadInvoice = false;
+      });
+    });
   }
 
   Future<void> _onPressedDatePicker(String tag) async {
@@ -54,7 +68,7 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
         tag == TAG_FROM_MONTH ? fromMonthSelected : toMonthSelected;
     final selected = await showMonthYearPicker(
         context: context,
-        initialDate: initialDate ?? DateTime.now(),
+        initialDate: initialDate,
         firstDate: DateTime(2019),
         lastDate: DateTime(2030),
         locale: const Locale('vi', 'VN'),
@@ -108,7 +122,7 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
     );
   }
 
-  Widget listBillResult(BuildContext context) {
+  Widget listBillResult(BuildContext context, Invoice invoice) {
     return Container(
       height: 140,
       margin: const EdgeInsets.all(BaseLayout.marginLayoutBase),
@@ -119,14 +133,13 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Container(
-              width: 5.0,
-              color: Colors.green,
-              height: Responsive.height(100, context)
-            ),
+                width: 5.0,
+                color: Colors.green,
+                height: Responsive.height(100, context)),
           ),
-          const Expanded(
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -134,16 +147,16 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Kỳ 04-2024',
-                        style: TextStyle(
+                        'Kỳ ${invoice.KYHOADON}',
+                        style: const TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue,
                         ),
                       ),
                       Text(
-                        '49.655 đ',
-                        style: TextStyle(
+                        '${invoice.getTongTien()} đ',
+                        style: const TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.blue,
@@ -151,79 +164,79 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
                       ),
                     ],
                   ),
-                  Divider(color: Colors.black),
+                  const Divider(color: Colors.black),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Danh bộ',
                             style: TextStyle(fontSize: 16),
                           ),
                           Text(
-                            '877026A',
-                            style: TextStyle(
+                            invoice.SODB ?? '',
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ],
                       ),
                       Column(
                         children: [
-                          Text(
+                          const Text(
                             'CS Cũ',
                             style: TextStyle(fontSize: 16),
                           ),
                           Text(
-                            '25',
-                            style: TextStyle(
+                            invoice.CSCU.toString(),
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ],
                       ),
                       Column(
                         children: [
-                          Text(
+                          const Text(
                             'CS Mới',
                             style: TextStyle(fontSize: 16),
                           ),
                           Text(
-                            '30',
-                            style: TextStyle(
+                            invoice.CSMOI.toString(),
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ],
                       ),
                       Column(
                         children: [
-                          Text(
+                          const Text(
                             'M3TT',
                             style: TextStyle(fontSize: 16),
                           ),
                           Text(
-                            '5',
-                            style: TextStyle(
+                            invoice.M3TT.toString(),
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Đã thanh toán',
-                        style: TextStyle(
+                        invoice.TRANGTHAITHANHTOAN ?? '',
+                        style: const TextStyle(
                             color: Colors.green,
                             fontWeight: FontWeight.bold,
                             fontSize: 14),
                       ),
                       Text(
-                        '17/04/2024',
-                        style: TextStyle(
+                        invoice.getNPHHD(),
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 14),
                       ),
                     ],
@@ -325,8 +338,8 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
               const SizedBox(height: 16.0),
               OutlinedButton(
                 onPressed: () {
-                    searchInvoice();
-                  },
+                  searchInvoice();
+                },
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(
                       color: Colors.white,
@@ -345,7 +358,17 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
           ),
         ),
         const SizedBox(height: 16.0),
-        listBillResult(context)
+        Expanded(
+            child: isLoadInvoice
+                ? BaseLayout.loadingView(context)
+                : SingleChildScrollView(
+                    child: Column(
+                      children: listInvoiceRs
+                          .map(
+                              (toElement) => listBillResult(context, toElement))
+                          .toList(),
+                    ),
+                  ))
       ],
     );
   }
@@ -353,7 +376,7 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
   Widget loadWidget(BuildContext context) {
     if (billProvider.listBill.isEmpty) {
       return FutureBuilder(
-          future: futureBills,
+          future: billProvider.futureBills(context),
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               dropdownList = snapshot.data ?? [];

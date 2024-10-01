@@ -1,6 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 // map to API
 
+import 'package:intl/intl.dart';
+
 class Invoice {
   int IDKH;
   int NAM;
@@ -31,19 +33,19 @@ class Invoice {
   String? M3TTTUNGKHOAN;
   String? THANHTIENTUNGKHOANG;
   double CONGTHANHTIEN;
-  double VAT;
+  int VAT;
   double TIENVAT;
-  double TIENLUUBO;
+  int TIENLUUBO;
   int PBVMT4M3;
-  double TIENPBVMT;
+  int TIENPBVMT;
   int PNT4M3;
-  double TIENPNT;
-  double TONGCONG;
+  int TIENPNT;
+  int TONGCONG;
   int TTGHI;
   String? MAHTTT;
   String? MAHTTT_HT;
   bool HETNO;
-  DateTime? NGAYCN;
+  String? NGAYCN;
   DateTime? NGAYNHAPCN;
   String? HDDT_MAUSO;
   String? HDDT_KYHIEU;
@@ -60,14 +62,14 @@ class Invoice {
   String? MAPHATHANH;
   int PHHOADON;
   int TONGKYNO;
-  double TONGTIENNO;
+  int TONGTIENNO;
   String? TTDIEUCHINH;
-  DateTime? NGAYPHHD;
+  String NGAYPHHD;
   String? NGAYDIEUCHINH;
   String? NVDIEUCHINH;
   String? cashMANH;
   String? KEYPHHOADON;
-  int GNHOADON;
+  int? GNHOADON;
   String? NGAYGNHOADON;
   String? TTPHDIEUCHINH;
   String? NGAYPHDIEUCHINH;
@@ -75,7 +77,7 @@ class Invoice {
   bool TINHPBVMT_PHANTRAM;
   bool TINHPBVMT_RUNG;
   int PBVMT_RUNG;
-  double TIENPBVMT_RUNG;
+  int TIENPBVMT_RUNG;
   bool TINHNHANKHAU;
   bool NONGTHON;
   bool LOCKGCS;
@@ -243,5 +245,14 @@ class Invoice {
       LOCKGCS: responseData['LOCKGCS'],
       LOCKTINHCUOC: responseData['LOCKTINHCUOC'],
     );
+  }
+
+  String getTongTien() {
+    return NumberFormat('#,###').format(TONGCONG).replaceAll(',', '.');
+  }
+
+  String getNPHHD() {
+    final date = DateTime.parse(NGAYPHHD);
+    return DateFormat('dd/MM/yyyy').format(date);
   }
 }

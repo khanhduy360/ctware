@@ -128,4 +128,42 @@ class ApiService {
       return null;
     }
   }
+
+  Future<Response?> postByToken(url, data) async {
+    // Method POST
+    try {
+      Dio dio = Dio();
+      authSSL(dio);
+      final response = await dio.post(url,
+          data: data,
+          options: Options(
+            headers: {
+              "Authorization": "Bearer ${CacheManage.tokenOnCache}",
+              "Accept": "application/json",
+              "Content-Type": "application/json-patch+json",
+            },
+          ));
+      // ignore: avoid_print
+      print('[POST] Result form <$url>:\n$response');
+      return response;
+    } on DioException catch (error) {
+      if (error.response != null) {
+        // ignore: avoid_print
+        print('[POST] Result form <$url>:\n${error.response}');
+        return error.response;
+      } else {
+        // ignore: avoid_print
+        print("[POST] Error form <$url>:\n$error");
+        // ignore: use_build_context_synchronously
+        Navigator.of(rootContext).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (rootContext) => const Login()),
+            (Route<dynamic> route) => false);
+        // ignore: use_build_context_synchronously
+        ShowingDialog.errorDialog(rootContext,
+            errMes: 'Hệ thống đang lỗi hoặc bảo trì, vui lòng thử lại sau',
+            title: 'Thông báo');
+      }
+      return null;
+    }
+  }
 }
