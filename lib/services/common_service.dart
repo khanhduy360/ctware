@@ -54,4 +54,13 @@ class CommonService extends ApiService {
 
     return listBankLocation;
   }
+
+  Future<String> getVNPAYLink() async {
+    String url = '';
+    final response = await fetch('${Url.config}?key=VNPAYLINK');
+    if (response != null && response.statusCode == 200) {
+      url = response.data['Value'];
+    }
+    return url;
+  }
 }

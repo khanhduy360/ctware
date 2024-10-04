@@ -14,7 +14,7 @@ class Bill {
   int IDKH;
   int PlatformType;
   String? UserId;
-  String? PhoneNumber;
+  String PhoneNumber;
   String? Email;
   String? SharedInfo;
   bool VerifyCustomer;
@@ -37,7 +37,7 @@ class Bill {
     required this.IDKH,
     required this.PlatformType,
     this.UserId,
-    this.PhoneNumber,
+    required this.PhoneNumber,
     this.Email,
     this.SharedInfo,
     required this.VerifyCustomer,
@@ -76,5 +76,12 @@ class Bill {
 
   String getSelectItem() {
     return '$IDKH - ${TENKH ?? ''}';
+  }
+
+  String getPhoneNumber() {
+    if (PhoneNumber.startsWith('84')) {
+      return PhoneNumber.replaceFirst('84', '0');
+    }
+    return PhoneNumber;
   }
 }

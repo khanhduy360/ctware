@@ -12,6 +12,7 @@ class Url {
   static const chuyenMucTin = "$version/Common/ChuyenMucTin"; //GET
   static const advertiseSlide = "$version/Common/AdvertiseSlide"; //GET
   static const traCuuDiaDiem = "$version/Common/TraCuuDiaDiem"; //GET
+  static const config = "$version/Common/Config"; //GET
   // Statistic
   static const traCuu = "$version/Statistic/TraCuu"; //POST
 }

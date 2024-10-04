@@ -35,16 +35,16 @@ class StatisticService extends ApiService {
       }
     }
     listInvoice.sort((a, b) {
-      if(a.NGAYPHHD == null && b.NGAYPHHD == null) {
+      if(a.NGAYPHHD.isEmpty && b.NGAYPHHD.isEmpty) {
         return 0;
       }
-      if(a.NGAYPHHD == null) {
+      if(a.NGAYPHHD.isEmpty) {
         return -1;
-      } else if(b.NGAYPHHD == null) {
+      } else if(b.NGAYPHHD.isEmpty) {
         return 1;
       }
-      final dateA = DateTime.parse(a.NGAYPHHD!);
-      final dateB = DateTime.parse(b.NGAYPHHD!);
+      final dateA = DateTime.parse(a.NGAYPHHD);
+      final dateB = DateTime.parse(b.NGAYPHHD);
       return dateB.compareTo(dateA);
     });
     return listInvoice;

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ctware/model/bill.dart';
 import 'package:ctware/model/invoice.dart';
 import 'package:ctware/provider/bill_provider.dart';
+import 'package:ctware/services/common_service.dart';
 import 'package:ctware/services/statistic_service.dart';
 import 'package:ctware/theme/base_layout.dart';
 import 'package:ctware/theme/month_year_picker_custom.dart';
@@ -10,6 +11,8 @@ import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class InvoiceSearchView extends StatefulWidget {
   const InvoiceSearchView({super.key});
@@ -29,8 +32,18 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
   late BillProvider billProvider;
   List<Bill> dropdownList = <Bill>[];
   late Bill dropdownValue;
+  late String urlVNPAY;
   bool isLoadInvoice = false;
+  bool showPayment = false;
   late List<Invoice> listInvoiceRs = [];
+  final List<Color> colorTTTT = [
+    Colors.red,
+    Colors.green,
+    Colors.orange,
+    Colors.orange,
+    Colors.orange,
+    Colors.red,
+  ];
 
   @override
   void initState() {
@@ -42,6 +55,19 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
       dropdownList = billProvider.listBill;
       dropdownValue = dropdownList.first;
     }
+    final commonService = CommonService(context: context);
+    commonService.getVNPAYLink().then((onValue) {
+      urlVNPAY = onValue;
+    });
+  }
+
+  bool checkPayment(List<Invoice> listInvoice) {
+    for (var invoice in listInvoice) {
+      if (invoice.TRANGTHAIHOADON == 5 && invoice.HETNO == false) {
+        return true;
+      }
+    }
+    return false;
   }
 
   searchInvoice() {
@@ -58,8 +84,13 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
         .then((onValue) {
       setState(() {
         listInvoiceRs = onValue;
+        showPayment = checkPayment(listInvoiceRs);
         isLoadInvoice = false;
       });
+      if(showPayment) {
+        urlVNPAY = urlVNPAY.replaceAll('{0}', dropdownValue.IDKH.toString());
+        urlVNPAY = urlVNPAY.replaceAll('{1}', dropdownValue.getPhoneNumber());
+      }
     });
   }
 
@@ -134,7 +165,7 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
             borderRadius: BorderRadius.circular(10),
             child: Container(
                 width: 5.0,
-                color: Colors.green,
+                color: colorTTTT[invoice.TRANGTHAIHOADON],
                 height: Responsive.height(100, context)),
           ),
           Expanded(
@@ -228,9 +259,9 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        invoice.TRANGTHAITHANHTOAN ?? '',
-                        style: const TextStyle(
-                            color: Colors.green,
+                        invoice.TRANGTHAI ?? '',
+                        style: TextStyle(
+                            color: colorTTTT[invoice.TRANGTHAIHOADON],
                             fontWeight: FontWeight.bold,
                             fontSize: 14),
                       ),
@@ -353,7 +384,25 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
                   'Tra cứu',
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
-              )
+              ),
+              showPayment
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          launchUrlString(urlVNPAY);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          minimumSize: const Size(double.infinity, 50),
+                        ),
+                        child: const Text(
+                          'Thanh toán trực tuyến',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      ),
+                    )
+                  : const SizedBox()
             ],
           ),
         ),

@@ -57,7 +57,7 @@ class _BankLocationMapViewState extends State<BankLocationMapView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    bankBranch.Ten ?? '',
+                    bankBranch.Ten,
                     style: const TextStyle(
                         fontSize: 16, fontWeight: FontWeight.bold),
                   ),
