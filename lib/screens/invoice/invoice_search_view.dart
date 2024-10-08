@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ctware/model/bill.dart';
 import 'package:ctware/model/invoice.dart';
 import 'package:ctware/provider/bill_provider.dart';
+import 'package:ctware/screens/invoice/invoice_chart_view.dart';
 import 'package:ctware/services/common_service.dart';
 import 'package:ctware/services/statistic_service.dart';
 import 'package:ctware/theme/base_layout.dart';
@@ -11,7 +12,6 @@ import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class InvoiceSearchView extends StatefulWidget {
@@ -443,6 +443,19 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
     return BaseLayout.view(
       context: context,
       title: 'Tra cứu Hóa đơn',
+      actions: [
+        IconButton(
+            icon: const Icon(
+              Icons.bar_chart_outlined,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const InvoiceChartView(),
+              ));
+            },
+          ),
+      ],
       body: loadWidget(context),
     );
   }
