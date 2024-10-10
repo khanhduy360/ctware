@@ -320,7 +320,10 @@ class _InvoiceSearchViewState extends State<InvoiceSearchView> {
                             .map<DropdownMenuItem<Bill>>((Bill value) {
                           return DropdownMenuItem<Bill>(
                             value: value,
-                            child: Text(value.getSelectItem()),
+                            child: Text(value.getSelectItem(), style: TextStyle(
+                            fontWeight: value == dropdownValue
+                                ? FontWeight.bold
+                                : FontWeight.normal),),
                           );
                         }).toList(),
                       ),
