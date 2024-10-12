@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:ctware/model/bill.dart';
 import 'package:ctware/model/invoice.dart';
 import 'package:ctware/provider/bill_provider.dart';
-import 'package:ctware/screens/invoice/invoice_chart_view.dart';
+import 'package:ctware/screens/invoice_search/invoice_chart_view.dart';
 import 'package:ctware/services/common_service.dart';
 import 'package:ctware/services/statistic_service.dart';
 import 'package:ctware/theme/base_layout.dart';

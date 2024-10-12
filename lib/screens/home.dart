@@ -8,7 +8,8 @@ import 'package:ctware/provider/news_provider.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/bank_location/bl_list_view.dart';
 import 'package:ctware/screens/contract/contract_list_view.dart';
-import 'package:ctware/screens/invoice/invoice_search_view.dart';
+import 'package:ctware/screens/invoice/invoice_list.dart';
+import 'package:ctware/screens/invoice_search/invoice_search_view.dart';
 import 'package:ctware/screens/news/news_list_view.dart';
 import 'package:ctware/screens/news/news_web_view.dart';
 import 'package:ctware/services/common_service.dart';
@@ -16,6 +17,7 @@ import 'package:ctware/theme/bottom_bar.dart';
 import 'package:ctware/theme/style.dart';
 import 'package:ctware/views/Account.dart';
 import 'package:ctware/views/Involce.dart';
+import 'package:ctware/views/InvolceLookUp.dart';
 import 'package:ctware/views/Setting.dart';
 import 'package:ctware/views/TestChart.dart';
 import 'package:ctware/views/chart/test_chart1.dart';
@@ -162,9 +164,23 @@ class _HomePageState extends State<HomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildMenuItem('assets/icons/ic_bill.png', 'Hóa đơn'),
-              _buildMenuItem('assets/icons/ic_notification.png', 'Thông báo'),
-              _buildMenuItem('assets/icons/ic_account.png', 'Tài khoản'),
+              _buildMenuItem(
+                  assetPath: 'assets/icons/ic_bill.png',
+                  title: 'Hóa đơn',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const InvoiceList()),
+                    );
+                  }),
+              _buildMenuItem(
+                  assetPath: 'assets/icons/ic_notification.png',
+                  title: 'Thông báo',
+                  onTap: () {}),
+              _buildMenuItem(
+                  assetPath: 'assets/icons/ic_account.png',
+                  title: 'Tài khoản',
+                  onTap: () {}),
             ],
           ),
         ],
@@ -202,7 +218,9 @@ class _HomePageState extends State<HomePage> {
               }),
               _buildMenuItemIcon(context, Iconsax.message, 'Gửi yêu cầu',
                   const Color.fromARGB(255, 0, 163, 233), () {
-                // Action for 'Gửi yêu cầu'
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => UserInfoScreen(),
+                ));
               }),
             ],
           ),
@@ -220,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                 // Action for 'Thông báo xì bể'
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BarLineChart()),
+                  MaterialPageRoute(builder: (context) => InvoiceLookUp()),
                 );
               }),
               _buildMenuItemIcon(
@@ -326,17 +344,23 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildMenuItem(String assetPath, String title) {
+  Widget _buildMenuItem(
+      {required String assetPath,
+      required String title,
+      required Function()? onTap}) {
     return Column(
       children: [
-        Container(
-          height: 40,
-          width: 40,
-          child: Image(
-            image: AssetImage(assetPath),
+        InkWell(
+          onTap: onTap,
+          child: SizedBox(
+            height: 40,
+            width: 40,
+            child: Image(
+              image: AssetImage(assetPath),
+            ),
           ),
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Text(title, textAlign: TextAlign.center),
       ],
     );
