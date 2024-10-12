@@ -1,5 +1,10 @@
+import 'package:ctware/model/bill.dart';
+import 'package:ctware/provider/bill_provider.dart';
+import 'package:ctware/screens/invoice/invoice_add.dart';
 import 'package:ctware/theme/base_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class InvoiceList extends StatefulWidget {
   const InvoiceList({super.key});
@@ -9,6 +14,53 @@ class InvoiceList extends StatefulWidget {
 }
 
 class _InvoiceListState extends State<InvoiceList> {
+  late BillProvider billProvider;
+  List<Bill> listBill = [];
+
+  @override
+  void initState() {
+    super.initState();
+    billProvider = Provider.of<BillProvider>(context, listen: false);
+    if (billProvider.listBill.isNotEmpty) {
+      listBill = billProvider.listBill;
+    }
+  }
+
+  Widget listBillView(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(BaseLayout.marginLayoutBase),
+      child: SingleChildScrollView(
+        child: Column(
+          children: listBill
+              .map((bill) => InvoiceCard(
+                  idkh: bill.IDKH.toString(),
+                  sodanhbo: bill.SODB ?? '',
+                  name: bill.TENKH ?? '',
+                  address: bill.DIACHI ?? ''))
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget mainView(BuildContext context) {
+    if (listBill.isNotEmpty) {
+      return SingleChildScrollView(
+        child: listBillView(context),
+      );
+    }
+    return FutureBuilder(
+        future: billProvider.futureBills(context),
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+            listBill = snapshot.data ?? [];
+
+            return listBillView(context);
+          }
+          return BaseLayout.loadingView(context);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BaseLayout.view(
@@ -21,50 +73,28 @@ class _InvoiceListState extends State<InvoiceList> {
             color: Colors.white,
           ),
           onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => AddInvoiceScreen()),
-            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const InvoiceAdd()),
+            );
           },
         ),
       ],
-      body: const SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(BaseLayout.marginLayoutBase),
-          child: Column(
-            children: [
-              InvoiceCard(
-                idkh: '65642',
-                sodanbo: '877026A',
-                name: 'NGUYỄN VĂN A',
-                address:
-                    'SỐ 10-U, ĐƯỜNG SỐ 10, KDC CTY8, P. HƯNG THẠNH. - KDC CTY 8',
-              ),
-              InvoiceCard(
-                idkh: '65642',
-                sodanbo: '877026A',
-                name: 'NGUYỄN VĂN A',
-                address:
-                    'SỐ 10-U, ĐƯỜNG SỐ 10, KDC CTY8, P. HƯNG THẠNH. - KDC CTY 8',
-              ),
-            ],
-          ),
-        ),
-      ),
+      body: mainView(context),
     );
   }
 }
 
 class InvoiceCard extends StatelessWidget {
   final String idkh;
-  final String sodanbo;
+  final String sodanhbo;
   final String name;
   final String address;
 
   const InvoiceCard(
       {super.key,
       required this.idkh,
-      required this.sodanbo,
+      required this.sodanhbo,
       required this.name,
       required this.address});
 
@@ -86,7 +116,7 @@ class InvoiceCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text('IDKH: $idkh'),
-            Text('Số danh bộ: $sodanbo'),
+            Text('Số danh bộ: $sodanhbo'),
             Text('Địa chỉ: $address'),
             const SizedBox(height: 8),
             Row(
