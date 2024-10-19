@@ -9,8 +9,10 @@ class BaseLayout {
     List<Widget>? actions,
     bool backAction = true,
     required Widget body,
+    bool? resizeToAvoidBottomInset
   }) {
     return Scaffold(
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         appBar: AppBar(
           title: Text(
             title,

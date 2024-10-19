@@ -1,3 +1,4 @@
+import 'package:ctware/api/url.dart';
 import 'package:ctware/configs/utilities.dart';
 import 'package:ctware/screens/login.dart';
 import 'package:ctware/services/cache_manage.dart';
@@ -6,17 +7,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class ApiService {
-  // Server config
-  static const domain = 'apidemo.ctn-cantho.com.vn';
-  static const urlSite = "https://$domain/api/ctwapi/";
-
   final BuildContext context;
 
   const ApiService({required this.context});
 
   void authSSL(Dio dio) {
     dio.options
-      ..baseUrl = urlSite
+      ..baseUrl = Url.urlSite
       ..connectTimeout = const Duration(seconds: 60)
       ..receiveTimeout = const Duration(seconds: 60);
   }

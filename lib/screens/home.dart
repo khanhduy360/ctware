@@ -7,7 +7,7 @@ import 'package:ctware/model/news_item.dart';
 import 'package:ctware/provider/news_provider.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/bank_location/bl_list_view.dart';
-import 'package:ctware/screens/burst_warning/burst_warning_form.dart';
+import 'package:ctware/screens/pipe_report/pipe_report_form.dart';
 import 'package:ctware/screens/contract/contract_list_view.dart';
 import 'package:ctware/screens/invoice/invoice_list.dart';
 import 'package:ctware/screens/invoice_search/invoice_search_view.dart';
@@ -239,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                 // Action for 'Thông báo xì bể'
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const BurstWarningForm()),
+                  MaterialPageRoute(builder: (context) => const PipeReportForm()),
                 );
               }),
               _buildMenuItemIcon(

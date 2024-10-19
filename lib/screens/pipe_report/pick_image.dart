@@ -15,7 +15,7 @@ class PickImage {
     return File(pickedFile.path);
   }
 
-  static Future<String?> convertToBase64(File imageFile) async {
+  static Future<String> convertToBase64(File imageFile) async {
     List<int> imageBytes = await imageFile.readAsBytes();
     return base64Encode(imageBytes);
   }

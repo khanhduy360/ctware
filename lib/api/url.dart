@@ -1,6 +1,9 @@
 // METHOD API
 
 class Url {
+  // Server config
+  static const domain = 'apidemo.ctn-cantho.com.vn';
+  static const urlSite = "https://$domain/api/ctwapi/";
   static const version = 'v1';
   static const platformId = 3;
   // Users
@@ -8,6 +11,8 @@ class Url {
   static const getUser = "$version/Users/GetUser"; // GET
   static const contracts = "$version/Users/Contracts?pId=$platformId"; //GET
   static const bills = "$version/Users/GetBills?pId=$platformId"; //GET
+  static const sendPipeReport = "$version/Users/SendPipeReport"; // POST
+  static const getListPipeReport = "$version/Users/GetListPipeReport"; // GET
   // Common
   static const chuyenMucTin = "$version/Common/ChuyenMucTin"; //GET
   static const advertiseSlide = "$version/Common/AdvertiseSlide"; //GET
