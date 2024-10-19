@@ -52,11 +52,11 @@ class Responsive {
 
 // Tạo extension cho String để chuyển đổi Base64 thành Image widget
 extension ImageFromBase64 on String {
-  static Widget toImage(String string) {
+  static Widget toImage(String string, {fit = BoxFit.fill}) {
     // Giải mã chuỗi Base64 thành Uint8List
     Uint8List bytes = base64Decode(string);
 
     // Hiển thị hình ảnh từ Uint8List
-    return Image.memory(bytes, fit: BoxFit.fill,);
+    return Image.memory(bytes, fit: fit,);
   }
 }
