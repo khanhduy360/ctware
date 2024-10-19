@@ -1,4 +1,5 @@
 import 'package:ctware/provider/user_provider.dart';
+import 'package:ctware/theme/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ctware/configs/Colors.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,8 @@ class UpdateUserInfoScreen extends StatefulWidget {
 }
 
 class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
-  bool isEditing = false;
+  bool _isEditing = false;
+  String _fullNameErr = "";
   TextEditingController fullNameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController displayNameController = TextEditingController();
@@ -23,6 +25,7 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
     fullNameController.text = userProvider.getFullName() ?? "";
     addressController.text = userProvider.getAddress() ?? "";
     displayNameController.text = userProvider.getDisplayName() ?? "";
+    _fullNameErr = "";
   }
 
   @override
@@ -49,19 +52,25 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
             actions: [
               IconButton(
                 icon: Icon(
-                  isEditing ? Icons.save : Icons.edit,
+                  _isEditing ? Icons.save : Icons.edit,
                   color: AppColors.txtWhite,
                 ),
                 onPressed: () {
                   setState(() {
-                    if (isEditing) {
+                    _fullNameErr = "";
+                    if (_isEditing) {
+                      if (fullNameController.text.isEmpty) {
+                        _fullNameErr = "Vui lòng nhập họ và tên";
+                        return;
+                      }
+
                       userProvider.setFullName(fullNameController.text);
                       userProvider.setAddress(addressController.text);
                       userProvider.setDisplayName(displayNameController.text);
 
                       userProvider.updateUser(context);
                     }
-                    isEditing = !isEditing;
+                    _isEditing = !_isEditing;
                   });
                 },
               ),
@@ -119,14 +128,18 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
         children: [
           Text(
             "$label: ",
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
+              color: _isEditing ? AppColors.txtMuted : null,
             ),
           ),
           Text(
             value,
-            style: const TextStyle(fontSize: 16),
+            style: TextStyle(
+              fontSize: 16,
+              color: _isEditing ? AppColors.txtMuted : null,
+            ),
           ),
         ],
       ),
@@ -146,11 +159,14 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
               fontSize: 16,
             ),
           ),
-          isEditing
+          _isEditing
               ? TextField(
                   controller: controller,
                   decoration: InputDecoration(
                     hintText: 'Nhập $label',
+                    errorText: label.toUpperCase().contains("HỌ VÀ TÊN") == true
+                        ? _fullNameErr
+                        : null,
                   ),
                 )
               : Text(

@@ -6,6 +6,7 @@ import 'package:ctware/model/users.dart';
 import 'package:ctware/services/cache_manage.dart';
 import 'package:ctware/theme/dialog.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService extends ApiService {
@@ -87,5 +88,26 @@ class AuthService extends ApiService {
           errMes: response.toString(), title: 'Cập nhật thất bại');
     }
     return null;
+  }
+
+  Future<bool> changePassword(
+      {required String password, required String newPassword}) async {
+    final data = {
+      'Password': password,
+      'NewPassword': newPassword,
+      'PlatformType': Url.platformId,
+    };
+    final response = await postByToken(Url.changePassword, data);
+    if (response != null && response.statusCode == 200) {
+      // ignore: use_build_context_synchronously
+      CacheManage.setCurrentPass(newPassword);
+      return true;
+    }
+    if (response != null && response.statusCode == 400) {
+      // ignore: use_build_context_synchronously
+      ShowingDialog.errorDialog(context,
+          errMes: response.toString(), title: 'Đổi mật khẩu thất bại');
+    }
+    return false;
   }
 }

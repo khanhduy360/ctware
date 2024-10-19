@@ -13,6 +13,7 @@ import 'package:ctware/screens/invoice_search/invoice_search_view.dart';
 import 'package:ctware/screens/news/news_list_view.dart';
 import 'package:ctware/screens/news/news_web_view.dart';
 import 'package:ctware/screens/user_info/user_info.dart';
+import 'package:ctware/screens/user_info/widgets/update_user_info_screen.dart';
 import 'package:ctware/services/common_service.dart';
 import 'package:ctware/theme/bottom_bar.dart';
 import 'package:ctware/theme/style.dart';
@@ -85,13 +86,13 @@ class _HomeState extends State<Home> {
       Navigator(
         key: _navigatorKeys[2],
         onGenerateRoute: (settings) {
-          return MaterialPageRoute(builder: (_) =>  const UserInfoScreen());
+          return MaterialPageRoute(builder: (_) => const UserInfoScreen());
         },
       ),
       Navigator(
         key: _navigatorKeys[3],
         onGenerateRoute: (settings) {
-          return MaterialPageRoute(builder: (_) =>  const UserInfoScreen());
+          return MaterialPageRoute(builder: (_) => const UserInfoScreen());
         },
       ),
     ];
@@ -182,7 +183,8 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const InvoiceList()),
+                      MaterialPageRoute(
+                          builder: (context) => const InvoiceList()),
                     );
                   }),
               _buildMenuItem(
@@ -192,7 +194,13 @@ class _HomePageState extends State<HomePage> {
               _buildMenuItem(
                   assetPath: 'assets/icons/ic_account.png',
                   title: 'Tài khoản',
-                  onTap: () {}),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UpdateUserInfoScreen()),
+                    );
+                  }),
             ],
           ),
         ],

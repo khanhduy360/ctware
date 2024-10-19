@@ -82,4 +82,14 @@ class UserProvider extends ChangeNotifier {
 
     return response;
   }
+
+  Future<bool> changePassword(BuildContext context,
+      {required String currPass, required String newPass}) async {
+    final authService = AuthService(context: context);
+    final response = await authService.changePassword(
+        password: currPass, newPassword: newPass);
+    notifyListeners();
+
+    return response;
+  }
 }

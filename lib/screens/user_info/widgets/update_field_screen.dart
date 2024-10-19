@@ -8,7 +8,7 @@ class UpdateFieldScreen extends StatefulWidget {
   final IconData icon;
   final Function() onSubmit;
 
-  UpdateFieldScreen({
+  const UpdateFieldScreen({
     super.key,
     required this.appbarTitle,
     required this.fieldName,

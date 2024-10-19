@@ -9,6 +9,7 @@ class Url {
   static const contracts = "$version/Users/Contracts?pId=$platformId"; //GET
   static const bills = "$version/Users/GetBills?pId=$platformId"; //GET
   static const updateUser = "$version/Users/UpdateUser"; //PATCH
+  static const changePassword = "$version/Users/ChangePass"; //POST
   // Common
   static const chuyenMucTin = "$version/Common/ChuyenMucTin"; //GET
   static const advertiseSlide = "$version/Common/AdvertiseSlide"; //GET
