@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ctware/api/api_config.dart';
 import 'package:ctware/api/url.dart';
 import 'package:ctware/model/users.dart';
@@ -25,13 +27,15 @@ class AuthService extends ApiService {
       CacheManage.tokenOnCache = user.Token;
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString('Token', user.Token ?? '');
+      CacheManage.setCurrentPass(data['Password']);
       // ignore: avoid_print
       print('Token: ${user.Token} ---------------------');
       return user;
     }
-    if(response != null && response.statusCode == 400) {
+    if (response != null && response.statusCode == 400) {
       // ignore: use_build_context_synchronously
-      ShowingDialog.errorDialog(context, errMes: response.toString(), title: 'Đăng nhập thất bại');
+      ShowingDialog.errorDialog(context,
+          errMes: response.toString(), title: 'Đăng nhập thất bại');
     }
     return null;
   }
@@ -48,5 +52,40 @@ class AuthService extends ApiService {
       CacheManage.tokenOnCache = null;     
       return null;
     }
+  }
+
+  Future<User?> updateUser(User? user) async {
+    final data = jsonEncode({
+      'accID': user?.accID,
+      'IDKH': user?.IDKH,
+      'accName': user?.accName,
+      'accPass': user?.accPass,
+      'accFullName': user?.accFullName,
+      'accAddress': user?.accAddress,
+      'accDisplayName': user?.accDisplayName,
+      'accEmail': user?.accEmail,
+      'accTel': user?.accTel,
+      'sqID': user?.sqID,
+      'Token': user?.Token,
+      'RefreshToken': user?.RefreshToken,
+      'SODB': user?.SODB,
+      'DisplayName': user?.DisplayName,
+      'accEmailVerified': user?.accEmailVerified,
+      'PlatformType': user?.PlatformType,
+    });
+    final response = await postByToken(Url.updateUser, data);
+    if (response != null && response.statusCode == 200) {
+      final user = User.fromJson(response.data);
+      // ignore: use_build_context_synchronously
+      ShowingDialog.successDialog(context,
+          message: 'Cập nhật thành công', title: 'Cập nhật');
+      return user;
+    }
+    if (response != null && response.statusCode == 400) {
+      // ignore: use_build_context_synchronously
+      ShowingDialog.errorDialog(context,
+          errMes: response.toString(), title: 'Cập nhật thất bại');
+    }
+    return null;
   }
 }

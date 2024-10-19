@@ -12,10 +12,10 @@ import 'package:ctware/screens/invoice/invoice_list.dart';
 import 'package:ctware/screens/invoice_search/invoice_search_view.dart';
 import 'package:ctware/screens/news/news_list_view.dart';
 import 'package:ctware/screens/news/news_web_view.dart';
+import 'package:ctware/screens/user_info/user_info.dart';
 import 'package:ctware/services/common_service.dart';
 import 'package:ctware/theme/bottom_bar.dart';
 import 'package:ctware/theme/style.dart';
-import 'package:ctware/views/Account.dart';
 import 'package:ctware/views/Involce.dart';
 import 'package:ctware/views/InvolceLookUp.dart';
 import 'package:ctware/views/Setting.dart';
@@ -80,6 +80,18 @@ class _HomeState extends State<Home> {
         key: _navigatorKeys[1],
         onGenerateRoute: (settings) {
           return MaterialPageRoute(builder: (_) => const NewsListView());
+        },
+      ),
+      Navigator(
+        key: _navigatorKeys[2],
+        onGenerateRoute: (settings) {
+          return MaterialPageRoute(builder: (_) =>  const UserInfoScreen());
+        },
+      ),
+      Navigator(
+        key: _navigatorKeys[3],
+        onGenerateRoute: (settings) {
+          return MaterialPageRoute(builder: (_) =>  const UserInfoScreen());
         },
       ),
     ];
