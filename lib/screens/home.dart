@@ -140,7 +140,6 @@ class _HomePageState extends State<HomePage> {
     'assets/images/slider2.png'
   ];
 
-  late UserProvider userProvider;
   late NewsProvider newsProvider;
   late List<AdvertiseSlide> advertiseSlideList;
   late Future<List<AdvertiseSlide>> futureAdvertiseSlide;
@@ -149,7 +148,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    userProvider = Provider.of<UserProvider>(context, listen: false);
     final commonService = CommonService(context: context);
     futureAdvertiseSlide = commonService.getAdvertiseSlideApi();
     newsProvider = Provider.of<NewsProvider>(context, listen: false);
@@ -167,11 +165,16 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           const SizedBox(height: 15),
-          Text(
-            'Xin chào, ${userProvider.user?.accFullName}',
-            style: const TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue),
-          ),
+          Consumer<UserProvider>(builder:
+              (BuildContext context, UserProvider userProvider, Widget? child) {
+            return Text(
+              'Xin chào, ${userProvider.getDisplayName() ?? userProvider.getFullName() ?? "User"}',
+              style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue),
+            );
+          }),
           const SizedBox(height: 5),
           const Divider(height: 1.0, color: Colors.black),
           const SizedBox(height: 15),
