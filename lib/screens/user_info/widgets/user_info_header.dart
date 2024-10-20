@@ -1,6 +1,7 @@
 import 'package:ctware/configs/Colors.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/user_info/widgets/update_user_info_screen.dart';
+import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,7 @@ class UserInfoHeader extends StatelessWidget {
         );
       },
       child: Container(
-        color: AppColors.contentColorWhite,
+        decoration: BoxStyle.fromBoxDecoration(),
         margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
         child: const Column(
@@ -46,11 +47,15 @@ class _UserInfoTile extends StatelessWidget {
             (BuildContext context, UserProvider userProvider, Widget? child) {
           return Row(
             children: [
-              CircleAvatar(
-                radius: 30,
-                child: Text(
-                  getFirstChar(userProvider.getDisplayName() ?? userProvider.getFullName()),
-                  style: const TextStyle(fontSize: 24),
+              Container(
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: const Color.fromARGB(255, 132, 177, 255)),
+                child: Center(
+                  child: Text(
+                    getFirstChar(userProvider.getDisplayName() ?? userProvider.getFullName()),
+                    style: const TextStyle(fontSize: 24),
+                  ),
                 ),
               ),
               const SizedBox(width: 16),

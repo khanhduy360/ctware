@@ -1,5 +1,4 @@
 import 'package:ctware/provider/user_provider.dart';
-import 'package:ctware/theme/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:ctware/configs/Colors.dart';
 import 'package:provider/provider.dart';

@@ -4,6 +4,7 @@ import 'package:ctware/screens/user_info/widgets/change_password_screen.dart';
 import 'package:ctware/screens/user_info/widgets/user_info_header.dart';
 import 'package:ctware/screens/user_info/widgets/update_field_screen.dart';
 import 'package:ctware/theme/base_layout.dart';
+import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/section_title.dart';
@@ -28,7 +29,7 @@ class UserInfoScreen extends StatelessWidget {
                       const SectionTitle(title: "Quản lý tài khoản"),
                       Container(
                         margin: const EdgeInsets.only(bottom: 16),
-                        color: AppColors.bgWhite,
+                        decoration: BoxStyle.fromBoxDecoration(),
                         child: Column(
                           children: [
                             ListTile(
@@ -49,7 +50,7 @@ class UserInfoScreen extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                          UpdatePasswordScreen(),
+                                          const UpdatePasswordScreen(),
                                     ));
                               },
                             ),
@@ -102,10 +103,10 @@ class UserInfoScreen extends StatelessWidget {
                       const SectionTitle(title: 'Hỗ trợ'),
                       Container(
                         margin: const EdgeInsets.only(bottom: 16),
-                        color: AppColors.bgWhite,
+                        decoration: BoxStyle.fromBoxDecoration(),
                         child: const Column(children: [
                           SupportRow(
-                            leftTitle: 'Email: ',
+                            leftTitle: 'Email',
                             rightTitle: 'ctncantho@gmail.com',
                             icon: 'assets/icons/gmail-icon.png',
                           ),
@@ -115,7 +116,7 @@ class UserInfoScreen extends StatelessWidget {
                             endIndent: 8,
                           ),
                           SupportRow(
-                              leftTitle: 'Zalo: ',
+                              leftTitle: 'Zalo',
                               rightTitle: 'CANTHOWASSCO OA Page',
                               icon: 'assets/icons/zalo-icon.png'),
                           Divider(
@@ -124,7 +125,7 @@ class UserInfoScreen extends StatelessWidget {
                             endIndent: 8,
                           ),
                           SupportRow(
-                              leftTitle: 'Facebook: ',
+                              leftTitle: 'Facebook',
                               rightTitle: 'CANTHOWASSCO Fanpage',
                               icon: 'assets/icons/fb-icon.png'),
                         ]),
@@ -132,7 +133,7 @@ class UserInfoScreen extends StatelessWidget {
                       const SectionTitle(title: 'Giới thiệu'),
                       Container(
                         margin: const EdgeInsets.only(bottom: 16),
-                        color: AppColors.bgWhite,
+                        decoration: BoxStyle.fromBoxDecoration(),
                         child: Column(
                           children: [
                             ListTile(
