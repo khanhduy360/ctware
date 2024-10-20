@@ -12,6 +12,22 @@ class AppColors {
   static const Color borderColor = Colors.white54;
   static const Color gridLinesColor = Color(0x11FFFFFF);
 
+  static const Color bgLight = Color(0xB3FFFFFF);
+  static const Color bgGrey = Colors.black26;
+  static const Color bgWhite = Color(0xFFFFFFFF);
+  static const Color bgPrimary = Color(0xFF2196F3);
+  static const Color bgDanger = Color(0xFFE80054);
+  static const Color bgSuccess = Color(0xFF4CAF50);
+
+  static const Color txtPrimary = Color(0xFF2196F3);
+  static const Color txtDanger = Color(0xFFE80054);
+  static const Color txtWarning = Color(0xFFFFC300);
+  static const Color txtInfo = Color(0xFF50E4FF);
+  static const Color txtWhite = Color(0xFFFFFFFF);
+  static const Color txtLight = Color(0xFFFFFFFF);
+  static const Color txtDark = Color(0x1AFFFFFF);
+  static const Color txtMuted = Colors.black26;
+
   static const Color contentColorBlack = Colors.black;
   static const Color contentColorWhite = Colors.white;
   static const Color contentColorBlue = Color(0xFF2196F3);

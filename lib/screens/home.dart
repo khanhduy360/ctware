@@ -13,10 +13,11 @@ import 'package:ctware/screens/invoice/invoice_list.dart';
 import 'package:ctware/screens/invoice_search/invoice_search_view.dart';
 import 'package:ctware/screens/news/news_list_view.dart';
 import 'package:ctware/screens/news/news_web_view.dart';
+import 'package:ctware/screens/user_info/user_info.dart';
+import 'package:ctware/screens/user_info/widgets/update_user_info_screen.dart';
 import 'package:ctware/services/common_service.dart';
 import 'package:ctware/theme/bottom_bar.dart';
 import 'package:ctware/theme/style.dart';
-import 'package:ctware/views/Account.dart';
 import 'package:ctware/views/Involce.dart';
 import 'package:ctware/views/InvolceLookUp.dart';
 import 'package:ctware/views/Setting.dart';
@@ -83,6 +84,18 @@ class _HomeState extends State<Home> {
           return MaterialPageRoute(builder: (_) => const NewsListView());
         },
       ),
+      Navigator(
+        key: _navigatorKeys[2],
+        onGenerateRoute: (settings) {
+          return MaterialPageRoute(builder: (_) => const UserInfoScreen());
+        },
+      ),
+      Navigator(
+        key: _navigatorKeys[3],
+        onGenerateRoute: (settings) {
+          return MaterialPageRoute(builder: (_) => const UserInfoScreen());
+        },
+      ),
     ];
   }
 
@@ -127,7 +140,6 @@ class _HomePageState extends State<HomePage> {
     'assets/images/slider2.png'
   ];
 
-  late UserProvider userProvider;
   late NewsProvider newsProvider;
   late List<AdvertiseSlide> advertiseSlideList;
   late Future<List<AdvertiseSlide>> futureAdvertiseSlide;
@@ -136,7 +148,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    userProvider = Provider.of<UserProvider>(context, listen: false);
     final commonService = CommonService(context: context);
     futureAdvertiseSlide = commonService.getAdvertiseSlideApi();
     newsProvider = Provider.of<NewsProvider>(context, listen: false);
@@ -154,11 +165,16 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           const SizedBox(height: 15),
-          Text(
-            'Xin chào, ${userProvider.user?.accFullName}',
-            style: const TextStyle(
-                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue),
-          ),
+          Consumer<UserProvider>(builder:
+              (BuildContext context, UserProvider userProvider, Widget? child) {
+            return Text(
+              'Xin chào, ${userProvider.getDisplayName() ?? userProvider.getFullName() ?? "User"}',
+              style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue),
+            );
+          }),
           const SizedBox(height: 5),
           const Divider(height: 1.0, color: Colors.black),
           const SizedBox(height: 15),
@@ -171,7 +187,8 @@ class _HomePageState extends State<HomePage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const InvoiceList()),
+                      MaterialPageRoute(
+                          builder: (context) => const InvoiceList()),
                     );
                   }),
               _buildMenuItem(
@@ -181,7 +198,13 @@ class _HomePageState extends State<HomePage> {
               _buildMenuItem(
                   assetPath: 'assets/icons/ic_account.png',
                   title: 'Tài khoản',
-                  onTap: () {}),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UpdateUserInfoScreen()),
+                    );
+                  }),
             ],
           ),
         ],

@@ -52,7 +52,6 @@ extension ShowingDialog on Dialog {
         text: errMes);
   }
 
-
   static loadingDialog(context,
       {String? text, bool barrierDismissible = false}) {
     QuickAlert.show(
@@ -72,18 +71,15 @@ extension ShowingDialog on Dialog {
   static successDialog(context,
       {Function()? onConfirmBtnTap,
       String? confirmBtnText,
+      String? title,
       required String message}) {
     QuickAlert.show(
         width: Responsive.width(60, context),
-        onConfirmBtnTap: onConfirmBtnTap ??
-            () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-            },
+        onConfirmBtnTap: onConfirmBtnTap,
         context: context,
         type: QuickAlertType.success,
         barrierDismissible: false,
-        title: '',
+        title: title,
         widget: const PopScope(
           canPop: false,
           child: SizedBox(),

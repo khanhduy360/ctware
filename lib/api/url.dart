@@ -11,6 +11,8 @@ class Url {
   static const getUser = "$version/Users/GetUser"; // GET
   static const contracts = "$version/Users/Contracts?pId=$platformId"; //GET
   static const bills = "$version/Users/GetBills?pId=$platformId"; //GET
+  static const updateUser = "$version/Users/UpdateUser"; //PATCH
+  static const changePassword = "$version/Users/ChangePass"; //POST
   static const sendPipeReport = "$version/Users/SendPipeReport"; // POST
   static const getListPipeReport = "$version/Users/GetListPipeReport"; // GET
   // Common

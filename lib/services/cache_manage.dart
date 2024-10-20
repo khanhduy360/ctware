@@ -12,4 +12,14 @@ class CacheManage {
       CacheManage.tokenOnCache = tokenCache.toString();
     }
   }
+
+  static setCurrentPass(String currentPass) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('CurrentPass', currentPass);
+  }
+
+  static Future<String> getCurrenPass() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.get('CurrentPass').toString();
+  }
 }
