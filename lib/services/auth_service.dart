@@ -6,7 +6,6 @@ import 'package:ctware/model/users.dart';
 import 'package:ctware/services/cache_manage.dart';
 import 'package:ctware/theme/dialog.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService extends ApiService {

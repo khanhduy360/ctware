@@ -7,6 +7,7 @@ import 'package:ctware/model/news_item.dart';
 import 'package:ctware/provider/news_provider.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/bank_location/bl_list_view.dart';
+import 'package:ctware/screens/notification/notification_view.dart';
 import 'package:ctware/screens/pipe_report/pipe_report_form.dart';
 import 'package:ctware/screens/contract/contract_list_view.dart';
 import 'package:ctware/screens/invoice/invoice_list.dart';
@@ -83,7 +84,7 @@ class _HomeState extends State<Home> {
       Navigator(
         key: _navigatorKeys[2],
         onGenerateRoute: (settings) {
-          return MaterialPageRoute(builder: (_) => const UserInfoScreen());
+          return MaterialPageRoute(builder: (_) => const NotificationView());
         },
       ),
       Navigator(
@@ -239,7 +240,7 @@ class _HomePageState extends State<HomePage> {
               _buildMenuItemIcon(context, Iconsax.message, 'Gửi yêu cầu',
                   const Color.fromARGB(255, 0, 163, 233), () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => UserInfoScreen(),
+                  builder: (context) => const UserInfoScreen(),
                 ));
               }),
             ],
@@ -406,7 +407,7 @@ class _HomePageState extends State<HomePage> {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 15),
+              style: const TextStyle(fontSize: 15),
               overflow:
                   TextOverflow.visible, // Allows text to wrap to the next line
             ),

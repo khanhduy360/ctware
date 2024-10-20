@@ -1,4 +1,4 @@
-import 'package:ctware/configs/Colors.dart';
+import 'package:ctware/configs/colors.dart';
 import 'package:ctware/screens/user_info/widgets/support_row.dart';
 import 'package:ctware/screens/user_info/widgets/change_password_screen.dart';
 import 'package:ctware/screens/user_info/widgets/user_info_header.dart';

@@ -1,6 +1,6 @@
 import 'package:ctware/provider/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:ctware/configs/Colors.dart';
+import 'package:ctware/configs/colors.dart';
 import 'package:provider/provider.dart';
 
 class UpdateUserInfoScreen extends StatefulWidget {
