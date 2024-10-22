@@ -1,5 +1,8 @@
 import 'package:ctware/provider/user_provider.dart';
-import 'package:ctware/theme/dialog.dart';
+import 'package:ctware/screens/load.dart';
+import 'package:ctware/screens/login.dart';
+import 'package:ctware/services/cache_manage.dart';
+import 'package:ctware/theme/base_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:ctware/configs/Colors.dart';
 import 'package:provider/provider.dart';
@@ -28,121 +31,36 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
     _fullNameErr = "";
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<UserProvider>(
-      builder:
-          (BuildContext context, UserProvider userProvider, Widget? child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              "Thông tin người dùng",
-              style: TextStyle(color: AppColors.txtWhite),
-            ),
-            backgroundColor: AppColors.bgPrimary,
-            leading: IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-                color: AppColors.txtWhite,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            actions: [
-              IconButton(
-                icon: Icon(
-                  _isEditing ? Icons.save : Icons.edit,
-                  color: AppColors.txtWhite,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _fullNameErr = "";
-                    if (_isEditing) {
-                      if (fullNameController.text.isEmpty) {
-                        _fullNameErr = "Vui lòng nhập họ và tên";
-                        return;
-                      }
+  void handleSavePressed() {
+    setState(() {
+      _fullNameErr = "";
 
-                      userProvider.setFullName(fullNameController.text);
-                      userProvider.setAddress(addressController.text);
-                      userProvider.setDisplayName(displayNameController.text);
+      if (_isEditing) {
+        if (fullNameController.text.isEmpty) {
+          _fullNameErr = "Vui lòng nhập họ và tên";
+          return;
+        }
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-                      userProvider.updateUser(context);
-                    }
-                    _isEditing = !_isEditing;
-                  });
-                },
-              ),
-            ],
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildUserInfoRow(
-                      "Tên tài khoản", userProvider.getUsername() ?? ""),
-                  _buildEditableRow("Họ và tên", fullNameController),
-                  _buildEditableRow("Địa chỉ", addressController),
-                  _buildEditableRow("Tên hiển thị", displayNameController),
-                  _buildUserInfoRow("Email", userProvider.getEmail() ?? ""),
-                  _buildUserInfoRow("Điện thoại", userProvider.getTel() ?? ""),
-                  const SizedBox(height: 20),
-                  Center(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      width: double.infinity,
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: AppColors.bgDanger,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                        ),
-                        onPressed: () async {},
-                        child: const Text(
-                          "Đăng xuất",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
+        userProvider.setFullName(fullNameController.text);
+        userProvider.setAddress(addressController.text);
+        userProvider.setDisplayName(displayNameController.text);
+        userProvider.updateUser(context);
+      }
+      _isEditing = !_isEditing;
+    });
   }
 
-  Widget _buildUserInfoRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "$label: ",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: _isEditing ? AppColors.txtMuted : null,
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 16,
-              color: _isEditing ? AppColors.txtMuted : null,
-            ),
-          ),
-        ],
+  void _logout(BuildContext context) async {
+    await CacheManage.removeToken();
+    // ignore: use_build_context_synchronously
+    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return const Login();
+        },
       ),
+      (_) => false,
     );
   }
 
@@ -175,6 +93,95 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
                 ),
         ],
       ),
+    );
+  }
+
+  Widget _buildUserInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "$label: ",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: _isEditing ? AppColors.txtMuted : null,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 16,
+              color: _isEditing ? AppColors.txtMuted : null,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<UserProvider>(
+      builder:
+          (BuildContext context, UserProvider userProvider, Widget? child) {
+        return BaseLayout.view(
+          context: context,
+          title: "Thông tin người dùng",
+          backAction: true,
+          actions: [
+            IconButton(
+              icon: Icon(
+                _isEditing ? Icons.save : Icons.edit,
+                color: AppColors.txtWhite,
+              ),
+              onPressed: handleSavePressed,
+            ),
+          ],
+          resizeToAvoidBottomInset: true,
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildUserInfoRow(
+                    "Tên tài khoản", userProvider.getUsername() ?? ""),
+                _buildEditableRow("Họ và tên", fullNameController),
+                _buildEditableRow("Địa chỉ", addressController),
+                _buildEditableRow("Tên hiển thị", displayNameController),
+                _buildUserInfoRow("Email", userProvider.getEmail() ?? ""),
+                _buildUserInfoRow("Điện thoại", userProvider.getTel() ?? ""),
+                const SizedBox(height: 20),
+                Center(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: double.infinity,
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: AppColors.bgDanger,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                      ),
+                      onPressed: () {
+                        _logout(context);
+                      },
+                      child: const Text(
+                        "Đăng xuất",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

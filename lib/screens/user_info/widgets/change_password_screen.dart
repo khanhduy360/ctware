@@ -1,6 +1,7 @@
 import 'package:ctware/configs/Colors.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/services/cache_manage.dart';
+import 'package:ctware/theme/base_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lottie/lottie.dart';
@@ -50,44 +51,10 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Đổi mật khẩu',
-          style: TextStyle(color: AppColors.txtWhite),
-        ),
-        backgroundColor: AppColors.bgPrimary,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: AppColors.txtWhite,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      // ignore: avoid_unnecessary_containers
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Builder(
-            builder: (context) {
-              switch (_step) {
-                case 2:
-                  return _buildNewPasswordFields();
-                case 3:
-                  return _buildCompletedChange();
-                default:
-                  return _buildCurrentPasswordField();
-              }
-            },
-          ),
-        ),
-      ),
-    );
+  void resetInputFields() {
+    _currentPassController.text = "";
+    _newPassController.text = "";
+    _confirmPassController.text = "";
   }
 
   String? _validateInputField(String val, String emptyErr) {
@@ -101,10 +68,121 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     return null;
   }
 
-  void resetInputFields() {
-    _currentPassController.text = "";
-    _newPassController.text = "";
-    _confirmPassController.text = "";
+  void handleContinuePressed() async {
+    if (_isEditing == false) return;
+    _currPassErr = null;
+    String currentPass = await CacheManage.getCurrenPass();
+    setState(() {
+      if (currentPass == _currentPassController.text) {
+        _step = 2;
+      } else {
+        _currPassErr = "Mật khẩu không chính xác";
+      }
+    });
+  }
+
+  void handleChangePassPressed() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    if (_newPassController.text.isEmpty ||
+        _confirmPassController.text.isEmpty) {
+      return;
+    }
+    setState(() {
+      _newPassErr =
+          _validateInputField(_newPassController.text, "mật khẩu mới");
+      _confirmPassErr =
+          _validateInputField(_confirmPassController.text, "lại mật khẩu");
+
+      if (_newPassErr != null || _confirmPassErr != null) {
+        return;
+      }
+      if (_newPassController.text != _confirmPassController.text) {
+        _confirmPassErr = "Nhập lại không trùng khớp";
+        return;
+      }
+
+      userProvider
+          .changePassword(context,
+              currPass: _currentPassController.text,
+              newPass: _newPassController.text)
+          .then((res) {
+        if (res) {
+          resetInputFields();
+          setState(() {
+            _step = 3;
+          });
+        }
+      });
+    });
+  }
+
+  Widget _buildCurrentPasswordField() {
+    return Column(
+      children: [
+        const Text(
+          'Vui lòng nhập mật khẩu cũ',
+          style: TextStyle(
+              color: AppColors.txtPrimary,
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
+        ),
+        TextField(
+          controller: _currentPassController,
+          obscureText: _isObscuredCurrPass,
+          onChanged: (val) => {
+            setState(() {
+              _isEditing = val.isEmpty ? false : true;
+            })
+          },
+          decoration: InputDecoration(
+              labelText: "Mật khẩu hiện tại",
+              errorText: _currPassErr,
+              prefixIcon: const Icon(
+                Icons.lock,
+                color: AppColors.bgPrimary,
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _isObscuredCurrPass == false
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isObscuredCurrPass = !_isObscuredCurrPass;
+                  });
+                },
+              )),
+        ),
+        const SizedBox(height: 24),
+        Center(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 4),
+            width: double.infinity,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                backgroundColor:
+                    _isEditing ? AppColors.bgPrimary : AppColors.bgGrey,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              onPressed: handleContinuePressed,
+              child: const Text(
+                "Tiếp tục",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildNewPasswordFields() {
@@ -200,37 +278,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  onPressed: () async {
-                    if (_newPassController.text.isEmpty ||
-                        _confirmPassController.text.isEmpty) return;
-                    setState(() {
-                      _newPassErr = _validateInputField(
-                          _newPassController.text, "mật khẩu mới");
-                      _confirmPassErr = _validateInputField(
-                          _confirmPassController.text, "lại mật khẩu");
-
-                      if (_newPassErr != null || _confirmPassErr != null) {
-                        return;
-                      }
-                      if (_newPassController.text !=
-                          _confirmPassController.text) {
-                        _confirmPassErr = "Nhập lại không trùng khớp";
-                        return;
-                      }
-
-                      _step = 3;
-                    // bool success = await userProvider.changePassword(context,
-                    //     currPass: _currentPassController.text,
-                    //     newPass: _newPassController.text);
-                    // if (success) {
-                    //   resetInputFields();
-                    //   setState(() {
-                    //     _step = 3;
-                    //   });
-                    // }
-                    });
-                    
-                  },
+                  onPressed: handleChangePassPressed,
                   child: const Text(
                     "Đổi mật khẩu",
                     style: TextStyle(
@@ -255,9 +303,9 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
         Center(
           child: Container(
             decoration: const BoxDecoration(
-            color: AppColors.bgSuccess,
-            shape: BoxShape.circle, 
-          ),
+              color: AppColors.bgSuccess,
+              shape: BoxShape.circle,
+            ),
             child: _step == 3
                 ? Lottie.asset(
                     'assets/lottie/checkmark_animation.json',
@@ -307,83 +355,27 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     );
   }
 
-  Widget _buildCurrentPasswordField() {
-    return Column(
-      // crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Vui lòng nhập mật khẩu cũ',
-          style: TextStyle(
-              color: AppColors.txtPrimary,
-              fontSize: 20,
-              fontWeight: FontWeight.bold),
-        ),
-        TextField(
-          controller: _currentPassController,
-          obscureText: _isObscuredCurrPass,
-          onChanged: (val) => {
-            setState(() {
-              _isEditing = val.isEmpty ? false : true;
-            })
+  @override
+  Widget build(BuildContext context) {
+    return BaseLayout.view(
+      context: context,
+      title: 'Đổi mật khẩu',
+      backAction: true,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Builder(
+          builder: (context) {
+            switch (_step) {
+              case 2:
+                return _buildNewPasswordFields();
+              case 3:
+                return _buildCompletedChange();
+              default:
+                return _buildCurrentPasswordField();
+            }
           },
-          decoration: InputDecoration(
-              labelText: "Mật khẩu hiện tại",
-              errorText: _currPassErr,
-              prefixIcon: const Icon(
-                Icons.lock,
-                color: AppColors.bgPrimary,
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _isObscuredCurrPass == false
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _isObscuredCurrPass = !_isObscuredCurrPass;
-                  });
-                },
-              )),
         ),
-        const SizedBox(height: 24),
-        Center(
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            width: double.infinity,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor:
-                    _isEditing ? AppColors.bgPrimary : AppColors.bgGrey,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              onPressed: () async {
-                if (_isEditing == false) return;
-                _currPassErr = null;
-                String currentPass = await CacheManage.getCurrenPass();
-                setState(() {
-                  if (currentPass == _currentPassController.text) {
-                    _step = 2;
-                  } else {
-                    _currPassErr = "Mật khẩu không chính xác";
-                  }
-                });
-              },
-              child: const Text(
-                "Tiếp tục",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

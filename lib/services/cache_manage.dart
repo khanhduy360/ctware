@@ -13,6 +13,12 @@ class CacheManage {
     }
   }
 
+  static Future<void> removeToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('Token');
+    CacheManage.tokenOnCache = null;
+  }
+
   static setCurrentPass(String currentPass) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString('CurrentPass', currentPass);

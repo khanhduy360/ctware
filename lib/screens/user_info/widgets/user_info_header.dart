@@ -10,7 +10,7 @@ class UserInfoHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () async {
+      onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const UpdateUserInfoScreen()),
@@ -34,6 +34,13 @@ class UserInfoHeader extends StatelessWidget {
 class _UserInfoTile extends StatelessWidget {
   const _UserInfoTile();
 
+  String getFirstChar(String? firstName) {
+    if (firstName == null) {
+      return "U";
+    }
+    return firstName[0];
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -49,7 +56,8 @@ class _UserInfoTile extends StatelessWidget {
               CircleAvatar(
                 radius: 30,
                 child: Text(
-                  getFirstChar(userProvider.getDisplayName() ?? userProvider.getFullName()),
+                  getFirstChar(userProvider.getDisplayName() ??
+                      userProvider.getFullName()),
                   style: const TextStyle(fontSize: 24),
                 ),
               ),
@@ -58,7 +66,9 @@ class _UserInfoTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    userProvider.getDisplayName() ?? userProvider.getFullName() ?? "User",
+                    userProvider.getDisplayName() ??
+                        userProvider.getFullName() ??
+                        "User",
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -71,7 +81,11 @@ class _UserInfoTile extends StatelessWidget {
                             userProvider.getEmail() != null
                         ? userProvider.getEmail()!
                         : 'Chưa xác thực Email',
-                    style: TextStyle(fontSize: 14, color: userProvider.isEmailVerified() ? AppColors.txtPrimary : AppColors.txtDanger),
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: userProvider.isEmailVerified()
+                            ? AppColors.txtPrimary
+                            : AppColors.txtDanger),
                   ),
                 ],
               ),
@@ -81,11 +95,4 @@ class _UserInfoTile extends StatelessWidget {
       ),
     );
   }
-}
-
-String getFirstChar(String? firstName) {
-  if (firstName == null) {
-    return "U";
-  }
-  return firstName[0];
 }

@@ -243,7 +243,7 @@ class _HomePageState extends State<HomePage> {
               _buildMenuItemIcon(context, Iconsax.message, 'Gửi yêu cầu',
                   const Color.fromARGB(255, 0, 163, 233), () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => UserInfoScreen(),
+                  builder: (context) => const UserInfoScreen(),
                 ));
               }),
             ],
