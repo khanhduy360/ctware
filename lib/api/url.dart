@@ -21,6 +21,7 @@ class Url {
   static const advertiseSlide = "$version/Common/AdvertiseSlide"; //GET
   static const traCuuDiaDiem = "$version/Common/TraCuuDiaDiem"; //GET
   static const config = "$version/Common/Config"; //GET
+  static const requestTypes = "$version/Common/RequestTypes"; //GET
   // Statistic
   static const traCuu = "$version/Statistic/TraCuu"; //POST
 }

@@ -4,6 +4,7 @@ import 'package:ctware/model/advertise_slide.dart';
 import 'package:ctware/model/bank_location.dart';
 import 'package:ctware/model/news.dart';
 import 'package:ctware/model/news_item.dart';
+import 'package:ctware/model/request_types.dart';
 import 'package:rss_dart/dart_rss.dart';
 
 class CommonService extends ApiService {
@@ -62,5 +63,16 @@ class CommonService extends ApiService {
       url = response.data['Value'];
     }
     return url;
+  }
+
+  Future<List<RequestTypes>> getRequestTypes() async {
+    final requestTypes = <RequestTypes>[];
+    final response = await fetch(Url.requestTypes);
+    if (response != null && response.statusCode == 200) {
+      for (var value in response.data) {
+        requestTypes.add(RequestTypes.fromJson(value));
+      }
+    }
+    return requestTypes;
   }
 }

@@ -3,18 +3,18 @@
 import 'package:intl/intl.dart';
 
 class PipeReport {
-    String TIEUDE;
-    String NOIDUNG;
-    String? HINHANH;
-    String NGAYGUI;
-    int IDKH;
-    int ACCID;
-    bool TRANGTHAI;
-    double? X;
-    double? Y;
-    String ProcessingDate;
-    String? ProcessingContent;
-    int Id;
+  String TIEUDE;
+  String NOIDUNG;
+  String? HINHANH;
+  String NGAYGUI;
+  int IDKH;
+  int ACCID;
+  bool TRANGTHAI;
+  double? X;
+  double? Y;
+  String ProcessingDate;
+  String? ProcessingContent;
+  int Id;
 
   PipeReport({
     required this.TIEUDE,
