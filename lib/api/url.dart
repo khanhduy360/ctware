@@ -15,6 +15,7 @@ class Url {
   static const changePassword = "$version/Users/ChangePass"; //POST
   static const sendPipeReport = "$version/Users/SendPipeReport"; // POST
   static const getListPipeReport = "$version/Users/GetListPipeReport"; // GET
+  static const userRequests = "$version/Users/UserRequests"; // GET
   // Common
   static const chuyenMucTin = "$version/Common/ChuyenMucTin"; //GET
   static const advertiseSlide = "$version/Common/AdvertiseSlide"; //GET
