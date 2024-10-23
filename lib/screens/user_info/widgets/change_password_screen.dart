@@ -1,4 +1,4 @@
-import 'package:ctware/configs/Colors.dart';
+import 'package:ctware/configs/colors.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/services/cache_manage.dart';
 import 'package:ctware/theme/base_layout.dart';
@@ -301,20 +301,14 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
-          child: Container(
-            decoration: const BoxDecoration(
-              color: AppColors.bgSuccess,
-              shape: BoxShape.circle,
-            ),
-            child: _step == 3
-                ? Lottie.asset(
-                    'assets/lottie/checkmark_animation.json',
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.fill,
-                  )
-                : Container(),
-          ),
+          child: _step == 3
+              ? Lottie.asset(
+                  'assets/lottie/checkmark_animation.json',
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.fill,
+                )
+              : Container(),
         ),
         const SizedBox(height: 20),
         const Text(

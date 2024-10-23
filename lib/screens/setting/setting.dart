@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'container/Bottombar.dart';
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -13,12 +10,6 @@ class Setting extends StatefulWidget {
 class _SettingState extends State<Setting> {
   bool _switchValue = false; // Initial switch value
   String mess = "Truned Off"; // Initial message
-  static const List<Destination> allDestinations = <Destination>[
-    Destination(0, 'Trang chủ', 'assets/icons/ic_home.png', Colors.teal),
-    Destination(1, 'Tin tức', 'assets/icons/ic_news.png', Colors.cyan),
-    Destination(2, 'Thông báo', 'assets/icons/ic_notify.png', Colors.orange),
-    Destination(3, 'Tài khoản', 'assets/icons/ic_user.png', Colors.blue),
-  ];
   int selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -84,11 +75,6 @@ class _SettingState extends State<Setting> {
               ],
             ),
           ),
-        ),
-        bottomNavigationBar: CustomBottomNavigationBar(
-          selectedIndex: selectedIndex,
-          onItemTapped: _onItemTapped,
-          allDestinations: allDestinations,
         ),
     )
 

@@ -1,4 +1,4 @@
-import 'package:ctware/configs/Colors.dart';
+import 'package:ctware/configs/colors.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/user_info/widgets/update_user_info_screen.dart';
 import 'package:flutter/material.dart';

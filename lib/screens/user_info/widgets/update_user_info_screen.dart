@@ -1,5 +1,4 @@
 import 'package:ctware/provider/user_provider.dart';
-import 'package:ctware/screens/load.dart';
 import 'package:ctware/screens/login.dart';
 import 'package:ctware/services/cache_manage.dart';
 import 'package:ctware/theme/base_layout.dart';
@@ -16,7 +15,7 @@ class UpdateUserInfoScreen extends StatefulWidget {
 
 class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
   bool _isEditing = false;
-  String _fullNameErr = "";
+  String? _fullNameErr;
   TextEditingController fullNameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController displayNameController = TextEditingController();
@@ -28,12 +27,12 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
     fullNameController.text = userProvider.getFullName() ?? "";
     addressController.text = userProvider.getAddress() ?? "";
     displayNameController.text = userProvider.getDisplayName() ?? "";
-    _fullNameErr = "";
+    _fullNameErr = null;
   }
 
   void handleSavePressed() {
     setState(() {
-      _fullNameErr = "";
+      _fullNameErr = null;
 
       if (_isEditing) {
         if (fullNameController.text.isEmpty) {
@@ -124,64 +123,65 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserProvider>(
-      builder:
-          (BuildContext context, UserProvider userProvider, Widget? child) {
-        return BaseLayout.view(
-          context: context,
-          title: "Thông tin người dùng",
-          backAction: true,
-          actions: [
-            IconButton(
-              icon: Icon(
-                _isEditing ? Icons.save : Icons.edit,
-                color: AppColors.txtWhite,
-              ),
-              onPressed: handleSavePressed,
-            ),
-          ],
-          resizeToAvoidBottomInset: true,
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildUserInfoRow(
-                    "Tên tài khoản", userProvider.getUsername() ?? ""),
-                _buildEditableRow("Họ và tên", fullNameController),
-                _buildEditableRow("Địa chỉ", addressController),
-                _buildEditableRow("Tên hiển thị", displayNameController),
-                _buildUserInfoRow("Email", userProvider.getEmail() ?? ""),
-                _buildUserInfoRow("Điện thoại", userProvider.getTel() ?? ""),
-                const SizedBox(height: 20),
-                Center(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 4),
-                    width: double.infinity,
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        backgroundColor: AppColors.bgDanger,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      onPressed: () {
-                        _logout(context);
-                      },
-                      child: const Text(
-                        "Đăng xuất",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+    return BaseLayout.view(
+      context: context,
+      title: "Thông tin người dùng",
+      backAction: true,
+      actions: [
+        IconButton(
+          icon: Icon(
+            _isEditing ? Icons.save : Icons.edit,
+            color: AppColors.txtWhite,
+          ),
+          onPressed: handleSavePressed,
+        ),
+      ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Consumer<UserProvider>(
+            builder: (BuildContext context, UserProvider userProvider,
+                Widget? child) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildUserInfoRow(
+                      "Tên tài khoản", userProvider.getUsername() ?? ""),
+                  _buildEditableRow("Họ và tên", fullNameController),
+                  _buildEditableRow("Địa chỉ", addressController),
+                  _buildEditableRow("Tên hiển thị", displayNameController),
+                  _buildUserInfoRow("Email", userProvider.getEmail() ?? ""),
+                  _buildUserInfoRow("Điện thoại", userProvider.getTel() ?? ""),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      width: double.infinity,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: AppColors.bgDanger,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        ),
+                        onPressed: () {
+                          _logout(context);
+                        },
+                        child: const Text(
+                          "Đăng xuất",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              );
+            },
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

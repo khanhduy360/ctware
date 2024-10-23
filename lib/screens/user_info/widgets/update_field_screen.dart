@@ -1,4 +1,4 @@
-import 'package:ctware/configs/Colors.dart';
+import 'package:ctware/configs/colors.dart';
 import 'package:ctware/theme/base_layout.dart';
 import 'package:flutter/material.dart';
 

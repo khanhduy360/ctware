@@ -1,4 +1,4 @@
-import 'package:ctware/configs/Colors.dart';
+import 'package:ctware/configs/colors.dart';
 import 'package:flutter/material.dart';
 
 class SupportRow extends StatelessWidget {
@@ -24,10 +24,14 @@ class SupportRow extends StatelessWidget {
             style: const TextStyle(fontSize: 16),
           ),
           Expanded(
-              child: Text(
-            rightTitle,
-            style: const TextStyle(fontSize: 18, color: AppColors.txtPrimary),
-          )),
+              child: Container(
+                padding: const EdgeInsets.only(right: 8),
+                alignment: Alignment.centerRight,
+                child: Text(
+                            rightTitle,
+                            style: const TextStyle(fontSize: 14, color: AppColors.txtPrimary),
+                          ),
+              )),
           Padding(
             padding: const EdgeInsets.only(right: 15),
             child: SizedBox(

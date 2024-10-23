@@ -1,9 +1,7 @@
-import 'package:ctware/views/Register.dart';
+import 'package:ctware/views_use_demo/Register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-import 'Chart.dart';
 
 class LoginByZalo extends StatelessWidget {
   @override
@@ -41,9 +39,7 @@ class LoginByZalo extends StatelessWidget {
                 SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => BarChartSample4(),
-                    ));
+                    
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:

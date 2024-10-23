@@ -1,4 +1,4 @@
-import 'package:ctware/views/OTPRegister.dart';
+import 'package:ctware/views_use_demo/OTPRegister.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

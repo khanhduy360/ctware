@@ -7,22 +7,19 @@ import 'package:ctware/model/news_item.dart';
 import 'package:ctware/provider/news_provider.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/bank_location/bl_list_view.dart';
+import 'package:ctware/screens/notification/notification_view.dart';
 import 'package:ctware/screens/pipe_report/pipe_report_form.dart';
 import 'package:ctware/screens/contract/contract_list_view.dart';
 import 'package:ctware/screens/invoice/invoice_list.dart';
 import 'package:ctware/screens/invoice_search/invoice_search_view.dart';
 import 'package:ctware/screens/news/news_list_view.dart';
 import 'package:ctware/screens/news/news_web_view.dart';
+import 'package:ctware/screens/setting/setting.dart';
 import 'package:ctware/screens/user_info/user_info.dart';
 import 'package:ctware/screens/user_info/widgets/update_user_info_screen.dart';
 import 'package:ctware/services/common_service.dart';
 import 'package:ctware/theme/bottom_bar.dart';
 import 'package:ctware/theme/style.dart';
-import 'package:ctware/views/Involce.dart';
-import 'package:ctware/views/InvolceLookUp.dart';
-import 'package:ctware/views/Setting.dart';
-import 'package:ctware/views/TestChart.dart';
-import 'package:ctware/views/chart/test_chart1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
@@ -87,7 +84,7 @@ class _HomeState extends State<Home> {
       Navigator(
         key: _navigatorKeys[2],
         onGenerateRoute: (settings) {
-          return MaterialPageRoute(builder: (_) => const UserInfoScreen());
+          return MaterialPageRoute(builder: (_) => const NotificationView());
         },
       ),
       Navigator(
@@ -410,7 +407,7 @@ class _HomePageState extends State<HomePage> {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 15),
+              style: const TextStyle(fontSize: 15),
               overflow:
                   TextOverflow.visible, // Allows text to wrap to the next line
             ),
