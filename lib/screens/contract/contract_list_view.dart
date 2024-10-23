@@ -1,6 +1,7 @@
 import 'package:ctware/model/contract.dart';
 import 'package:ctware/provider/contract_provider.dart';
 import 'package:ctware/theme/base_layout.dart';
+import 'package:ctware/theme/dialog.dart';
 import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ class ContractListView extends StatefulWidget {
 
 class _ContractListViewState extends State<ContractListView> {
   late ContractProvider contractProvider;
+  bool firstLoad = true;
 
   @override
   void initState() {
@@ -23,14 +25,17 @@ class _ContractListViewState extends State<ContractListView> {
 
   Widget loadWidget(BuildContext context) {
     if (contractProvider.listContract.isEmpty) {
-      return FutureBuilder(
-          future: contractProvider.futureContracts(context),
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-              return contractItems(context, contractProvider.listContract);
-            }
-            return BaseLayout.loadingView(context);
-          });
+      if(firstLoad) {
+        firstLoad = false;
+        return FutureBuilder(
+            future: contractProvider.futureContracts(context),
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                return contractItems(context, contractProvider.listContract);
+              }
+              return BaseLayout.loadingView(context);
+            });
+      }
     }
     return contractItems(context, contractProvider.listContract);
   }

@@ -5,6 +5,7 @@ import 'package:ctware/api/url.dart';
 import 'package:ctware/model/bill.dart';
 import 'package:ctware/model/contract.dart';
 import 'package:ctware/model/pipe_report.dart';
+import 'package:ctware/model/user_requests.dart';
 import 'package:ctware/screens/pipe_report/pick_image.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -71,9 +72,22 @@ class UsersService extends ApiService {
     final response = await fetchByToken(Url.getListPipeReport);
     if (response != null && response.statusCode == 200) {
       for (var value in response.data) {
-        pipeReport.add(PipeReport.fromJson(value));
+        if(value['TRANGTHAI']) {
+          pipeReport.add(PipeReport.fromJson(value));
+        }
       }
     }
     return pipeReport;
+  }
+
+  Future<List<UserRequests>> getUserRequests() async {
+    final userRequests = <UserRequests>[];
+    final response = await fetchByToken(Url.userRequests);
+    if (response != null && response.statusCode == 200) {
+      for (var value in response.data) {
+        userRequests.add(UserRequests.fromJson(value));
+      }
+    }
+    return userRequests;
   }
 }

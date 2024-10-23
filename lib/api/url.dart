@@ -15,11 +15,13 @@ class Url {
   static const changePassword = "$version/Users/ChangePass"; //POST
   static const sendPipeReport = "$version/Users/SendPipeReport"; // POST
   static const getListPipeReport = "$version/Users/GetListPipeReport"; // GET
+  static const userRequests = "$version/Users/UserRequests"; // GET
   // Common
   static const chuyenMucTin = "$version/Common/ChuyenMucTin"; //GET
   static const advertiseSlide = "$version/Common/AdvertiseSlide"; //GET
   static const traCuuDiaDiem = "$version/Common/TraCuuDiaDiem"; //GET
   static const config = "$version/Common/Config"; //GET
+  static const requestTypes = "$version/Common/RequestTypes"; //GET
   // Statistic
   static const traCuu = "$version/Statistic/TraCuu"; //POST
 }

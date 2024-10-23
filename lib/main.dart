@@ -2,6 +2,7 @@ import 'package:ctware/configs/utilities.dart';
 import 'package:ctware/provider/bill_provider.dart';
 import 'package:ctware/provider/contract_provider.dart';
 import 'package:ctware/provider/news_provider.dart';
+import 'package:ctware/provider/request_types_provider.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/load.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class CTWareApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => NewsProvider()),
         ChangeNotifierProvider(create: (_) => ContractProvider()),
         ChangeNotifierProvider(create: (_) => BillProvider()),
+        ChangeNotifierProvider(create: (_) => RequestTypesProvider()),
       ],
       child: MaterialApp(
         title: 'Hello FreeLanecer First',

@@ -22,7 +22,6 @@ class InvoiceSearchView extends StatefulWidget {
 }
 
 class _InvoiceSearchViewState extends State<InvoiceSearchView> {
-  int selectedIndex = 0;
   late DateTime fromMonthSelected;
   late DateTime toMonthSelected;
   // ignore: non_constant_identifier_names

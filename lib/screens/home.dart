@@ -14,6 +14,8 @@ import 'package:ctware/screens/invoice/invoice_list.dart';
 import 'package:ctware/screens/invoice_search/invoice_search_view.dart';
 import 'package:ctware/screens/news/news_list_view.dart';
 import 'package:ctware/screens/news/news_web_view.dart';
+import 'package:ctware/screens/send_request/send_request_add.dart';
+import 'package:ctware/screens/send_request/send_request_list.dart';
 import 'package:ctware/screens/setting/setting.dart';
 import 'package:ctware/screens/user_info/user_info.dart';
 import 'package:ctware/screens/user_info/widgets/update_user_info_screen.dart';
@@ -240,7 +242,7 @@ class _HomePageState extends State<HomePage> {
               _buildMenuItemIcon(context, Iconsax.message, 'Gửi yêu cầu',
                   const Color.fromARGB(255, 0, 163, 233), () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const UserInfoScreen(),
+                  builder: (context) => const SendRequestList(),
                 ));
               }),
             ],
