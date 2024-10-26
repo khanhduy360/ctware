@@ -6,8 +6,10 @@ import 'package:ctware/model/bill.dart';
 import 'package:ctware/model/contract.dart';
 import 'package:ctware/model/pipe_report.dart';
 import 'package:ctware/model/user_requests.dart';
+import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/pipe_report/pick_image.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 class UsersService extends ApiService {
   UsersService({required super.context});
@@ -72,9 +74,7 @@ class UsersService extends ApiService {
     final response = await fetchByToken(Url.getListPipeReport);
     if (response != null && response.statusCode == 200) {
       for (var value in response.data) {
-        if(value['TRANGTHAI']) {
           pipeReport.add(PipeReport.fromJson(value));
-        }
       }
     }
     return pipeReport;
@@ -89,5 +89,38 @@ class UsersService extends ApiService {
       }
     }
     return userRequests;
+  }
+
+  Future<bool> sendRequestsApi({
+    required int reqType,
+    required int idkh,
+    String? reqContent,
+    String? res2Name,
+    String? res2Tel,
+  }) async {
+    DateTime now = DateTime.now();
+    String formattedDate = now.toIso8601String();
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    if(userProvider.user == null) {
+      return false;
+    }
+    Map<String, dynamic> data = {
+      "ReqId": 0,
+      "AccId": userProvider.user?.accID,
+      "Req4MaKv": "string",
+      "ReqDate": formattedDate,
+      "ReqType": reqType,
+      "ReqContent": reqContent,
+      "Res2Name": res2Name,
+      "Res2Tel": res2Tel,
+      "ReqHasResponse": true,
+      "ReqHasClosed": true,
+      "RequestType": "string",
+      "TENKV": "string",
+      "IDKH": idkh,
+      "TENKH": "string"
+    };
+    final response = await postByToken(Url.sendRequests, data);
+    return response != null && response.statusCode == 200;
   }
 }

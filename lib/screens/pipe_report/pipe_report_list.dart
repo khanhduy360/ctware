@@ -87,13 +87,17 @@ class _PipeReportListState extends State<PipeReportList> {
         body: FutureBuilder(
             future: usersService.getListPipeReport(),
             builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+              if (snapshot.hasData) {
                 pipeRpList = snapshot.data ?? [];
+                if(pipeRpList.isEmpty) {
+                  return BaseLayout.emptyView(context);
+                }
                 return RefreshIndicator(
                   onRefresh: () async {
                     await onRefreshList();
                   },
                   child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
                     child: Padding(
                       padding:
                           const EdgeInsets.all(BaseLayout.marginLayoutBase),

@@ -16,6 +16,7 @@ class Url {
   static const sendPipeReport = "$version/Users/SendPipeReport"; // POST
   static const getListPipeReport = "$version/Users/GetListPipeReport"; // GET
   static const userRequests = "$version/Users/UserRequests"; // GET
+  static const sendRequests = "$version/Users/SendRequests"; // POST
   // Common
   static const chuyenMucTin = "$version/Common/ChuyenMucTin"; //GET
   static const advertiseSlide = "$version/Common/AdvertiseSlide"; //GET
