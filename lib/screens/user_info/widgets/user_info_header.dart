@@ -1,7 +1,6 @@
 import 'package:ctware/configs/colors.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/user_info/widgets/update_user_info_screen.dart';
-import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,14 +10,14 @@ class UserInfoHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () async {
+      onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const UpdateUserInfoScreen()),
         );
       },
       child: Container(
-        decoration: BoxStyle.fromBoxDecoration(),
+        color: AppColors.contentColorWhite,
         margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
         child: const Column(
@@ -35,6 +34,13 @@ class UserInfoHeader extends StatelessWidget {
 class _UserInfoTile extends StatelessWidget {
   const _UserInfoTile();
 
+  String getFirstChar(String? firstName) {
+    if (firstName == null) {
+      return "U";
+    }
+    return firstName[0];
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -47,15 +53,12 @@ class _UserInfoTile extends StatelessWidget {
             (BuildContext context, UserProvider userProvider, Widget? child) {
           return Row(
             children: [
-              Container(
-                height: 60,
-                width: 60,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: const Color.fromARGB(255, 132, 177, 255)),
-                child: Center(
-                  child: Text(
-                    getFirstChar(userProvider.getDisplayName() ?? userProvider.getFullName()),
-                    style: const TextStyle(fontSize: 24),
-                  ),
+              CircleAvatar(
+                radius: 30,
+                child: Text(
+                  getFirstChar(userProvider.getDisplayName() ??
+                      userProvider.getFullName()),
+                  style: const TextStyle(fontSize: 24),
                 ),
               ),
               const SizedBox(width: 16),
@@ -63,7 +66,9 @@ class _UserInfoTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    userProvider.getDisplayName() ?? userProvider.getFullName() ?? "User",
+                    userProvider.getDisplayName() ??
+                        userProvider.getFullName() ??
+                        "User",
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -76,7 +81,11 @@ class _UserInfoTile extends StatelessWidget {
                             userProvider.getEmail() != null
                         ? userProvider.getEmail()!
                         : 'Chưa xác thực Email',
-                    style: TextStyle(fontSize: 14, color: userProvider.isEmailVerified() ? AppColors.txtPrimary : AppColors.txtDanger),
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: userProvider.isEmailVerified()
+                            ? AppColors.txtPrimary
+                            : AppColors.txtDanger),
                   ),
                 ],
               ),
@@ -86,11 +95,4 @@ class _UserInfoTile extends StatelessWidget {
       ),
     );
   }
-}
-
-String getFirstChar(String? firstName) {
-  if (firstName == null) {
-    return "U";
-  }
-  return firstName[0];
 }

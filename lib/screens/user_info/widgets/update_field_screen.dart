@@ -1,4 +1,5 @@
 import 'package:ctware/configs/colors.dart';
+import 'package:ctware/theme/base_layout.dart';
 import 'package:flutter/material.dart';
 
 class UpdateFieldScreen extends StatefulWidget {
@@ -38,29 +39,15 @@ class _UpdateFieldScreenState extends State<UpdateFieldScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.appbarTitle,
-          style: const TextStyle(color: AppColors.txtWhite),
-        ),
-        backgroundColor: AppColors.bgPrimary,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: AppColors.txtWhite,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+    return BaseLayout.view(
+      context: context,
+      title: widget.appbarTitle,
+      backAction: true,
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                'assets/images/LoginScreen.png'),
-            fit: BoxFit.fill, 
+            image: AssetImage('assets/images/LoginScreen.png'),
+            fit: BoxFit.fill,
           ),
         ),
         child: Padding(
@@ -70,7 +57,10 @@ class _UpdateFieldScreenState extends State<UpdateFieldScreen> {
             children: [
               Text(
                 widget.fieldTitle,
-                style: const TextStyle(color: AppColors.txtPrimary, fontSize: 24, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    color: AppColors.txtPrimary,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
               ),
               TextField(
                 controller: _controller,
