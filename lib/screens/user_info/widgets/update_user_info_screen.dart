@@ -1,9 +1,9 @@
+import 'package:ctware/configs/utilities.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/login.dart';
 import 'package:ctware/services/cache_manage.dart';
 import 'package:ctware/theme/base_layout.dart';
 import 'package:flutter/material.dart';
-import 'package:ctware/configs/Colors.dart';
 import 'package:provider/provider.dart';
 
 class UpdateUserInfoScreen extends StatefulWidget {
@@ -50,10 +50,10 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
     });
   }
 
-  void _logout(BuildContext context) async {
+  void _logout() async {
     await CacheManage.removeToken();
     // ignore: use_build_context_synchronously
-    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+    Navigator.of(rootContext, rootNavigator: true).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (BuildContext context) {
           return const Login();
@@ -106,14 +106,14 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
-              color: _isEditing ? AppColors.txtMuted : null,
+              color: _isEditing ? Colors.black26 : null,
             ),
           ),
           Text(
             value,
             style: TextStyle(
               fontSize: 16,
-              color: _isEditing ? AppColors.txtMuted : null,
+              color: _isEditing ? Colors.black26 : null,
             ),
           ),
         ],
@@ -131,7 +131,7 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
         IconButton(
           icon: Icon(
             _isEditing ? Icons.save : Icons.edit,
-            color: AppColors.txtWhite,
+            color: Colors.white,
           ),
           onPressed: handleSavePressed,
         ),
@@ -159,11 +159,11 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
                       width: double.infinity,
                       child: TextButton(
                         style: TextButton.styleFrom(
-                          backgroundColor: AppColors.bgDanger,
+                          backgroundColor: Colors.red,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                         ),
                         onPressed: () {
-                          _logout(context);
+                          _logout();
                         },
                         child: const Text(
                           "Đăng xuất",
