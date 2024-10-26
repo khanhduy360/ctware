@@ -39,4 +39,17 @@ class BaseLayout {
         child: const SizedBox(
             height: 50, width: 50, child: CircularProgressIndicator()));
   }
+
+  static Widget emptyView(BuildContext context, {String? message}) {
+    return Container(
+      alignment: Alignment.center,
+      margin: const EdgeInsets.all(BaseLayout.marginLayoutBase),
+      child: Column(
+        children: [
+          Expanded(child: Container()),
+          Center(child: Text(message ?? 'Không có dữ liệu để hiển thị', style: const TextStyle(fontWeight: FontWeight.bold),))
+        ],
+      ),
+    );
+  }
 }

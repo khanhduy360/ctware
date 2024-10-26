@@ -104,9 +104,10 @@ class _SendRequestListState extends State<SendRequestList> {
   Widget requestListView(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        await onRefreshList();
+        onRefreshList();
       },
       child: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(BaseLayout.marginLayoutBase),
           child: Column(

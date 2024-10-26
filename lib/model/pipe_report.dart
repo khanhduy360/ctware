@@ -7,12 +7,12 @@ class PipeReport {
   String NOIDUNG;
   String? HINHANH;
   String NGAYGUI;
-  int IDKH;
+  int? IDKH;
   int ACCID;
   bool TRANGTHAI;
   double? X;
   double? Y;
-  String ProcessingDate;
+  String? ProcessingDate;
   String? ProcessingContent;
   int Id;
 
