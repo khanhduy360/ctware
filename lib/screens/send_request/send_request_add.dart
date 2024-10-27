@@ -3,6 +3,7 @@ import 'package:ctware/model/bill.dart';
 import 'package:ctware/model/request_types.dart';
 import 'package:ctware/provider/bill_provider.dart';
 import 'package:ctware/provider/request_types_provider.dart';
+import 'package:ctware/provider/send_request_provider.dart';
 import 'package:ctware/services/users_service.dart';
 import 'package:ctware/theme/base_layout.dart';
 import 'package:ctware/theme/dialog.dart';
@@ -26,6 +27,7 @@ class _SendRequestAddState extends State<SendRequestAdd> {
   List<RequestTypes> dropdownListRequestTypes = <RequestTypes>[];
   late RequestTypes dropdownValueRequestTypes;
   late Future<bool> initFuture;
+  late SendRequestProvider sendRequestProvider;
 
   String reqContent = '';
   String res2Name = '';
@@ -37,6 +39,8 @@ class _SendRequestAddState extends State<SendRequestAdd> {
   void initState() {
     super.initState();
     billProvider = Provider.of<BillProvider>(context, listen: false);
+    sendRequestProvider =
+        Provider.of<SendRequestProvider>(context, listen: false);
     requestTypesProvider =
         Provider.of<RequestTypesProvider>(context, listen: false);
     initFuture = loadDataPost();
@@ -82,14 +86,15 @@ class _SendRequestAddState extends State<SendRequestAdd> {
             res2Tel: res2Tel)
         .then((value) {
       if (value) {
+        onLoadRequestList();
         ShowingDialog.successDialog(rootContext,
         onConfirmBtnTap: () {
           Navigator.pop(rootContext);
           Navigator.pop(context);
         },
+        title: 'Gửi yêu cầu',
             message:
-                'Quý khách đã gửi thông báo thành công. Công ty sẽ sớm cử nhân viên kiểm tra và khắc phục sự cố. Cảm hơn Quý khách.');
-        onLoadRequestList();
+                'Yêu cầu của Quý khách đã được gửi đến Công ty. Công ty sẽ phản hồi lại cho Quý khách trong thời gian sớm nhất');
       }
     });
     setState(() {
@@ -97,7 +102,9 @@ class _SendRequestAddState extends State<SendRequestAdd> {
     });
   }
 
-  Future onLoadRequestList() async {}
+  onLoadRequestList() async {
+    await sendRequestProvider.futureUserRequests(context);
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -70,6 +70,7 @@ class _PipeReportFormState extends State<PipeReportForm> {
           .then((value) {
         if (value) {
           ShowingDialog.successDialog(context,
+          title: 'Thông báo xì bể',
               message:
                   'Quý khách đã gửi thông báo thành công. Công ty sẽ sớm cử nhân viên kiểm tra và khắc phục sự cố. Cảm hơn Quý khách.');
         }

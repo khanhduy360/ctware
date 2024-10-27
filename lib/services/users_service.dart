@@ -6,6 +6,7 @@ import 'package:ctware/model/bill.dart';
 import 'package:ctware/model/contract.dart';
 import 'package:ctware/model/pipe_report.dart';
 import 'package:ctware/model/user_requests.dart';
+import 'package:ctware/model/user_responses.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/pipe_report/pick_image.dart';
 import 'package:geolocator/geolocator.dart';
@@ -88,6 +89,7 @@ class UsersService extends ApiService {
         userRequests.add(UserRequests.fromJson(value));
       }
     }
+    userRequests.sort((a, b) => b.getReqDate().compareTo(a.getReqDate()));
     return userRequests;
   }
 
@@ -121,6 +123,22 @@ class UsersService extends ApiService {
       "TENKH": "string"
     };
     final response = await postByToken(Url.sendRequests, data);
+    return response != null && response.statusCode == 200;
+  }
+
+  Future<List<UserResponses>> getResponses(int reqId) async {
+    final userResponses = <UserResponses>[];
+    final response = await fetchByToken('${Url.getResponses}?reqId=$reqId');
+    if (response != null && response.statusCode == 200) {
+      for (var value in response.data) {
+        userResponses.add(UserResponses.fromJson(value));
+      }
+    }
+    return userResponses;
+  }
+
+  Future<bool> sendResponseApi(Map<String, dynamic> data) async {
+    final response = await postByToken(Url.sendResponse, data);
     return response != null && response.statusCode == 200;
   }
 }
