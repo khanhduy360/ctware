@@ -15,7 +15,8 @@ class BillProvider extends ChangeNotifier {
     return futureBills;
   }
 
-  Future<List<Invoice>> futureInvoicesDataChart(BuildContext context, idkh) async {
+  Future<List<Invoice>> futureInvoicesDataChart(
+      BuildContext context, idkh) async {
     final statisticService = StatisticService(context: context);
     DateTime now = DateTime.now();
     DateTime oneYearAgo = DateTime(now.year - 1, now.month, now.day);
@@ -26,5 +27,16 @@ class BillProvider extends ChangeNotifier {
         fromDate: oneYearAgoTest.toUtc().toIso8601String(),
         toDate: oneYearAgo.toUtc().toIso8601String());
     return futureInvoices;
+  }
+
+  Future<bool> futureDeleteBill(BuildContext context, Bill bill) async {
+    final usersService = UsersService(context: context);
+    final rs = await usersService.deleteBillApi(bill.getJson());
+    if (rs) {
+      final futureBills = await usersService.getBillsApi();
+      listBill = futureBills;
+      notifyListeners();
+    }
+    return rs;
   }
 }

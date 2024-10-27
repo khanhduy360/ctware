@@ -1,9 +1,10 @@
+import 'package:ctware/configs/utilities.dart';
 import 'package:ctware/model/bill.dart';
 import 'package:ctware/provider/bill_provider.dart';
 import 'package:ctware/screens/invoice/invoice_add.dart';
 import 'package:ctware/theme/base_layout.dart';
+import 'package:ctware/theme/dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class InvoiceList extends StatefulWidget {
@@ -15,50 +16,57 @@ class InvoiceList extends StatefulWidget {
 
 class _InvoiceListState extends State<InvoiceList> {
   late BillProvider billProvider;
-  List<Bill> listBill = [];
+
+  late Future<List<Bill>> futureBills;
 
   @override
   void initState() {
     super.initState();
     billProvider = Provider.of<BillProvider>(context, listen: false);
-    if (billProvider.listBill.isNotEmpty) {
-      listBill = billProvider.listBill;
+    futureBills = billProvider.futureBills(context);
+  }
+
+  onRefreshList() async {
+    await billProvider.futureBills(context);
+  }
+
+  Widget onInitView(BuildContext context) {
+    if (billProvider.listBill.isEmpty) {
+      return FutureBuilder(
+          future: futureBills,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data!.isEmpty) {
+                return BaseLayout.emptyView(context);
+              }
+              return listBillView(context);
+            }
+            return BaseLayout.loadingView(context);
+          });
     }
+    return listBillView(context);
   }
 
   Widget listBillView(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(BaseLayout.marginLayoutBase),
+    return RefreshIndicator(
+      onRefresh: () async {
+        onRefreshList();
+      },
       child: SingleChildScrollView(
-        child: Column(
-          children: listBill
-              .map((bill) => InvoiceCard(
-                  idkh: bill.IDKH.toString(),
-                  sodanhbo: bill.SODB ?? '',
-                  name: bill.TENKH ?? '',
-                  address: bill.DIACHI ?? ''))
-              .toList(),
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.all(BaseLayout.marginLayoutBase),
+          child: Consumer<BillProvider>(builder:
+              (BuildContext context, BillProvider billProvider, Widget? child) {
+            return Column(
+              children: billProvider.listBill
+                  .map((item) => InvoiceCard(bill: item))
+                  .toList(),
+            );
+          }),
         ),
       ),
     );
-  }
-
-  Widget mainView(BuildContext context) {
-    if (listBill.isNotEmpty) {
-      return SingleChildScrollView(
-        child: listBillView(context),
-      );
-    }
-    return FutureBuilder(
-        future: billProvider.futureBills(context),
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-            listBill = snapshot.data ?? [];
-
-            return listBillView(context);
-          }
-          return BaseLayout.loadingView(context);
-        });
   }
 
   @override
@@ -80,23 +88,31 @@ class _InvoiceListState extends State<InvoiceList> {
           },
         ),
       ],
-      body: mainView(context),
+      body: onInitView(context),
     );
   }
 }
 
 class InvoiceCard extends StatelessWidget {
-  final String idkh;
-  final String sodanhbo;
-  final String name;
-  final String address;
+  final Bill bill;
+  const InvoiceCard({super.key, required this.bill});
 
-  const InvoiceCard(
-      {super.key,
-      required this.idkh,
-      required this.sodanhbo,
-      required this.name,
-      required this.address});
+  onDeleteBill(BuildContext context) {
+    ShowingDialog.comfirmDialog(rootContext,
+        title: 'Thông báo',
+        message: 'Bạn có muốn xóa liên kết với khách hàng này?',
+        yesEvent: () async {
+      ShowingDialog.loadingDialog(rootContext);
+      final billProvider = Provider.of<BillProvider>(context, listen: false);
+      await billProvider.futureDeleteBill(context, bill);
+      // Pop loading
+      // ignore: use_build_context_synchronously
+      Navigator.pop(rootContext);
+      // Pop confirm
+      // ignore: use_build_context_synchronously
+      Navigator.pop(rootContext);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,16 +124,16 @@ class InvoiceCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              name,
+              bill.TENKH ?? '',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
             ),
             const SizedBox(height: 8),
-            Text('IDKH: $idkh'),
-            Text('Số danh bộ: $sodanhbo'),
-            Text('Địa chỉ: $address'),
+            Text('IDKH: ${bill.IDKH.toString()}'),
+            Text('Số danh bộ: ${bill.SODB ?? ''}'),
+            Text('Địa chỉ: ${bill.DIACHI ?? ''}'),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -138,7 +154,7 @@ class InvoiceCard extends StatelessWidget {
                 const SizedBox(width: 15),
                 ElevatedButton.icon(
                   onPressed: () {
-                    // Handle delete action
+                    onDeleteBill(context);
                   },
                   icon: const Icon(
                     Icons.delete,

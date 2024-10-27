@@ -232,6 +232,7 @@ class _SendRequestAddState extends State<SendRequestAdd> {
                                 ),
                                 const SizedBox(height: 10),
                                 TextFormField(
+                                  keyboardType: TextInputType.number,
                                   decoration: const InputDecoration(
                                     labelText: 'Điện thoại',
                                     border: OutlineInputBorder(),

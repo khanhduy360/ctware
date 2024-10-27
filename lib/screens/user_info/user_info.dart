@@ -1,9 +1,11 @@
 import 'package:ctware/configs/colors.dart';
+import 'package:ctware/screens/invoice/invoice_list.dart';
 import 'package:ctware/screens/user_info/widgets/support_row.dart';
 import 'package:ctware/screens/user_info/widgets/change_password_screen.dart';
 import 'package:ctware/screens/user_info/widgets/user_info_header.dart';
 import 'package:ctware/screens/user_info/widgets/update_field_screen.dart';
 import 'package:ctware/theme/base_layout.dart';
+import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/section_title.dart';
@@ -27,13 +29,19 @@ class UserInfoScreen extends StatelessWidget {
             const SectionTitle(title: "Quản lý tài khoản"),
             Container(
               margin: const EdgeInsets.only(bottom: 16),
-              color: AppColors.bgWhite,
+              decoration: BoxStyle.fromBoxDecoration(),
               child: Column(
                 children: [
                   ListTile(
                     title: const Text('Quản lý Hóa đơn'),
                     trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const InvoiceList(),
+                          ));
+                    },
                   ),
                   const Divider(
                     thickness: .3,
@@ -100,7 +108,7 @@ class UserInfoScreen extends StatelessWidget {
             const SectionTitle(title: 'Hỗ trợ'),
             Container(
               margin: const EdgeInsets.only(bottom: 16),
-              color: AppColors.bgWhite,
+              decoration: BoxStyle.fromBoxDecoration(),
               child: const Column(children: [
                 SupportRow(
                   leftTitle: 'Email: ',
@@ -130,7 +138,7 @@ class UserInfoScreen extends StatelessWidget {
             const SectionTitle(title: 'Giới thiệu'),
             Container(
               margin: const EdgeInsets.only(bottom: 16),
-              color: AppColors.bgWhite,
+              decoration: BoxStyle.fromBoxDecoration(),
               child: Column(
                 children: [
                   ListTile(

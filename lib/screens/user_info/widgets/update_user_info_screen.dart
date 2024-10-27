@@ -3,6 +3,7 @@ import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/login.dart';
 import 'package:ctware/services/cache_manage.dart';
 import 'package:ctware/theme/base_layout.dart';
+import 'package:ctware/theme/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,16 +52,21 @@ class _UpdateUserInfoScreenState extends State<UpdateUserInfoScreen> {
   }
 
   void _logout() async {
-    await CacheManage.removeToken();
-    // ignore: use_build_context_synchronously
-    Navigator.of(rootContext, rootNavigator: true).pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return const Login();
-        },
-      ),
-      (_) => false,
-    );
+    ShowingDialog.comfirmDialog(rootContext,
+        title: 'Thông báo',
+        message: 'Bạn có chắc chắn muốn đăng xuất khỏi tài khoản?',
+        yesEvent: () async {
+      await CacheManage.removeToken();
+      // ignore: use_build_context_synchronously
+      Navigator.of(rootContext, rootNavigator: true).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (BuildContext rootContext) {
+            return const Login();
+          },
+        ),
+        (_) => false,
+      );
+    });
   }
 
   Widget _buildEditableRow(String label, TextEditingController controller) {

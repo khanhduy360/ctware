@@ -1,6 +1,7 @@
 import 'package:ctware/configs/colors.dart';
 import 'package:ctware/provider/user_provider.dart';
 import 'package:ctware/screens/user_info/widgets/update_user_info_screen.dart';
+import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,7 @@ class UserInfoHeader extends StatelessWidget {
         );
       },
       child: Container(
-        color: AppColors.contentColorWhite,
+        decoration: BoxStyle.fromBoxDecoration(),
         margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 0),
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
         child: const Column(

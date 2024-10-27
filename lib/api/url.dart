@@ -19,6 +19,7 @@ class Url {
   static const sendRequests = "$version/Users/SendRequests"; // POST
   static const getResponses = "$version/Users/GetResponses"; // GET
   static const sendResponse = "$version/Users/SendResponse"; // POST
+  static const deleteBill = "$version/Users/DeleteBill"; // POST
   // Common
   static const chuyenMucTin = "$version/Common/ChuyenMucTin"; //GET
   static const advertiseSlide = "$version/Common/AdvertiseSlide"; //GET

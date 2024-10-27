@@ -10,6 +10,7 @@ extension ShowingDialog on Dialog {
     String? cancelBtnText,
     String? confirmBtnText,
     bool showCancelBtn = true,
+    String? title,
   }) {
     QuickAlert.show(
         onConfirmBtnTap: yesEvent,
@@ -22,7 +23,7 @@ extension ShowingDialog on Dialog {
         confirmBtnTextStyle: const TextStyle(
             fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),
         type: QuickAlertType.warning,
-        title: '',
+        title: title ?? '',
         onCancelBtnTap: () {
           Navigator.pop(context);
         },

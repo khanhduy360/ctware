@@ -141,4 +141,9 @@ class UsersService extends ApiService {
     final response = await postByToken(Url.sendResponse, data);
     return response != null && response.statusCode == 200;
   }
+
+  Future<bool> deleteBillApi(Map<String, dynamic> data) async {
+    final response = await postByToken(Url.deleteBill, data);
+    return response != null && response.statusCode == 200;
+  }
 }

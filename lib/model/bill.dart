@@ -84,4 +84,30 @@ class Bill {
     }
     return PhoneNumber;
   }
+
+  Map<String, dynamic> getJson() {
+    return {
+      'SODB': SODB,
+      'TENKH': TENKH,
+      'DIACHI': DIACHI,
+      'MAHTTT': MAHTTT,
+      'MAKV': MAKV,
+      'SODT': SODT,
+      'SODT_SMS': SODT_SMS,
+      'GHICHU': GHICHU,
+      'DONVI': DONVI,
+      'IDKH': IDKH,
+      'PlatformType': PlatformType,
+      'UserId': UserId,
+      'PhoneNumber': PhoneNumber,
+      'Email': Email,
+      'SharedInfo': SharedInfo,
+      'VerifyCustomer': VerifyCustomer,
+      'VerifyDate': VerifyDate,
+      'VerifyPhone': VerifyPhone,
+      'UpdateDate': UpdateDate,
+      'LoginLastTime': LoginLastTime,
+      'Id': Id,
+    };
+  }
 }
