@@ -19,6 +19,12 @@ class _LoginState extends State<Login> {
   late String _account = '', _password = '';
   late bool _isLoginProcess = false;
 
+  @override
+  void initState() {
+    super.initState();
+    rootContext = context;
+  }
+
   void _togglePasswordVisibility() {
     setState(() {
       _obscureText = !_obscureText;
@@ -49,7 +55,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    rootContext = context;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(

@@ -49,6 +49,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     selectedIndex = 0;
+    rootContext = context;
   }
 
   void _onItemTapped(int index) {
@@ -100,7 +101,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    rootContext = context;
     // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {

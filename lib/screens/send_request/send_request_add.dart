@@ -87,12 +87,11 @@ class _SendRequestAddState extends State<SendRequestAdd> {
         .then((value) {
       if (value) {
         onLoadRequestList();
-        ShowingDialog.successDialog(rootContext,
-        onConfirmBtnTap: () {
+        ShowingDialog.successDialog(rootContext, onConfirmBtnTap: () {
           Navigator.pop(rootContext);
           Navigator.pop(context);
         },
-        title: 'Gửi yêu cầu',
+            title: 'Gửi yêu cầu',
             message:
                 'Yêu cầu của Quý khách đã được gửi đến Công ty. Công ty sẽ phản hồi lại cho Quý khách trong thời gian sớm nhất');
       }
