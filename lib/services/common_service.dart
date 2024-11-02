@@ -75,4 +75,12 @@ class CommonService extends ApiService {
     }
     return requestTypes;
   }
+
+  Future<bool> getConfigGCS() async {
+    final response = await fetch('${Url.config}?key=IsGCSOnline');
+    if (response != null && response.statusCode == 200) {
+      return response.data['Value'] == 'true';
+    }
+    return false;
+  }
 }

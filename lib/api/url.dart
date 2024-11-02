@@ -6,6 +6,7 @@ class Url {
   static const urlSite = "https://$domain/api/ctwapi/";
   static const version = 'v1';
   static const platformId = 3;
+  static const platformType = 3;
   // Users
   static const login = "$version/Users/Login"; // POST
   static const getUser = "$version/Users/GetUser"; // GET
@@ -20,6 +21,10 @@ class Url {
   static const getResponses = "$version/Users/GetResponses"; // GET
   static const sendResponse = "$version/Users/SendResponse"; // POST
   static const deleteBill = "$version/Users/DeleteBill"; // POST
+  static const getHoaDon = "$version/Users/GetHoaDon"; // POST
+  static const addBill = "$version/Users/AddBill"; // POST
+  static const checkKhachHangGCS = "$version/Users/CheckKhachHangGCS"; // POST
+
   // Common
   static const chuyenMucTin = "$version/Common/ChuyenMucTin"; //GET
   static const advertiseSlide = "$version/Common/AdvertiseSlide"; //GET

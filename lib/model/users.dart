@@ -57,4 +57,25 @@ class User {
       PlatformType: responseData['PlatformType'],
     );
   }
+
+  Map<String, dynamic> getJson() {
+    return {
+      'accID': accID,
+      'IDKH': IDKH,
+      'accName': accName,
+      'accPass': accPass,
+      'accFullName': accFullName,
+      'accAddress': accAddress,
+      'accDisplayName': accDisplayName,
+      'accEmail': accEmail,
+      'accTel': accTel,
+      'sqID': sqID,
+      'Token': Token,
+      'RefreshToken': RefreshToken,
+      'SODB': SODB,
+      'DisplayName': DisplayName,
+      'accEmailVerified': accEmailVerified,
+      'PlatformType': PlatformType,
+    };
+  }
 }

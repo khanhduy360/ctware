@@ -1,7 +1,10 @@
 import 'package:ctware/configs/utilities.dart';
 import 'package:ctware/model/bill.dart';
 import 'package:ctware/provider/bill_provider.dart';
+import 'package:ctware/provider/user_provider.dart';
+import 'package:ctware/screens/invoice/gcs_form.dart';
 import 'package:ctware/screens/invoice/invoice_add.dart';
+import 'package:ctware/services/users_service.dart';
 import 'package:ctware/theme/base_layout.dart';
 import 'package:ctware/theme/dialog.dart';
 import 'package:flutter/material.dart';
@@ -18,16 +21,20 @@ class _InvoiceListState extends State<InvoiceList> {
   late BillProvider billProvider;
 
   late Future<List<Bill>> futureBills;
+  late Future<bool> futureGetConfigGCS;
 
   @override
   void initState() {
     super.initState();
     billProvider = Provider.of<BillProvider>(context, listen: false);
     futureBills = billProvider.futureBills(context);
+    futureGetConfigGCS = billProvider.futureGetConfigGCS(context);
   }
 
   onRefreshList() async {
     await billProvider.futureBills(context);
+    // ignore: use_build_context_synchronously
+    await billProvider.futureGetConfigGCS(context);
   }
 
   Widget onInitView(BuildContext context) {
@@ -60,7 +67,8 @@ class _InvoiceListState extends State<InvoiceList> {
               (BuildContext context, BillProvider billProvider, Widget? child) {
             return Column(
               children: billProvider.listBill
-                  .map((item) => InvoiceCard(bill: item))
+                  .map((item) => InvoiceCard(
+                      bill: item, isGCSOnline: billProvider.configGCS))
                   .toList(),
             );
           }),
@@ -95,7 +103,8 @@ class _InvoiceListState extends State<InvoiceList> {
 
 class InvoiceCard extends StatelessWidget {
   final Bill bill;
-  const InvoiceCard({super.key, required this.bill});
+  final bool isGCSOnline;
+  const InvoiceCard({super.key, required this.bill, required this.isGCSOnline});
 
   onDeleteBill(BuildContext context) {
     ShowingDialog.comfirmDialog(rootContext,
@@ -112,6 +121,25 @@ class InvoiceCard extends StatelessWidget {
       // ignore: use_build_context_synchronously
       Navigator.pop(rootContext);
     });
+  }
+
+  onCheckGCS(BuildContext context) async {
+    final userService = UsersService(context: context);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    if (userProvider.user != null) {
+      await userService
+          .checkKhachHangGCSApi(
+              idkh: bill.IDKH.toString(),
+              uId: userProvider.user!.accID.toString())
+          .then((value) {
+        if (value) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => GcsForm(bill: bill)),
+          );
+        }
+      });
+    }
   }
 
   @override
@@ -138,19 +166,21 @@ class InvoiceCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // Handle ghi chỉ số online action
-                  },
-                  icon: const Icon(
-                    Icons.speed,
-                    color: Colors.blue,
-                  ),
-                  label: const Text(
-                    'Ghi chỉ số Online',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ),
+                isGCSOnline
+                    ? ElevatedButton.icon(
+                        onPressed: () {
+                          onCheckGCS(context);
+                        },
+                        icon: const Icon(
+                          Icons.speed,
+                          color: Colors.blue,
+                        ),
+                        label: const Text(
+                          'Ghi chỉ số Online',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                      )
+                    : const SizedBox(),
                 const SizedBox(width: 15),
                 ElevatedButton.icon(
                   onPressed: () {
