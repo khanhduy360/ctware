@@ -103,7 +103,7 @@ class _GcsFormState extends State<GcsForm> {
   }
 
   Widget renderImageView(BuildContext context) {
-    if(imageData != null) {
+    if (imageData != null) {
       return renderImagePick(context, imageData!);
     }
     return inputImageViewItem(context);
@@ -257,13 +257,20 @@ class _GcsFormState extends State<GcsForm> {
                     const Text('Thông tin Khách hàng', style: textStyleHead),
                     const SizedBox(height: 5),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
                           'Họ tên:',
                           style: textStyleLable,
                         ),
                         const SizedBox(width: 5),
-                        Text(widget.bill.TENKH ?? '', style: textStyleValue),
+                        Flexible(
+                            child: Text(
+                          widget.bill.TENKH ?? '',
+                          style: textStyleValue,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        )),
                       ],
                     ),
                     const SizedBox(height: 2),
