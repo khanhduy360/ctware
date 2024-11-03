@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:ctware/configs/utilities.dart';
 import 'package:ctware/model/bill.dart';
 import 'package:ctware/model/bill_info.dart';
 import 'package:ctware/screens/pipe_report/pick_image.dart';
 import 'package:ctware/screens/pipe_report/pick_image_full_screen.dart';
+import 'package:ctware/services/users_service.dart';
 import 'package:ctware/theme/base_layout.dart';
+import 'package:ctware/theme/dialog.dart';
 import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +41,7 @@ class _GcsFormState extends State<GcsForm> {
     });
   }
 
-  submit() {
+  submit() async {
     if (isSubmitProcess) {
       return;
     }
@@ -46,7 +49,31 @@ class _GcsFormState extends State<GcsForm> {
       isSubmitProcess = true;
     });
     final formState = _formKey.currentState;
-    if (formState != null && formState.validate()) {}
+    if (formState != null && formState.validate()) {
+      final userService = UsersService(context: context);
+      String img = '';
+      if (imageData != null) {
+        img = await PickImage.convertToBase64(imageData!);
+      }
+      await userService
+          .ghiChiSoOnlApi(
+              bill: widget.bill,
+              billInfo: widget.billInfo,
+              csm: csm,
+              m3tt: m3tt,
+              img: img)
+          .then((value) {
+        if (value) {
+          ShowingDialog.successDialog(rootContext,
+              title: 'Thông báo',
+              message: 'Quý khách đã gửi thông tin thành công',
+              onConfirmBtnTap: () {
+                Navigator.pop(rootContext);
+                Navigator.pop(context);
+              },);
+        }
+      });
+    }
     setState(() {
       isSubmitProcess = false;
     });

@@ -201,14 +201,14 @@ class UsersService extends ApiService {
     required int uId,
   }) async {
     int month = DateTime.now().month;
-    if(month == 1) {
+    if (month == 1) {
       month = 12;
     } else {
       month--;
     }
     Map<String, dynamic> data = {
       "PlatformType": 3,
-      "IDKH": 37526,
+      "IDKH": idkh,
       "THANG": month,
       "NAM": 2023, // DEMO can tinh lai year khi trien khai
       "UserId": uId.toString(),
@@ -218,5 +218,59 @@ class UsersService extends ApiService {
       return BillInfo.fromJson(response.data);
     }
     return null;
+  }
+
+  Future<bool> ghiChiSoOnlApi({
+    required Bill bill,
+    required BillInfo billInfo,
+    required String csm,
+    required String m3tt,
+    required String img,
+  }) async {
+    DateTime now = DateTime.now();
+    String formattedDate = now.toIso8601String();
+    Map<String, dynamic> data = {
+      "MAHTTT": billInfo.MAHTTT,
+      "SODB": billInfo.SODB,
+      "HOTEN": bill.TENKH,
+      "DIACHI": bill.DIACHI,
+      "SODT": bill.SODT,
+      "SODT_SMS": bill.SODT_SMS,
+      "PlatformType": Url.platformType,
+      "IDKH": billInfo.IDKH,
+      "THANG": DateTime.now().month,
+      "NAM": 2023, // DEMO can tinh lai year khi trien khai
+      "MAKV": bill.MAKV,
+      "MADP": billInfo.MADP,
+      "UserId": bill.UserId,
+      "KhOnlId": null,
+      "CSCU": billInfo.CSMOI,
+      "CSMOI": csm,
+      "M3TT": m3tt,
+      "NGAYGHI": formattedDate,
+      "M3TT1": 0,
+      "M3TT2": 0,
+      "M3TT3": 0,
+      "VerifyDate": formattedDate,
+      "VerifyMANV": "string",
+      "GHICHU": "string",
+      "HINHANH": img,
+      "TRANGTHAI": true,
+      "LYDO": "string",
+      "TTGHI": 0,
+      "GHICHU_TT": "string",
+      "M3TT_TDH": 0,
+      "Id": 0
+    };
+    final response = await postByToken(Url.ghiChiSoOnl, data);
+    if (response != null && response.statusCode == 200) {
+      return true;
+    }
+    if (response != null && response.data is String) {
+      // ignore: use_build_context_synchronously
+      ShowingDialog.errorDialog(rootContext,
+          errMes: response.data, title: 'Thông báo');
+    }
+    return false;
   }
 }
