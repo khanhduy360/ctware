@@ -24,6 +24,7 @@ class Url {
   static const getHoaDon = "$version/Users/GetHoaDon"; // POST
   static const addBill = "$version/Users/AddBill"; // POST
   static const checkKhachHangGCS = "$version/Users/CheckKhachHangGCS"; // POST
+  static const thongTinHoaDon = "$version/Users/ThongTinHoaDon"; // POST
 
   // Common
   static const chuyenMucTin = "$version/Common/ChuyenMucTin"; //GET

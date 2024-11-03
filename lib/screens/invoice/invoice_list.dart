@@ -131,12 +131,19 @@ class InvoiceCard extends StatelessWidget {
           .checkKhachHangGCSApi(
               idkh: bill.IDKH.toString(),
               uId: userProvider.user!.accID.toString())
-          .then((value) {
+          .then((value) async {
         if (value) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => GcsForm(bill: bill)),
-          );
+          await userService.thongTinHoaDonApi(idkh: bill.IDKH, uId: userProvider.user!.accID).then((billInfo) {
+            if(billInfo != null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => GcsForm(
+                  bill: bill,
+                  billInfo: billInfo
+                )),
+              );
+            }
+          });
         }
       });
     }

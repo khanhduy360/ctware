@@ -4,6 +4,7 @@ import 'package:ctware/api/api_config.dart';
 import 'package:ctware/api/url.dart';
 import 'package:ctware/configs/utilities.dart';
 import 'package:ctware/model/bill.dart';
+import 'package:ctware/model/bill_info.dart';
 import 'package:ctware/model/contract.dart';
 import 'package:ctware/model/pipe_report.dart';
 import 'package:ctware/model/user_requests.dart';
@@ -193,5 +194,29 @@ class UsersService extends ApiService {
           errMes: response.data, title: 'Thông báo');
     }
     return false;
+  }
+
+  Future<BillInfo?> thongTinHoaDonApi({
+    required int idkh,
+    required int uId,
+  }) async {
+    int month = DateTime.now().month;
+    if(month == 1) {
+      month = 12;
+    } else {
+      month--;
+    }
+    Map<String, dynamic> data = {
+      "PlatformType": 3,
+      "IDKH": 37526,
+      "THANG": month,
+      "NAM": 2023, // DEMO can tinh lai year khi trien khai
+      "UserId": uId.toString(),
+    };
+    final response = await postByToken(Url.thongTinHoaDon, data);
+    if (response != null && response.statusCode == 200) {
+      return BillInfo.fromJson(response.data);
+    }
+    return null;
   }
 }
