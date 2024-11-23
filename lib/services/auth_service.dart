@@ -11,7 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthService extends ApiService {
   AuthService({required super.context});
 
-  Future<User?> loginApi({required account, required password}) async {
+  Future<User?> loginApi(
+      {required account, required password, bool localAuth = false}) async {
     // Set up the request data
     Map<String, dynamic> data = {
       "UserName": account,
@@ -22,20 +23,22 @@ class AuthService extends ApiService {
       "Fkey": "string",
     };
     final response = await post(Url.login, data);
-    if(response != null && response.statusCode == 200) {
+    if (response != null && response.statusCode == 200) {
       final user = User.fromJson(response.data);
       CacheManage.tokenOnCache = user.Token;
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setString('Token', user.Token ?? '');
+      CacheManage.setToken();
+      CacheManage.saveKeywordLogin(data['UserName']);
       CacheManage.setCurrentPass(data['Password']);
       // ignore: avoid_print
       print('Token: ${user.Token} ---------------------');
       return user;
     }
-    if (response != null && response.statusCode == 400) {
-      // ignore: use_build_context_synchronously
-      ShowingDialog.errorDialog(context,
-          errMes: response.toString(), title: 'Đăng nhập thất bại');
+    if (!localAuth) {
+      if (response != null && response.statusCode == 400) {
+        // ignore: use_build_context_synchronously
+        ShowingDialog.errorDialog(context,
+            errMes: response.toString(), title: 'Đăng nhập thất bại');
+      }
     }
     return null;
   }
@@ -49,7 +52,7 @@ class AuthService extends ApiService {
       final user = User.fromJson(response?.data);
       return user;
     } else {
-      CacheManage.tokenOnCache = null;     
+      CacheManage.tokenOnCache = null;
       return null;
     }
   }

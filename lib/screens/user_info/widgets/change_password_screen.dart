@@ -1,5 +1,6 @@
 import 'package:ctware/configs/colors.dart';
 import 'package:ctware/provider/user_provider.dart';
+import 'package:ctware/services/auth_service.dart';
 import 'package:ctware/services/cache_manage.dart';
 import 'package:ctware/theme/base_layout.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,8 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   String? _confirmPassErr;
   String? _currPassErr;
 
+  late AuthService authService;
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +46,7 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     _newPassErr = null;
     _confirmPassErr = null;
     _currPassErr = null;
+    authService = AuthService(context: context);
   }
 
   @override
@@ -71,9 +75,11 @@ class _UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   void handleContinuePressed() async {
     if (_isEditing == false) return;
     _currPassErr = null;
-    String currentPass = await CacheManage.getCurrenPass();
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final status = await authService.loginApi(
+        account: userProvider.user!.accName, password: _currentPassController.text, localAuth: true);
     setState(() {
-      if (currentPass == _currentPassController.text) {
+      if (status != null) {
         _step = 2;
       } else {
         _currPassErr = "Mật khẩu không chính xác";

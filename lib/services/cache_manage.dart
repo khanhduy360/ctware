@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheManage {
@@ -13,6 +15,11 @@ class CacheManage {
     }
   }
 
+  static setToken() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('Token', tokenOnCache ?? '');
+  }
+
   static Future<void> removeToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('Token');
@@ -24,8 +31,34 @@ class CacheManage {
     pref.setString('CurrentPass', currentPass);
   }
 
-  static Future<String> getCurrenPass() async {
+  static Future<String> getCurrentPass() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     return pref.get('CurrentPass').toString();
+  }
+
+  static saveKeywordLogin(String keyword) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('KeywordLogin', keyword);
+  }
+
+  static Future<String?> loadKeywordLogin() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getString('KeywordLogin');
+  }
+
+  static Future<Map<String, dynamic>?> getSetting() async {
+    Map<String, dynamic>? rs;
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? settingJs = pref.getString('Setting');
+    if(settingJs != null) {
+      rs = jsonDecode(settingJs);
+    }
+    return rs;
+  }
+
+  static setSetting(Map<String, dynamic> setting) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String jsonString = jsonEncode(setting);
+    pref.setString('Setting', jsonString);
   }
 }
