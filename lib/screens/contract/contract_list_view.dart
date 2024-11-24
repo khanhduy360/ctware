@@ -1,7 +1,6 @@
 import 'package:ctware/model/contract.dart';
 import 'package:ctware/provider/contract_provider.dart';
 import 'package:ctware/theme/base_layout.dart';
-import 'package:ctware/theme/dialog.dart';
 import 'package:ctware/theme/style.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
