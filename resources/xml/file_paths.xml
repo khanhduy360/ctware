@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+	<root-path name="root" path="." />
+	<files-path name="my_docs" path="." />
+	<external-files-path name="my_images" path="Pictures" />
+	<external-files-path name="my_movies" path="Movies" />
+	<external-files-path name="PDF" path="content://storage/emulated/0/PDF/" />
+	<external-files-path name="Documents" path="content://storage/emulated/0/Documents/" />
+	<external-files-path name="CTWCAREFILE" path="/data/data/com.ctwassco.CTWCARE/files" />
+	<external-path name="external_files" path="."/>
+	<external-path name="external_files_pdf" path="content:///storage/emulated/0/PDF/" />
+	<external-path name="external_files_document" path="content:///storage/emulated/0/Documents/" />
+	<external-path name="ctwcare_external_files_document" path="content://data/data/com.ctwassco.CTWCARE/files/" />
+</paths>

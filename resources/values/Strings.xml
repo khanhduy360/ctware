@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+  <string name="app_name">CTWCARE</string>
+  <string name="firebase_instance">com.ctwassco.CTWCARE</string>
+  <string name="com.crashlytics.android.build_id">10</string>
+	<string name="com.google.firebase.crashlytics.mapping_file_id">1.0</string>
+  <string name="FACEBOOK_APP_ID">1905435639668425</string>
+  <string name="ACCOUNT_KIT_CLIENT_TOKEN">396f1a272fc505cca76d7e5f7d602232</string>
+</resources>
