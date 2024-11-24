@@ -42,12 +42,13 @@ class _LoginState extends State<Login> {
   initView() async {
     inputAccountController = TextEditingController();
     String? accountCache = await CacheManage.loadKeywordLogin();
-    _checkBiometrics();
-    setState(() {
-      if (accountCache != null) {
-        _account = accountCache;
-        inputAccountController.text = _account;
-      }
+    await _checkBiometrics().then((onValue) {
+      setState(() {
+        if (accountCache != null) {
+          _account = accountCache;
+          inputAccountController.text = _account;
+        }
+      });
     });
   }
 
